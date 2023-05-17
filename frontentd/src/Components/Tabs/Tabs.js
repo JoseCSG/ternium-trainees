@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Tabs = () => {
+const Tabs = ({text}) => {
   return (
-    <div>Tabs</div>
+    <h3>{text}</h3>
   )
 }
 
