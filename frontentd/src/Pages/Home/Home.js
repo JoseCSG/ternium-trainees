@@ -3,7 +3,10 @@ import Header from '../../Components/Header/Header'
 
 const Home = () => {
   return (
-    <Header/>
+    <div>
+      <Header/>
+      <h1>Home</h1>
+    </div>
   )
 }
 

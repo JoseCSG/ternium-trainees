@@ -3,3 +3,9 @@
     display: flex;
     justify-content: space-evenly;
 }
+
+.Link
+{
+    text-decoration: none;
+    color: black;
+}
