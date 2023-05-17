@@ -1,5 +1,5 @@
 import './App.css';
-import {Route, BrowserRouter as Router, Routes, UNSAFE_DataRouterStateContext} from 'react-router-dom'
+import {Route, Routes} from 'react-router-dom'
 import Home from '../src/Pages/Home/Home'
 import Profile from '../src/Pages/Profile/Profile'
 import Courses from '../src/Pages/Courses/Courses'

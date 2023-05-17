@@ -1,21 +1,22 @@
 import React from 'react'
-import Tabs from '../Tabs/Tabs'
+import Tab from '../Tab/Tab'
 import './Header.css'
 import { Link } from 'react-router-dom'
 
-const Header = () => {
+const Header = ({name}) => {
+
   return (
     <div className='header'>
         <Link to= "/" className='Link'>
-          <Tabs text = "Inicio" />
+          <Tab text = "Inicio" page = {name} />
         </Link>
 
         <Link to= "/courses" className='Link'>
-          <Tabs text = "Cursos" />
+          <Tab text = "Cursos" page = {name}/>
         </Link>
 
         <Link to= "/profile" className='Link'>
-          <Tabs text = "Perfil" />
+          <Tab text = "Perfil" page = {name}/>
         </Link>
     </div>
   )

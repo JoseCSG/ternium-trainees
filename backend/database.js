@@ -2,10 +2,10 @@ const {Pool} = require ("pg")
 
 const pool = new Pool ({
     user: "postgres",
-    password: "#Samanta10",
+    password: "password",
     host: "localhost",
     port: 5432,
-    database: "login_system",
+    database: "ternium_database",
 })
 
 

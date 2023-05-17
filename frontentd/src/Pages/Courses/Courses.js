@@ -4,8 +4,8 @@ import Header from '../../Components/Header/Header'
 const Courses = () => {
   return (
     <div>
-      <Header/>
-      <h1>Courses</h1>
+      <Header name= "Cursos"/>
+      
     </div>
   )
 }
