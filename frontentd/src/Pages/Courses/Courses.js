@@ -1,29 +1,38 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../../Components/Header/Header'
+import Card from '../../Components/Card/Card'
+import '../Courses/Courses.css'
 
 const Courses = () => {
 
   const [courses, setCourses] = useState([])
 
-  const loadCourses = () => {
-    fetch('http://localhost:4000/cursos')
-    .then(res => res.json())
-    .then(data => {setCourses(data)})
-    .catch(error => {console.error(error)})
+  const loadCourses = async () => {
+    try
+    {
+        const response = await fetch('http://localhost:4000/cursos')
+        const jsonData = await response.json()
+
+        console.log(jsonData)
+        setCourses(jsonData)
+    }
+    catch(error)
+    {
+      console.log(error.message);
+    }
   }
+
   useEffect(() => {
     loadCourses()
   }, [])
-  console.log(courses)
   return (
     <div>
-      <Header name= "Cursos"/>
-      {courses.map(course => {
-        return (
-          <h1>{course.name}</h1>
-        )
-      })}
-
+      <Header name="Cursos" />
+      <div className='container'>
+        {courses.map((course) => {
+          return <Card name={course.name}/>;
+        })}
+      </div>
     </div>
   )
 }

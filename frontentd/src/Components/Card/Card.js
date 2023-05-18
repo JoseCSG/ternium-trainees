@@ -1,8 +1,11 @@
 import React from 'react'
 
-const Card = () => {
+const Card = ({name}) => {
   return (
-    <div>Card</div>
+    <article>
+      <img src='https://www.tec-innova.mx/wp-content/uploads/2021/12/Imagen1.png'></img>
+      <p>{name}</p>
+    </article>
   )
 }
 

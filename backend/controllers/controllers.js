@@ -1,15 +1,15 @@
-import pool from '../database.js'
+import client from '../database.js'
+
+client.connect()
 
 export const getCourses = async (req, res) => {
-    pool.query('SELECT name FROM courses').then((response) => {
-        console.log(response);
-    })
-    .catch((err) =>{
-        console.log(err);
-    });
-
-    console.log(req.body);
-    res.send("Response received: "+req.body);
+    try {
+    const courses = await client.query('SELECT name FROM courses')
+    res.json(courses.rows)
+    }
+    catch(err) {
+        console.log(err.message);
+    };
 }
 
 export const postUser = async (req, res) => {
@@ -21,7 +21,7 @@ export const postUser = async (req, res) => {
 
     //const insert_USPS= 'INSERT INTO accounts (username , password) VALUES ($1,$2)', [username,password];
 
-    pool.query('INSERT INTO accounts (username , password) VALUES ($1,$2)', [username,password]).then((response) => {
+    client.query('INSERT INTO accounts (username , password) VALUES ($1,$2)', [username,password]).then((response) => {
         console.log("Data saved");
         console.log(response);
     })
