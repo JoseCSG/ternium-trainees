@@ -1,11 +1,11 @@
 import pkg from "pg";
-const {Pool} = pkg
+const {Client} = pkg
 
-const pool = new Pool ({
+const client = new Client ({
     user: "postgres",
     password: "#Samanta10",
     host: "localhost",
     port: 5432,
     database: "login_system",
 })
-export default pool;
+export default client;
