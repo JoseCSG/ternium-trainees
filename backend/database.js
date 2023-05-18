@@ -1,4 +1,5 @@
-const {Pool} = require ("pg")
+import pkg from "pg";
+const {Pool} = pkg
 
 const pool = new Pool ({
     user: "postgres",
@@ -7,6 +8,4 @@ const pool = new Pool ({
     port: 5432,
     database: "ternium_database",
 })
-
-
-module.exports=pool;
+export default pool;
