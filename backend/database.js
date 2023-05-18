@@ -3,9 +3,9 @@ const {Pool} = pkg
 
 const pool = new Pool ({
     user: "postgres",
-    password: "password",
+    password: "#Samanta10",
     host: "localhost",
     port: 5432,
-    database: "ternium_database",
+    database: "login_system",
 })
 export default pool;
