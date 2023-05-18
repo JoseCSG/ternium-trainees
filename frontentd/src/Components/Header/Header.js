@@ -18,6 +18,9 @@ const Header = ({name}) => {
         <Link to= "/profile" className='Link'>
           <Tab text = "Perfil" page = {name}/>
         </Link>
+        <Link to= "/login" className='Link'>
+          <Tab text = "Login" page = {name}/>
+        </Link>
     </div>
   )
 }
