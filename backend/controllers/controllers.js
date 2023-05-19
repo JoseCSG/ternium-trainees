@@ -4,8 +4,8 @@ client.connect()
 
 export const getCourses = async (req, res) => {
     try {
-    const courses = await client.query('SELECT name FROM courses')
-    res.json(courses.rows)
+        const courses = await client.query('SELECT nombre, img FROM courses')
+        res.json(courses.rows)
     }
     catch(err) {
         console.log(err.message);

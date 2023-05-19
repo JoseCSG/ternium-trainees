@@ -26,11 +26,13 @@ const Courses = () => {
     loadCourses()
   }, [])
   return (
-    <div>
-      <Header name="Cursos" />
+    <div className='page'>
+      <Header name= "Cursos" />
+      <h1>Cursos a realizar</h1>
+      <br></br>
       <div className='container'>
         {courses.map((course) => {
-          return <Card name={course.name}/>;
+          return <Card nombre= {course.nombre} img = {course.img}/>;
         })}
       </div>
     </div>
