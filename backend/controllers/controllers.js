@@ -1,12 +1,14 @@
-import client from "../database.js";
+import client from '../database.js';
 import pkg from 'jsonwebtoken'
 import {SECRET} from '../constants/index.js'
 const {sign} = pkg
 client.connect();
 
+
+//Retorna los nombres, y URL de las imagenes de los cursos, en formato JSON
 export const getCourses = async (req, res) => {
 	try {
-		const { rows } = await client.query("SELECT nombre FROM courses");
+		const { rows } = await client.query("SELECT nombre, img FROM courses");
 		res.json(rows);
 	} catch (err) {
 		console.log(err.message);
@@ -22,6 +24,9 @@ export const getUsers = async (req, res) => {
 	}
 };
 
+
+//Inserta en la base de datos un neuvo usuario con contraseña y usuario
+//(Creo que esto seria mejor para un sign in, y no tanto para un login)
 export const postUser = async (req, res) => {
 	const username = req.body["username"]; //expecting a json object
 	const password = req.body["password"]; //expecting a json object
