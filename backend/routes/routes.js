@@ -1,9 +1,17 @@
 import { Router } from "express";
-import { getCourses, postUser } from "../controllers/controllers.js";
+import { getCourses, getUsers, postUser, login, protectedRoute, logout } from "../controllers/controllers.js";
+import {loginValidation} from '../validators/auth.js'
+import { validationMiddleware } from "../middlewares/validations-middleware.js";
+import { userAuth } from "../middlewares/auth-middleware.js";
 const router = Router();
 
-//Cuando el servidor accede a estas rutas, se ejecutan los metodos HTTP (post, get, delete, update)
+router.post('/login', loginValidation, validationMiddleware, login)
 router.post("/adduser", postUser);
 router.get('/cursos', getCourses)
+router.get('/users', getUsers)
+router.get('/protected',userAuth ,protectedRoute)
+router.get('/logout',userAuth , logout)
+
+
 
 export default router
