@@ -46,11 +46,13 @@ const Login =() => {
       <>
       <Header name="Login"/>
         <h1> Ingresa a tu cuenta </h1>
-        <form action="">
+        <form action="" className="form">
           <input type="text" placeholder="username"
              value={username} onChange={(e) => setUsername(e.target.value)} />
+             <br></br>
           <input type="password" placeholder="password"
                   value={password} onChange={(e) => setPassword(e.target.value)} />
+              <br></br>
           <button type="submit"
                   onClick={agregaUsuario}>submit</button>
         </form>      

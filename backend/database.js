@@ -3,9 +3,9 @@ const {Client} = pkg
 
 const client = new Client ({
     user: "postgres",
-    password: "#Samanta10",
+    password: "password",
     host: "localhost",
     port: 5432,
-    database: "login_system",
+    database: "ternium_database",
 })
 export default client;
