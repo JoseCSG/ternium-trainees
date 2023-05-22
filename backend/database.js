@@ -1,11 +1,14 @@
 import pkg from "pg";
-const {Pool} = pkg
+const {Client} = pkg
 
-const pool = new Pool ({
+
+//Inicializacion de la conexion de la base de datos
+//Tienen que poner la contraseña que tienen en su propio postgress
+const client = new Client ({
     user: "postgres",
-    password: "#Samanta10",
+    password: "password",
     host: "localhost",
     port: 5432,
-    database: "login_system",
+    database: "ternium_database",
 })
-export default pool;
+export default client;

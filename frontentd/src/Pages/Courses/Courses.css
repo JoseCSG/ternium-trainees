@@ -1,0 +1,10 @@
+.container
+{
+    display: flex;
+    justify-content: space-evenly;
+    border-color: black;
+}
+.page
+{
+    background-color: lightsalmon;
+}

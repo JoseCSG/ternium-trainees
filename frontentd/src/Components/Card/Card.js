@@ -1,8 +1,15 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+import './Card.css'
 
-const Card = () => {
+const Card = ({nombre, img}) => {
   return (
-    <div>Card</div>
+    <Link to={'https://www.google.com/'} className='Link'>
+      <article className= 'tarjeta'>
+        <img src= {img} alt= {nombre} className='imagen'></img>
+        <p>{nombre}</p>
+      </article>
+    </Link>
   )
 }
 
