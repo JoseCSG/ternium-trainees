@@ -1,7 +1,7 @@
 import pool from '../database.js'
 
 export const getCourses = async (req, res) => {
-    pool.query('SELECT name FROM courses').then((response) => {
+    pool.query('SELECT nombre FROM courses').then((response) => {
         console.log(response);
     })
     .catch((err) =>{
