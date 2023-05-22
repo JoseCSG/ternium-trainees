@@ -45,8 +45,8 @@ const Login =() => {
     return (
       <>
       <Header name="Login"/>
-        <h1> Ingresa a tu cuenta </h1>
-        <form action="" className="form">
+        <h1 className='text-center my-5'> Ingresa a tu cuenta </h1>
+        <form action="">
           <input type="text" placeholder="username"
              value={username} onChange={(e) => setUsername(e.target.value)} />
              <br></br>
