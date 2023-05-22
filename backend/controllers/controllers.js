@@ -24,7 +24,6 @@ export const getUsers = async (req, res) => {
 	}
 };
 
-
 //Inserta en la base de datos un neuvo usuario con contraseña y usuario
 //(Creo que esto seria mejor para un sign in, y no tanto para un login)
 export const postUser = async (req, res) => {

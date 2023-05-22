@@ -4,6 +4,8 @@ import Home from '../src/Pages/Home/Home'
 import Profile from '../src/Pages/Profile/Profile'
 import Courses from '../src/Pages/Courses/Courses'
 import Login from './Pages/Login/Login';
+import NavbarComp from './Components/NavbarComp';
+//import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
 
@@ -18,7 +20,9 @@ function App() {
   }
 
   return (
-    <Routes>
+    <div className='App'>
+      <NavbarComp/>
+      <Routes>
       <Route path='/' element={<Home/>}/>
 
       <Route element = {<PrivateRoutes/>}>
@@ -29,6 +33,7 @@ function App() {
         <Route path='/login' element={<Login/>}/>
       </Route>
     </Routes>
+    </div>
   );
 }
 
