@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "../../Components/Header/Header";
 import { useState } from "react";
+import Button from 'react-bootstrap/Button';
 
 
 const Login =() => {
@@ -52,9 +52,8 @@ const Login =() => {
              <br></br>
           <input type="password" placeholder="password"
                   value={password} onChange={(e) => setPassword(e.target.value)} />
-              <br></br>
-          <button type="submit"
-                  onClick={agregaUsuario}>submit</button>
+          <Button variant="outline-success"
+                  onClick={agregaUsuario}>submit</Button>
         </form>      
       </>
     );
