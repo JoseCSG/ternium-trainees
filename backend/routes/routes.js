@@ -10,7 +10,7 @@ router.post("/adduser", postUser);
 router.get('/cursos', getCourses)
 router.get('/users', getUsers)
 router.get('/protected',userAuth ,protectedRoute)
-router.get('/logout',userAuth , logout)
+router.get('/logout' , logout)
 
 
 

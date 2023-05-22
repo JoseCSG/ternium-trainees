@@ -16,7 +16,7 @@ import Card from 'react-bootstrap/Card';
   const loadCourses = async () => {
     try
     {
-        const response = await fetch('http://localhost:4000/cursos')
+        const response = await fetch('http://localhost:4000/api/cursos')
         
         //La parseamos a JSON y lo asignamos a la variable de cursos
         const jsonData = await response.json()
