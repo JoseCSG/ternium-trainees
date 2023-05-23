@@ -60,7 +60,7 @@ export const login = async (req, res) => {
 	try {
 		const token = await sign(payload, SECRET)
 		return res.status(200).cookie('token', token, {httpOnly: true }).json({
-			succes: true, 
+			success: true, 
 			message: 'Logged in succesfully'
 		})	
 	} catch (error) {
