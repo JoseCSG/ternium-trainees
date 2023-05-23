@@ -49,8 +49,8 @@ import Card from 'react-bootstrap/Card';
       <h1>Cursos a realizar</h1>
       <br></br>
       <div className='container'>
-        {/* Iteramos en el arreglo de cursos, y por cada elemento de cursos
-            renderizamos una tarjeta con su información */}
+        { Iteramos en el arreglo de cursos, y por cada elemento de cursos
+            renderizamos una tarjeta con su información }
         {courses.map((course) => {
           return <Card nombre= {course.nombre} img = {course.img}/>;
         })}
@@ -59,8 +59,7 @@ import Card from 'react-bootstrap/Card';
   )
 }*/
 
-const Courses =() => 
-{
+const Courses =() => {
 
   //const [nombre, setNombre] = useState("");
 

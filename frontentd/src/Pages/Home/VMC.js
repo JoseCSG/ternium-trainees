@@ -1,7 +1,6 @@
 import React from "react";
 
-function VMC()
-{
+function VMC() {
     return (
         <section className="section bg-c-light border-top">
         <div className="container">
