@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+//import React, { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
@@ -16,7 +16,7 @@ import Card from 'react-bootstrap/Card';
   const loadCourses = async () => {
     try
     {
-        const response = await fetch('http://localhost:4000/cursos')
+        const response = await fetch('http://localhost:4000/api/cursos')
         
         //La parseamos a JSON y lo asignamos a la variable de cursos
         const jsonData = await response.json()
@@ -49,8 +49,9 @@ import Card from 'react-bootstrap/Card';
       <h1>Cursos a realizar</h1>
       <br></br>
       <div className='container'>
-        { Iteramos en el arreglo de cursos, y por cada elemento de cursos
-            renderizamos una tarjeta con su información }
+
+        {/* Iteramos en el arreglo de cursos, y por cada elemento de cursos
+            renderizamos una tarjeta con su información 
         {courses.map((course) => {
           return <Card nombre= {course.nombre} img = {course.img}/>;
         })}
