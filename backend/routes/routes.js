@@ -11,6 +11,7 @@ router.get('/cursos', getCourses)
 router.get('/users', getUsers)
 router.get('/protected',userAuth ,protectedRoute)
 router.get('/logout' , logout)
+//jeannette
 
 
 

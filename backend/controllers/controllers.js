@@ -92,3 +92,14 @@ export const logout = async (req, res) => {
 		})
 	}
 }
+
+/*export const getProfile=async(req,res)=> {
+	try {
+		const profile=await
+	}
+	catch (error){
+		console.error(err.message);
+		res.status(500).send('server error');
+
+	}
+}*/

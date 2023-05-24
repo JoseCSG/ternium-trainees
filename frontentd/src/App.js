@@ -19,7 +19,7 @@ function App() {
         <Route path='/' element={isAuth ? <Home/> : <Login/>}/>
         <Route path='/profile' element = {isAuth ? <Profile/> : <Login/>}/>
         <Route path='/courses' element={isAuth ? <Courses/> : <Login/>}/>
-        <Route path='/login' element={!isAuth ? <Login/> : <Home/>}/>       
+        <Route path='/login' element={!isAuth ? <Login/> : <Home/>}/>   
       </Routes>
     </>
   );

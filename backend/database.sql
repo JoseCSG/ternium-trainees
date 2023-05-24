@@ -3,7 +3,28 @@ CREATE TABLE accounts(
 	nombre varchar (90) NOT NULL,
 	email varchar(255) unique not null,
 	password varchar(255) not null
+	--genero varchar(1) not null,
+	--fecha_nac date not null,
+	--estado_origen varchar(255) not null
+	--id_business FK
+	--id_estado FK
 );
+
+/*CREATE TABLE business_area(
+	id_business SERIAL primary key,
+	area varchar(255) not null,
+);*/
+
+/*CREATE TABLE info_estado (
+	id_estado SERIAL primary key,
+	fecha_ini date not null,
+	fecha_fin date not null,
+	fecha_actual date not null,
+	duracion int(30),
+	estado int(1)
+
+);*/
+
 
 CREATE TABLE courses(
 	id SERIAL primary key,

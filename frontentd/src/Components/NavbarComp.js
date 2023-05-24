@@ -31,6 +31,8 @@ const NavbarComp = ({ isAuth, dispatch }) => {
               <>
                 <Nav.Link href="/courses">Courses</Nav.Link>
                 <Nav.Link href="/profile">Profile</Nav.Link>
+                <Nav.Link href="/admin">Admin</Nav.Link>
+                <Nav.Link href="/game">Game</Nav.Link>
                 <Nav.Link onClick={logout}>Log out</Nav.Link>
               </>
             ) : (

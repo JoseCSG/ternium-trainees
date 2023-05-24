@@ -23,6 +23,8 @@ const Login =() => {
       try {
         const response = await onLogin(values)  
         console.log(response.data)
+        setValues(response.data);
+        localStorage.setItem('user',response.data);
         if(response.data.success)
         {
           dispatch(authenticateUser())
