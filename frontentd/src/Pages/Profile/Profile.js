@@ -83,7 +83,7 @@ const Profile = () => {
                 <div class="card-body">
                   <h5 class="card-title">Teamwork</h5>
                   <p class="card-text">Al terminar el curso TC10274 te ganaste esta medalla ¡felicidades!</p>
-                  <a href="#" class="btn btn-custom">Ir a curso</a>
+                  <a href="http://localhost:3000/courses" class="btn btn-custom">Ir a curso</a>
                 </div>
                 </div> 
               </div>

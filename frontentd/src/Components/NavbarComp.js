@@ -15,6 +15,7 @@ const NavbarComp = ({ isAuth, dispatch }) => {
       console.log(error.response);
     }
   };
+  const isAdmin = false
 
   return (
     <div>
@@ -26,16 +27,19 @@ const NavbarComp = ({ isAuth, dispatch }) => {
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="mr-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
-            <Nav.Link href="/">Home</Nav.Link>
-            {isAuth ? (
-              <>
-                <Nav.Link href="/courses">Courses</Nav.Link>
-                <Nav.Link href="/profile">Profile</Nav.Link>
+            { isAuth ? 
+              (
+                <>
+                <Nav.Link href="/">Inicio</Nav.Link>
+                {!isAdmin && <Nav.Link href="/courses">Cursos</Nav.Link>}
+                {!isAdmin && <Nav.Link href="/profile">Perfil</Nav.Link>}
+                {isAdmin && <Nav.Link href="/data">Datos</Nav.Link>}
                 <Nav.Link onClick={logout}>Log out</Nav.Link>
-              </>
-            ) : (
-              <Nav.Link href="/login">Login</Nav.Link>
-            )}
+               </>
+              ) : (
+                <Nav.Link href="/login">Login</Nav.Link>
+              )
+            }
           </Nav>
         </Navbar.Collapse>
       </Navbar>

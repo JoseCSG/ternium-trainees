@@ -7,8 +7,16 @@ const userAuthFromLocal = () => {
     return false;
 }
 
+const userAdminFromLocal = () => {
+    const isAdmin = localStorage.getItem('isAdmin')
+    if(isAdmin && JSON.parse(isAdmin) === true) return true;
+    
+    return false;
+}
+
 const initialState = {
     isAuth: userAuthFromLocal(),
+    isAdmin : userAdminFromLocal(),
 }
 
 const authSlice = createSlice({
@@ -21,8 +29,14 @@ const authSlice = createSlice({
         unauthenticateUser: (state) => {
             state.isAuth = false
         },
+        authenticateAdmin: (state) => {
+            state.isAdmin = true
+        },
+        unauthenticateAdmin: (state) => {
+            state.isAdmin = false
+        },
     },
 })
 
-export const {authenticateUser, unauthenticateUser} = authSlice.actions
+export const {authenticateUser, unauthenticateUser, authenticateAdmin, unauthenticateAdmin} = authSlice.actions
 export default authSlice.reducer
