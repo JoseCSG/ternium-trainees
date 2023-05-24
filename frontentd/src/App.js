@@ -6,20 +6,25 @@ import Courses from '../src/Pages/Courses/Courses'
 import Login from './Pages/Login/Login';
 import NavbarComp from './Components/NavbarComp';
 import { useSelector } from 'react-redux';
+import Data from './Pages/Data/Data';
 //import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
 
   const {isAuth} = useSelector((state) => state.auth)
+  //const {isAdmin} =  useSelector((state) => state.auth)
+  const isAdmin = false
 
   return (
     <>
       <NavbarComp/>
       <Routes>
         <Route path='/' element={isAuth ? <Home/> : <Login/>}/>
-        <Route path='/profile' element = {isAuth ? <Profile/> : <Login/>}/>
-        <Route path='/courses' element={isAuth ? <Courses/> : <Login/>}/>
-        <Route path='/login' element={!isAuth ? <Login/> : <Home/>}/>       
+        <Route path='/profile' element = {isAuth && !isAdmin ? <Profile/> : <Login/>}/>
+        <Route path='/courses' element={isAuth && !isAdmin ? <Courses/> : <Login/>}/>
+        <Route path='/login' element={!isAuth ? <Login/> : <Home/>}/>
+        <Route path='/data' element={isAuth && isAdmin ? <Data/> : <Home/>}/>       
+
       </Routes>
     </>
   );

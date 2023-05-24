@@ -20,13 +20,11 @@ const Login = () => {
               <LoginForm />
 
               <br />
-
               <div className="text-center">
                 <a href="/recuperar-contrasena" className="forgot-password-link">
                   Recover password
                 </a>
               </div>
-
               <br />
 
             </div>

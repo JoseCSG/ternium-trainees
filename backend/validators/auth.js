@@ -7,12 +7,12 @@ export const loginValidation = check('email').custom(async (val, {req}) => {
     const user = await client.query('SELECT * from accounts WHERE email = $1', [val])
     if(!user.rows.length)
     {
-        throw new Error('No existe ese correo')
+        throw new Error('Contraseña o correo erróneo')
     }
     //const validPassword = await compare(req.body.password, user.rows[0].password)
     if(req.body.password !== user.rows[0].password)
     {
-        throw new Error('Contraseña incorrecta')
+        throw new Error('Contraseña o correo erróneo')
     }
     req.user = user.rows[0]
 })
