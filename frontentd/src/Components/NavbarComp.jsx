@@ -26,6 +26,7 @@ export default class NavbarComp extends Component{
                                 <>
                                 <Nav.Link href="/profile">Profile</Nav.Link>
                                 <Nav.Link href="/courses">Courses</Nav.Link>
+                                <Nav.Link href="/game">Game</Nav.Link>
                                 </>
                             ) : ( 
                                 <Nav.Link href="/login">Login</Nav.Link>
