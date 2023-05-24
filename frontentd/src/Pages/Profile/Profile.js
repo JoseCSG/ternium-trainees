@@ -16,7 +16,6 @@ const Profile = () => {
               alt="Logo"
             />
 
-            <br />
             <div className="underline mx-auto"></div>
 
             <img 
@@ -27,16 +26,16 @@ const Profile = () => {
             <br />
             <br />
 
-            nombre de usuario
+            <p className="px-2 my-3" style={{ textAlign: 'center', margin: 'auto' }}>nombre de usuario</p>
             <br />
-            correo@gmail.com
+            <p className="px-2 my-3" style={{ textAlign: 'center', margin: 'auto' }}>correo@gmail.com</p>
 
             <br />
             <br />
             <br />
             <br />
 
-            <button type="button" class="btn btn-secondary btn-sm">Editar perfil</button>
+            <button type="button" className="btn btn-secondary btn-sm button-center">Editar perfil</button>
 
             <br />
             <br />
@@ -46,7 +45,7 @@ const Profile = () => {
           </div>
 
           <div className="col-9">
-            <h3 className="px-2 my-3">Profile</h3>
+          <h3 className="px-2 my-3" style={{ textAlign: 'center', margin: 'auto' }}>Profile</h3>
             {/* SECTION 2 PROFILE INFO */}
             <div className="row px-5">
               <div className="row-content px-4 my-10" style={{ backgroundColor: 'rgb(212, 212, 212)' }}>

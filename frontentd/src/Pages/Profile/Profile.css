@@ -1,8 +1,11 @@
-.logo-image{
+.logo-image {
     max-width: 90px;
     margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
-
+  
 .underline {
     height: 1px;
     background-color: black;
@@ -11,14 +14,22 @@
 .profile-image {
     border-radius: 50%;
     max-width: 150px;
-    margin-top: 40px;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
   }
 
-  .profile-image-2 {
+.profile-image-2 {
     border-radius: 10px 10px 10px 10px;
     max-width: 150px;
     margin-top: 20px;
     float: left;
+}
+
+.button-center {
+    display: block;
+    margin: 0 auto;
 }
 
 .header5 {
@@ -36,4 +47,4 @@
 .btn-custom {
     background-color: rgb(0, 51, 153); 
     color: #ffffff;
-  }
+}
