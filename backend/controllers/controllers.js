@@ -92,3 +92,27 @@ export const logout = async (req, res) => {
 		})
 	}
 }
+
+export const getIdEmpleado = async (req, res) => {
+	try {
+		const correo = req.query.correo
+		const {rows} = await client.query('SELECT idEmpleado FROM empleados_login WHERE correo = $1', [correo])
+		res.json(rows)
+	} catch (error) {
+		return res.status(500).json({
+			error: error.error.message,
+		})
+	}
+}
+
+export const getIdPerfil = async (req, res) => {
+	try {
+		const correo = req.query.correo
+		const {rows} = await client.query('SELECT idPerfil FROM empleados_login WHERE correo = $1', [correo])
+		res.json(rows)
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+}

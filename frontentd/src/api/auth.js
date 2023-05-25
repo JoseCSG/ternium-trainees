@@ -8,3 +8,11 @@ export async function onLogin(loginData) {
 export async function onLogout(){
     return await axios.get('http://localhost:4000/api/logout')
 }
+
+export async function getIdEmpleado(correo){
+    return await axios.get('http://localhost:4000/api/idEmpleado', {params: correo})
+}
+
+export async function getIdPerfil(correo){
+    return await axios.get('http://localhost:4000/api/idPerfil',{params: correo})
+}

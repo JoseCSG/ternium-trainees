@@ -3,6 +3,7 @@ import './Profile.css';
 import foto from '../../Images/logo.png';
 
 const Profile = () => {
+  const id = localStorage.getItem('idEmpleado')
   return (
     <div>
 
@@ -55,7 +56,7 @@ const Profile = () => {
                   alt="Foto de perfil 2"
                   />
 
-                  <h5 className="header5">Nombre de usuario</h5>
+                  <h5 className="header5">Nombre de usuario {id}</h5>
                   <br />
                   <br />
                   <br />

@@ -9,10 +9,10 @@ const Login = () => {
       <h3 className='text-center my-5'> Bienvenido </h3>
 
       {/*FORMATO*/}
-      <div class="container">
-        <div class="row">
+      <div className="container">
+        <div className="row">
             {/*Sirve para dividir espacio*/}
-            <div class="col"></div>
+            <div className="col"></div>
 
             <div className="col" style={{ backgroundColor: 'rgb(255, 153, 0)' }}>
               <h6 className='text-center my-3'> Ingresa a tu cuenta </h6>
@@ -31,7 +31,7 @@ const Login = () => {
             </div>
 
             {/*Sirve para dividir espacio*/}
-            <div class="col"></div>
+            <div className="col"></div>
 
             <div className="text-center my-3">
               <Link to="/" className="forgot-password-link">
