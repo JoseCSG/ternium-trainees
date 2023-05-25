@@ -46,7 +46,7 @@ const Profile = () => {
           </div>
 
           <div className="col-9">
-          <h3 className="px-2 my-3" style={{ textAlign: 'center', margin: 'auto' }}>Profile</h3>
+          <h3 className="px-2 my-3" style={{ textAlign: 'center', margin: 'auto' }}>Perfil</h3>
             {/* SECTION 2 PROFILE INFO */}
             <div className="row px-5">
               <div className="row-content px-4 my-10" style={{ backgroundColor: 'rgb(212, 212, 212)' }}>
@@ -75,17 +75,21 @@ const Profile = () => {
               <h5 className="header5">Medallas ganadas</h5>
               <br />
                 
-              <div className="col">
-                <div className="card px-4 my-5" style={{width: '15rem', height: '25'}}>
-                <img src="https://in-crescendo.org/wp-content/uploads/2017/11/teamwork.png" 
-                    className="card-img-top" 
-                    alt="..."/>
-                <div className="card-body">
-                  <h5 className="card-title">Teamwork</h5>
-                  <p className="card-text">Al terminar el curso TC10274 te ganaste esta medalla ¡felicidades!</p>
-                  <a href="http://localhost:3000/courses" className="btn btn-custom">Ir a curso</a>
+              <div class="col">
+                <div class="card px-4 my-5" style={{ width: '15rem', height: '25' }}>
+                  <img src="https://in-crescendo.org/wp-content/uploads/2017/11/teamwork.png" class="card-img-top" alt="..." />
+                  <div class="card-body d-flex flex-column justify-content-between">
+                    <div class="text-center">
+                      <h5 class="card-title">Teamwork</h5>
+                    </div>
+                    <div>
+                      <p class="card-text" style={{ textAlign: 'justify' }}>Al terminar el curso TC10274 te ganaste esta medalla ¡felicidades!</p>
+                    </div>
+                    <div class="text-center my-4">
+                      <a href="http://localhost:3000/courses" class="btn btn-custom">Ir a curso</a>
+                    </div>
+                  </div>
                 </div>
-                </div> 
               </div>
 
               </div>
