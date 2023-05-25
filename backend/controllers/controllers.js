@@ -8,7 +8,7 @@ client.connect();
 //Retorna los nombres, y URL de las imagenes de los cursos, en formato JSON
 export const getCourses = async (req, res) => {
 	try {
-		const { rows } = await client.query("SELECT nombre, img FROM courses");
+		const { rows } = await client.query("SELECT nombre FROM cursos");
 		res.json(rows);
 	} catch (err) {
 		console.log(err.message);
@@ -17,7 +17,7 @@ export const getCourses = async (req, res) => {
 
 export const getUsers = async (req, res) => {
 	try {
-		const { rows } = await client.query("SELECT nombre, email FROM accounts");
+		const { rows } = await client.query("SELECT idEmpleado, idPerfil FROM empleados_login");
 		res.json(rows);
 	} catch (err) {
 		console.log(err.message);

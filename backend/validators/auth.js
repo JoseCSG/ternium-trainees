@@ -5,7 +5,6 @@ const {compare} = pkg
 
 export const loginValidation = check('email').custom(async (val, {req}) => {
     const user = await client.query('SELECT * from empleados_login WHERE correo = $1', [val])
-    console.log(user)
     if(!user.rows.length)
     {
         throw new Error('Contraseña o correo erróneo')

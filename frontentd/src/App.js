@@ -14,13 +14,13 @@ function App() {
 
   const {isAuth} = useSelector((state) => state.auth)
   //const {isAdmin} =  useSelector((state) => state.auth)
-  const isAdmin = false
+  const {isAdmin} = useSelector((state) => state.auth)
 
   return (
     <>
       <NavbarComp/>
       <Routes>
-        <Route path='/' element={isAuth ? <Home/> : <Login/>}/>
+        <Route path='/' element={<Home/>}/>
         <Route path='/profile' element = {isAuth && !isAdmin ? <Profile/> : <Login/>}/>
         <Route path='/courses' element={isAuth && !isAdmin ? <Courses/> : <Login/>}/>
         <Route path='/game' element={isAuth && !isAdmin ? <Game/> : <Login/>}/>

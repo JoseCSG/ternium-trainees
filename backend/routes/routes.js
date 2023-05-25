@@ -6,12 +6,10 @@ import { userAuth } from "../middlewares/auth-middleware.js";
 const router = Router();
 
 router.post('/login', loginValidation, validationMiddleware, login)
-router.post("/adduser", postUser);
+router.post('/adduser', postUser);
 router.get('/cursos', getCourses)
 router.get('/users', getUsers)
 router.get('/protected',userAuth ,protectedRoute)
 router.get('/logout' , logout)
-
-
 
 export default router

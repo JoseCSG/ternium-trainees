@@ -1,9 +1,8 @@
 import React from "react";
 import {useState} from "react";
-import Button from 'react-bootstrap/Button';
 import {onLogin} from '../../api/auth'
 import {useDispatch} from 'react-redux'
-import {authenticateUser} from '../../redux/slices/auth_slice'
+import {authenticateUser, authenticateAdmin} from '../../redux/slices/auth_slice'
 
 const Login =() => {
     //const cuenta=postUser.username; //reemplazaria a handle
@@ -21,11 +20,14 @@ const Login =() => {
 
       try {
         const response = await onLogin(values)  
-        console.log(response.data)
         if(response.data.success) {
           dispatch(authenticateUser())
           localStorage.setItem('isAuth', true);
           setError('')
+          if(true){
+            dispatch(authenticateAdmin())
+            localStorage.setItem('isAdmin', true);
+          }
         }
         else setError(response.data.errors[0].msg)
       } catch (errorResponse) {

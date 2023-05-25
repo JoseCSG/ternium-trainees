@@ -3,19 +3,20 @@ import { Navbar, Nav } from "react-bootstrap";
 import foto from "../Images/terniumlogo.png";
 import { connect } from "react-redux";
 import { onLogout } from "../api/auth";
-import { unauthenticateUser } from "../redux/slices/auth_slice";
+import { unauthenticateAdmin, unauthenticateUser } from "../redux/slices/auth_slice";
 
-const NavbarComp = ({ isAuth, dispatch }) => {
+const NavbarComp = ({ isAuth, isAdmin, dispatch }) => {
   const logout = async () => {
     try {
       await onLogout();
       dispatch(unauthenticateUser());
+      dispatch(unauthenticateAdmin())
       localStorage.removeItem("isAuth");
+      localStorage.removeItem("isAdmin");
     } catch (error) {
       console.log(error.response);
     }
   };
-  const isAdmin = false
 
   return (
     <div>
@@ -27,10 +28,10 @@ const NavbarComp = ({ isAuth, dispatch }) => {
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="mr-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
+            <Nav.Link href="/">Inicio</Nav.Link>
             { isAuth ? 
               (
                 <>
-                <Nav.Link href="/">Inicio</Nav.Link>
                 {!isAdmin && <Nav.Link href="/courses">Cursos</Nav.Link>}
                 {!isAdmin && <Nav.Link href="/profile">Perfil</Nav.Link>}
                 {!isAdmin && <Nav.Link href="/game">Juego</Nav.Link>}
@@ -51,6 +52,7 @@ const NavbarComp = ({ isAuth, dispatch }) => {
 const mapStateToProps = (state) => {
   return {
     isAuth: state.auth.isAuth, // Access the isAuth property correctly
+    isAdmin: state.auth.isAdmin,
   };
 };
 
