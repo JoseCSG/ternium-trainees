@@ -1,7 +1,7 @@
 //import React, { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-
+import './Courses.css';
 
 /*const Courses = () => {
 
@@ -75,69 +75,85 @@ const Courses =() => {
 
   return(
     <div>
-      <h1 className='text-center my-5'>Courses</h1>
+      <h1 className='text-center my-5'>Cursos</h1>
       <div className='container'>
         {/*PRIMERA FILA */}
         <div className='row'>
 
           {/*TARJETA 1 ROW 1 */}
-          <div className='col-md-3'>
-          <Card style={{ width: '18rem' }}>
-            <Card.Img variant="top" src="https://www.eleconomista.com.mx/__export/1676426202807/sites/eleconomista/img/2023/02/14/ternium_plantas_mexico_nl_cortesia.png_1902800913.png" />
-            <Card.Body>
-              <Card.Title>curso 1</Card.Title>
-              <Card.Text>
-                Some quick example text to build on the card title and make up the
-                bulk of the card's content.
-              </Card.Text>
-              <Button variant="primary">Go somewhere</Button>
-            </Card.Body>
-          </Card>
+          <div className='col-md-3' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Card style={{ width: '18rem' }}>
+                <Card.Img variant="top" src="https://www.eleconomista.com.mx/__export/1676426202807/sites/eleconomista/img/2023/02/14/ternium_plantas_mexico_nl_cortesia.png_1902800913.png" />
+                <Card.Body style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', height: '100%' }}>
+                  <div style={{ textAlign: 'center' }}>
+                    <Card.Title>Curso 1</Card.Title>
+                  </div>
+                  <Card.Text style={{ textAlign: 'justify' }}>
+                    Un texto de ejemplo rápido para construir sobre el título de la tarjeta 
+                    y componer la mayor parte del contenido de las tarjetas.
+                  </Card.Text>
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Button variant="primary" className="btn-custom">Empezar</Button>
+                  </div>
+                </Card.Body>
+              </Card>
           </div>
 
           {/*TARJETA 2 ROW 1 */}
-          <div className='col-md-3'>
-          <Card style={{ width: '18rem' }}>
-            <Card.Img variant="top" src="https://www.eleconomista.com.mx/__export/1676426202807/sites/eleconomista/img/2023/02/14/ternium_plantas_mexico_nl_cortesia.png_1902800913.png" />
-            <Card.Body>
-              <Card.Title>curso 2</Card.Title>
-              <Card.Text>
-                Some quick example text to build on the card title and make up the
-                bulk of the card's content.
-              </Card.Text>
-              <Button variant="primary">Go somewhere</Button>
-            </Card.Body>
-          </Card>
+          <div className='col-md-3' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Card style={{ width: '18rem' }}>
+                <Card.Img variant="top" src="https://www.eleconomista.com.mx/__export/1676426202807/sites/eleconomista/img/2023/02/14/ternium_plantas_mexico_nl_cortesia.png_1902800913.png" />
+                <Card.Body style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', height: '100%' }}>
+                  <div style={{ textAlign: 'center' }}>
+                    <Card.Title>Curso 2</Card.Title>
+                  </div>
+                  <Card.Text style={{ textAlign: 'justify' }}>
+                    Un texto de ejemplo rápido para construir sobre el título de la tarjeta 
+                    y componer la mayor parte del contenido de las tarjetas.
+                  </Card.Text>
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Button variant="primary" className="btn-custom">Empezar</Button>
+                  </div>
+                </Card.Body>
+              </Card>
           </div>
 
           {/*TARJETA 3 ROW 1 */}
-          <div className='col-md-3'>
-          <Card style={{ width: '18rem' }}>
-            <Card.Img variant="top" src="https://www.eleconomista.com.mx/__export/1676426202807/sites/eleconomista/img/2023/02/14/ternium_plantas_mexico_nl_cortesia.png_1902800913.png" />
-            <Card.Body>
-              <Card.Title>curso 3</Card.Title>
-              <Card.Text>
-                Some quick example text to build on the card title and make up the
-                bulk of the card's content.
-              </Card.Text>
-              <Button variant="primary">Go somewhere</Button>
-            </Card.Body>
-          </Card>
+          <div className='col-md-3' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Card style={{ width: '18rem' }}>
+              <Card.Img variant="top" src="https://www.eleconomista.com.mx/__export/1676426202807/sites/eleconomista/img/2023/02/14/ternium_plantas_mexico_nl_cortesia.png_1902800913.png" />
+              <Card.Body style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', height: '100%' }}>
+                <div style={{ textAlign: 'center' }}>
+                  <Card.Title>Curso 3</Card.Title>
+                </div>
+                <Card.Text style={{ textAlign: 'justify' }}>
+                  Un texto de ejemplo rápido para construir sobre el título de la tarjeta 
+                  y componer la mayor parte del contenido de las tarjetas.
+                </Card.Text>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Button variant="primary" className="btn-custom">Empezar</Button>
+                </div>
+              </Card.Body>
+            </Card>
           </div>
 
           {/*TARJETA 4 ROW 1 */}
           <div className='col-md-3'>
-          <Card style={{ width: '18rem' }}>
-            <Card.Img variant="top" src="https://www.eleconomista.com.mx/__export/1676426202807/sites/eleconomista/img/2023/02/14/ternium_plantas_mexico_nl_cortesia.png_1902800913.png" />
-            <Card.Body>
-              <Card.Title>curso 4</Card.Title>
-              <Card.Text>
-                Some quick example text to build on the card title and make up the
-                bulk of the card's content.
-              </Card.Text>
-              <Button variant="primary">Go somewhere</Button>
-            </Card.Body>
-          </Card>
+            <Card style={{ width: '18rem' }}>
+                <Card.Img variant="top" src="https://www.eleconomista.com.mx/__export/1676426202807/sites/eleconomista/img/2023/02/14/ternium_plantas_mexico_nl_cortesia.png_1902800913.png" />
+                <Card.Body style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', height: '100%' }}>
+                  <div style={{ textAlign: 'center' }}>
+                    <Card.Title>Curso 4</Card.Title>
+                  </div>
+                  <Card.Text style={{ textAlign: 'justify' }}>
+                    Un texto de ejemplo rápido para construir sobre el título de la tarjeta 
+                    y componer la mayor parte del contenido de las tarjetas.
+                  </Card.Text>
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Button variant="primary" className="btn-custom">Empezar</Button>
+                  </div>
+                </Card.Body>
+            </Card>
           </div>
 
         </div>

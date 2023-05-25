@@ -10,10 +10,12 @@ const Game = () => {
   });
 
   return (
-    <Unity
-      unityProvider={unityProvider}
-      style={{ height: 600, width: 1080}}
-    />
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "90vh" }}>
+      <Unity
+        unityProvider={unityProvider}
+        style={{ height: 600, width: 1080 }}
+      />
+    </div>
   );
 }
 

@@ -24,7 +24,7 @@ const Login =() => {
           dispatch(authenticateUser())
           localStorage.setItem('isAuth', true);
           setError('')
-          if(true){
+          if(false){
             dispatch(authenticateAdmin())
             localStorage.setItem('isAdmin', true);
           }
@@ -55,12 +55,12 @@ const Login =() => {
       <>
         <form onSubmit={(e) => onSubmit(e)}>
          <div className="d-flex justify-content-center">
-            <input required type="text" placeholder="username"
+            <input required type="text" placeholder="usuario"
               value={values.email} name = 'email' onChange={(e) => onChange(e)} />
          </div>
 
          <div className="d-flex justify-content-center my-1">
-            <input required type="password" placeholder="password"
+            <input required type="password" placeholder="contraseña"
                     value={values.password} name = 'password' onChange={(e) => onChange(e)} />
          </div>
 
@@ -73,7 +73,7 @@ const Login =() => {
           </div>
           */}
 
-          <button type="submit" variant="outline-success" className="btn btn-secondary btn-sm button-center">Submit</button>
+          <button type="submit" variant="outline-success" className="btn btn-secondary btn-sm button-center">Enter</button>
 
 
         </form>      
