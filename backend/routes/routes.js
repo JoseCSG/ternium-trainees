@@ -1,11 +1,13 @@
 import { Router } from "express";
-import { getCourses, getUsers, postUser, login, protectedRoute, logout } from "../controllers/controllers.js";
+import { getCourses, getUsers, postUser, login, protectedRoute, logout, getIdEmpleado, getIdPerfil } from "../controllers/controllers.js";
 import {loginValidation} from '../validators/auth.js'
 import { validationMiddleware } from "../middlewares/validations-middleware.js";
 import { userAuth } from "../middlewares/auth-middleware.js";
 const router = Router();
 
 router.post('/login', loginValidation, validationMiddleware, login)
+router.get('/idEmpleado', getIdEmpleado);
+router.get('/idPerfil', getIdPerfil);
 router.post('/adduser', postUser);
 router.get('/cursos', getCourses)
 router.get('/users', getUsers)

@@ -13,6 +13,7 @@ const NavbarComp = ({ isAuth, isAdmin, dispatch }) => {
       dispatch(unauthenticateAdmin())
       localStorage.removeItem("isAuth");
       localStorage.removeItem("isAdmin");
+      localStorage.removeItem("idEmpleado");
     } catch (error) {
       console.log(error.response);
     }

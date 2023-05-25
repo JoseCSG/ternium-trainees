@@ -3,6 +3,7 @@ import './Profile.css';
 import foto from '../../Images/logo.png';
 
 const Profile = () => {
+  const id = localStorage.getItem('idEmpleado')
   return (
     <div>
 
@@ -55,7 +56,7 @@ const Profile = () => {
                   alt="Foto de perfil 2"
                   />
 
-                  <h5 className="header5">Nombre de usuario</h5>
+                  <h5 className="header5">Nombre de usuario {id}</h5>
                   <br />
                   <br />
                   <br />
@@ -74,15 +75,15 @@ const Profile = () => {
               <h5 className="header5">Medallas ganadas</h5>
               <br />
                 
-              <div class="col">
-                <div class="card px-4 my-5" style={{width: '15rem', height: '25'}}>
+              <div className="col">
+                <div className="card px-4 my-5" style={{width: '15rem', height: '25'}}>
                 <img src="https://in-crescendo.org/wp-content/uploads/2017/11/teamwork.png" 
-                    class="card-img-top" 
+                    className="card-img-top" 
                     alt="..."/>
-                <div class="card-body">
-                  <h5 class="card-title">Teamwork</h5>
-                  <p class="card-text">Al terminar el curso TC10274 te ganaste esta medalla ¡felicidades!</p>
-                  <a href="http://localhost:3000/courses" class="btn btn-custom">Ir a curso</a>
+                <div className="card-body">
+                  <h5 className="card-title">Teamwork</h5>
+                  <p className="card-text">Al terminar el curso TC10274 te ganaste esta medalla ¡felicidades!</p>
+                  <a href="http://localhost:3000/courses" className="btn btn-custom">Ir a curso</a>
                 </div>
                 </div> 
               </div>

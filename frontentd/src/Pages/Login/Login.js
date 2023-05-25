@@ -8,10 +8,10 @@ const Login = () => {
       <h3 className='text-center my-5'> Welcome </h3>
 
       {/*FORMATO*/}
-      <div class="container">
-        <div class="row">
+      <div className="container">
+        <div className="row">
             {/*Sirve para dividir espacio*/}
-            <div class="col"></div>
+            <div className="col"></div>
 
             <div className="col" style={{ backgroundColor: 'rgb(255, 153, 0)' }}>
               <h6 className='text-center my-3'> Log into your account </h6>
@@ -30,7 +30,7 @@ const Login = () => {
             </div>
 
             {/*Sirve para dividir espacio*/}
-            <div class="col"></div>
+            <div className="col"></div>
 
             <div className="text-center my-3">
                 <a href="/recuperar-contrasena" className="forgot-password-link">

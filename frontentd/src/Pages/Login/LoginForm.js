@@ -1,6 +1,6 @@
 import React from "react";
 import {useState} from "react";
-import {onLogin} from '../../api/auth'
+import {getIdEmpleado, getIdPerfil, onLogin} from '../../api/auth'
 import {useDispatch} from 'react-redux'
 import {authenticateUser, authenticateAdmin} from '../../redux/slices/auth_slice'
 
@@ -24,10 +24,18 @@ const Login =() => {
           dispatch(authenticateUser())
           localStorage.setItem('isAuth', true);
           setError('')
-          if(true){
+          const aux = {
+            "correo": values.email
+          }
+          let response = await getIdPerfil(aux);
+          const perfil = response.data[0].idperfil;
+          if(perfil === 1){
             dispatch(authenticateAdmin())
             localStorage.setItem('isAdmin', true);
           }
+
+          response = await getIdEmpleado(aux);
+          localStorage.setItem('idEmpleado', response.data[0].idempleado)
         }
         else setError(response.data.errors[0].msg)
       } catch (errorResponse) {
