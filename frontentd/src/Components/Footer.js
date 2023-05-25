@@ -7,22 +7,22 @@ function Footer()
             <div className="container">
                 <div className="row">
                     <div className="col">
-                        <h6 className='text-center my-3'>Company Info</h6>
+                        <h6 className='text-center my-3'>Información de la compañia</h6>
                         <hr/>
-                        <p>
-                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opp
+                        <p style={{ textAlign: "justify" }}>
+                        Es un hecho establecido desde hace mucho tiempo que un lector se distraerá con el contenido legible de una página cuando mire su diseño. El punto de usar Lorem Ipsum es que tiene una distribución de letras más o menos normal, como opp
                         </p>
                     </div>
                     <div className="col">
-                        <h6 className='text-center my-3'>Contact Info</h6>
+                        <h6 className='text-center my-3'>Información de contacto</h6>
                         <hr/>
                         <div>
-                            <p className="text-white mb-1">
+                            <p className="text-white mb-1" style={{ textAlign: "justify" }}>
                                 #64 Rio de la Plata Roma
                             </p>
                         </div>
                         <div>
-                            <p className="text-white mb-1">
+                            <p className="text-white mb-1" style={{ textAlign: "justify" }}>
                                 8717341255
                             </p>
                         </div>

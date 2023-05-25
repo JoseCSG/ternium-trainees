@@ -16,10 +16,10 @@ const Home = () => {
         <div className="container">
           <div className="row">
             <div className='col-md-12 text-center'>
-              <h3 className='main-heading'>Our Company</h3>
+              <h3 className='main-heading'>Nuestra compañia</h3>
               <div className='underline mx-auto'></div>
               <p>
-              Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de
+              Contrariamente a la creencia popular, Lorem Ipsum no es simplemente un texto aleatorio. Tiene sus raíces en una pieza de la literatura latina clásica del 45 a. C., por lo que tiene más de 2000 años. Richard McClintock, profesor de latín en Hampden-Sydney College en Virginia, buscó una de las palabras latinas más oscuras, consectetur, en un pasaje de Lorem Ipsum, y al revisar las citas de la palabra en la literatura clásica, descubrió la fuente indudable. Lorem Ipsum proviene de las secciones 1.10.32 y 1.10.33 de "de
               </p>
             </div>
           </div>
@@ -35,7 +35,7 @@ const Home = () => {
         <div className="container">
           <div className="row">
             <div className='col-md-12 mb-4 text-center'>
-              <h3 className='main-heading'>Our Services</h3>
+              <h3 className='main-heading'>Nuestros servicios</h3>
               <div className='underline mx-auto'></div>
             </div>
 
@@ -43,9 +43,9 @@ const Home = () => {
               <div className="card-shadow">
                 <img src={foto} className='w-100 border-bottom' alt="Services"/>
                 <div className='card-body'>
-                  <h6>Service 1</h6>
-                  <p>
-                  ny variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lore
+                  <h6>Servicio 1</h6>
+                  <p style={{ textAlign: "justify" }}>
+                  Hay variaciones de pasajes de Lorem Ipsum disponibles, pero la mayoría ha sufrido alteraciones de alguna forma, por humor inyectado o palabras aleatorias que no parecen ni un poco creíbles. Si vas a usar un pasaje de Lorem Ipsum, debes asegurarte de que no haya nada vergonzoso escondido en medio del texto. Todo el saber
                   </p>
                 </div>
               </div>

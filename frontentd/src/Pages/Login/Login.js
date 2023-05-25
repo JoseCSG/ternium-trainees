@@ -1,11 +1,12 @@
 import React from "react";
 import LoginForm from "./LoginForm";
 import './Login.css';
+import { Link } from "react-router-dom";
 
 const Login = () => {
   return (
     <>
-      <h3 className='text-center my-5'> Welcome </h3>
+      <h3 className='text-center my-5'> Bienvenido </h3>
 
       {/*FORMATO*/}
       <div class="container">
@@ -14,7 +15,7 @@ const Login = () => {
             <div class="col"></div>
 
             <div className="col" style={{ backgroundColor: 'rgb(255, 153, 0)' }}>
-              <h6 className='text-center my-3'> Log into your account </h6>
+              <h6 className='text-center my-3'> Ingresa a tu cuenta </h6>
 
               {/*LOGIN*/}
               <LoginForm />
@@ -22,7 +23,7 @@ const Login = () => {
               <br />
               <div className="text-center">
                 <a href="/recuperar-contrasena" className="forgot-password-link">
-                  Recover password
+                  Recuperar contraseña
                 </a>
               </div>
               <br />
@@ -33,11 +34,10 @@ const Login = () => {
             <div class="col"></div>
 
             <div className="text-center my-3">
-                <a href="/recuperar-contrasena" className="forgot-password-link">
-                  Go back
-                </a>
+              <Link to="/" className="forgot-password-link">
+                Regresar
+              </Link>
             </div>
-
 
         </div>
     </div>
