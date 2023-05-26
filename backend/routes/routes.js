@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getCourses, getUsers, postUser, login, protectedRoute, logout, getIdEmpleado, getIdPerfil } from "../controllers/controllers.js";
+import { getCourses, getUsers, postUser, login, protectedRoute, logout, getIdEmpleado, getIdPerfil, getInfo } from "../controllers/controllers.js";
 import {loginValidation} from '../validators/auth.js'
 import { validationMiddleware } from "../middlewares/validations-middleware.js";
 import { userAuth } from "../middlewares/auth-middleware.js";
@@ -13,5 +13,6 @@ router.get('/cursos', getCourses)
 router.get('/users', getUsers)
 router.get('/protected',userAuth ,protectedRoute)
 router.get('/logout' , logout)
+router.get('/infoEmpleado', getInfo);
 
 export default router

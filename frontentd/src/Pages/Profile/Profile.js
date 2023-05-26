@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Profile.css';
 import foto from '../../Images/logo.png';
+import { getInfoEmpleado } from '../../api/auth';
 
 const Profile = () => {
-  const id = localStorage.getItem('idEmpleado')
+  
+  const [infoEmpleado, setInfoEmpleado] = useState({})
+  const infoEmpleadoAux =  async () => {
+    const idJSON = {
+      "idempleado": localStorage.getItem('idEmpleado')
+    }
+    const {data}  = await getInfoEmpleado(idJSON)
+    setInfoEmpleado(data[0])
+  }
+  infoEmpleadoAux()
+  /*
+    Datos guardados en infoEmpleado:
+     nombre, apellidopeterno, apellidomaterno, pais, genero,
+     fechanacimiento, idempleado, idarea
+  */
   return (
     <div>
 
@@ -27,7 +42,7 @@ const Profile = () => {
             <br />
             <br />
 
-            <p className="px-2 my-3" style={{ textAlign: 'center', margin: 'auto' }}>nombre de usuario</p>
+            <p className="px-2 my-3" style={{ textAlign: 'center', margin: 'auto' }}>{infoEmpleado.nombre + ' ' +  infoEmpleado.apellidopaterno}</p>
             <br />
             <p className="px-2 my-3" style={{ textAlign: 'center', margin: 'auto' }}>correo@gmail.com</p>
 
@@ -56,7 +71,7 @@ const Profile = () => {
                   alt="Foto de perfil 2"
                   />
 
-                  <h5 className="header5">Nombre de usuario {id}</h5>
+                  <h5 className="header5">Nombre de usuario</h5>
                   <br />
                   <br />
                   <br />
@@ -75,18 +90,18 @@ const Profile = () => {
               <h5 className="header5">Medallas ganadas</h5>
               <br />
                 
-              <div class="col">
-                <div class="card px-4 my-5" style={{ width: '15rem', height: '25' }}>
-                  <img src="https://in-crescendo.org/wp-content/uploads/2017/11/teamwork.png" class="card-img-top" alt="..." />
-                  <div class="card-body d-flex flex-column justify-content-between">
-                    <div class="text-center">
-                      <h5 class="card-title">Teamwork</h5>
+              <div className="col">
+                <div className="card px-4 my-5" style={{ width: '15rem', height: '25' }}>
+                  <img src="https://in-crescendo.org/wp-content/uploads/2017/11/teamwork.png" className="card-img-top" alt="..." />
+                  <div className="card-body d-flex flex-column justify-content-between">
+                    <div className="text-center">
+                      <h5 className="card-title">Teamwork</h5>
                     </div>
                     <div>
-                      <p class="card-text" style={{ textAlign: 'justify' }}>Al terminar el curso TC10274 te ganaste esta medalla ¡felicidades!</p>
+                      <p className="card-text" style={{ textAlign: 'justify' }}>Al terminar el curso TC10274 te ganaste esta medalla ¡felicidades!</p>
                     </div>
-                    <div class="text-center my-4">
-                      <a href="http://localhost:3000/courses" class="btn btn-custom">Ir a curso</a>
+                    <div className="text-center my-4">
+                      <a href="http://localhost:3000/courses" className="btn btn-custom">Ir a curso</a>
                     </div>
                   </div>
                 </div>

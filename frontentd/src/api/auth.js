@@ -16,3 +16,7 @@ export async function getIdEmpleado(correo){
 export async function getIdPerfil(correo){
     return await axios.get('http://localhost:4000/api/idPerfil',{params: correo})
 }
+
+export async function getInfoEmpleado(idEmpleado){
+    return await axios.get('http://localhost:4000/api/infoEmpleado', {params: idEmpleado})
+}

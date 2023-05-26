@@ -4,8 +4,10 @@ import foto from "../Images/terniumlogo.png";
 import { connect } from "react-redux";
 import { onLogout } from "../api/auth";
 import { unauthenticateAdmin, unauthenticateUser } from "../redux/slices/auth_slice";
+import { useNavigate } from "react-router-dom";
 
 const NavbarComp = ({ isAuth, isAdmin, dispatch }) => {
+  const navigate = useNavigate();
   const logout = async () => {
     try {
       await onLogout();
@@ -14,6 +16,7 @@ const NavbarComp = ({ isAuth, isAdmin, dispatch }) => {
       localStorage.removeItem("isAuth");
       localStorage.removeItem("isAdmin");
       localStorage.removeItem("idEmpleado");
+      navigate('/');
     } catch (error) {
       console.log(error.response);
     }
