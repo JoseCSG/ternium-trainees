@@ -116,3 +116,16 @@ export const getIdPerfil = async (req, res) => {
 		})
 	}
 }
+
+export const getInfo = async (req, res) => {
+	try {
+		const idEmpleado = req.query.idempleado
+		const {rows} = await client.query('SELECT * FROM empleados_info WHERE idEmpleado = $1', [idEmpleado])
+		res.json(rows)
+
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+}

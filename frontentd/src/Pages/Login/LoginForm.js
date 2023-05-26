@@ -24,17 +24,17 @@ const Login =() => {
           dispatch(authenticateUser())
           localStorage.setItem('isAuth', true);
           setError('')
-          const aux = {
+          const correoJSON = {
             "correo": values.email
           }
-          let response = await getIdPerfil(aux);
+          let response = await getIdPerfil(correoJSON);
           const perfil = response.data[0].idperfil;
           if(perfil === 1){
             dispatch(authenticateAdmin())
             localStorage.setItem('isAdmin', true);
           }
 
-          response = await getIdEmpleado(aux);
+          response = await getIdEmpleado(correoJSON);
           localStorage.setItem('idEmpleado', response.data[0].idempleado)
         }
         else setError(response.data.errors[0].msg)
@@ -45,20 +45,6 @@ const Login =() => {
     const onChange = (e) => {
       setValues({ ...values, [e.target.name]: e.target.value })
     }
-    /*
-    const agregaUsuario = () => {
-        fetch('http://localhost:4000/adduser',{method: "post",body:JSON.stringify({ email, password }),
-        headers: {
-            'Content-Type': 'application/json'
-        }})
-        .then(res => res.json())
-        //.then(data => {setName(data),setEmail(data)}) //aqui cambie
-        .catch(error => {console.error(error)})
-      }
-      /*useEffect(() => {
-        agregaUsuario()
-      }, [])*/
-
     return (
       <>
         <form onSubmit={(e) => onSubmit(e)}>
@@ -73,14 +59,6 @@ const Login =() => {
          </div>
 
           <div style={{color: 'red', margin: '10px 0'}}>{error}</div>
-
-          {/*<Button type="submit" variant="outline-success">Submit</Button>
-
-          <div className="d-flex justify-content-center"> 
-            <Button type="submit" variant="outline-success">Submit</Button>
-          </div>
-          */}
-
           <button type="submit" variant="outline-success" className="btn btn-secondary btn-sm button-center">Enter</button>
 
 
