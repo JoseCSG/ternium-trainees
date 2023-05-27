@@ -107,7 +107,7 @@ INSERT INTO cursos_completados(idEmpleado, idCurso, estado) VALUES(2, 4, FALSE);
 CREATE OR REPLACE PROCEDURE sp_empleados_login_insert(correo VARCHAR(255), contraseña VARCHAR(255), estado BOOLEAN,idPerfil INT)
 AS $$
 	INSERT INTO empleados_login(correo, contraseña, estado, idPerfil) VALUES ($1, $2, $3, $4);
-$$ LANGUAGE SQL
+$$ LANGUAGE SQL;
 
 --Update
 CREATE OR REPLACE PROCEDURE sp_empleados_login_update(contraseña VARCHAR(255), empleadoId INT)
@@ -175,6 +175,7 @@ AS $$
 	SELECT nombre, idArea FROM empleados_info
 	WHERE idEmpleado = $1
 $$ LANGUAGE SQL;
+
 /*
 SELECT CURSOS COMPLETADOS
 SELECT c.nombre
