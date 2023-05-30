@@ -227,6 +227,7 @@ AS $$
 	INNER JOIN cursos c ON cc.idcurso = c.idcurso
 	WHERE cc.idempleado = $1;
 $$ LANGUAGE SQL;
+
 /*
 SELECT c.nombre
 FROM cursos c

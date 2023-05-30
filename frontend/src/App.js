@@ -8,6 +8,7 @@ import Login from './Pages/Login/Login';
 import NavbarComp from './Components/NavbarComp';
 import { useSelector } from 'react-redux';
 import Data from './Pages/Data/Data';
+import DataUsers from './Pages/Data/DataUsers';
 //import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path='/game' element={isAuth && !isAdmin ? <Game/> : <Login/>}/>
         <Route path='/login' element={!isAuth ? <Login/> : <Home/>}/>
         <Route path='/data' element={isAuth && isAdmin ? <Data/> : <Home/>}/>
+        <Route path='/datausers' element={isAuth && isAdmin ? <DataUsers/> : <Home/>}/>
       </Routes>
     </>
   );
