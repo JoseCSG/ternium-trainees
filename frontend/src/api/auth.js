@@ -20,3 +20,7 @@ export async function getIdPerfil(correo){
 export async function getInfoEmpleado(idEmpleado){
     return await axios.get('http://localhost:4000/api/infoEmpleado', {params: idEmpleado})
 }
+
+export async function getCursosEmpleado(idEmpleado){
+    return await axios.get('http://localhost:4000/api/cursosEmpleado', {params: idEmpleado})
+}

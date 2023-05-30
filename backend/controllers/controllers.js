@@ -120,12 +120,26 @@ export const getIdPerfil = async (req, res) => {
 export const getInfo = async (req, res) => {
 	try {
 		const idEmpleado = req.query.idempleado
-		const {rows} = await client.query('SELECT * FROM empleados_info WHERE idEmpleado = $1', [idEmpleado])
-		res.json(rows)
 
+		//const {rows} = await client.query('SELECT * FROM empleados_info WHERE idEmpleado = $1', [idEmpleado])
+		const {rows} = await client.query('SELECT fun_empleados_login($1)', [idEmpleado])
+		//res.json(rows)
+		res.json(rows[0].fun_empleados_login)
 	} catch (error) {
 		return res.status(500).json({
 			error: error.message,
+		})
+	}
+}
+
+export const getCursosEmpleados = async (req, res) => {
+	try {
+		const idEmpleado = req.query.idempleado
+		const {rows} = await client.query('SELECT fun_cursos($1) ', [idEmpleado])
+		res.json(rows[0].fun_cursos)
+	} catch (error) {
+		return error.status(500).json({
+			error: error.message,		
 		})
 	}
 }

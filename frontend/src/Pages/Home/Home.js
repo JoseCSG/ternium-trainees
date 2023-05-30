@@ -9,7 +9,6 @@ import Footer from '../../Components/Footer';
 const Home = () => {
   return (
     <div>
-
       <Slider/>
       {/*SECTION 1 INTRODUCTION*/}
       <section className="section">
