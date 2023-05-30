@@ -6,14 +6,14 @@ import { getInfoEmpleado } from '../../api/auth';
 const Profile = () => {
   
   const [infoEmpleado, setInfoEmpleado] = useState({})
-  const infoEmpleadoAux =  async () => {
+  const loadProfileInfo =  async () => {
     const idJSON = {
       "idempleado": localStorage.getItem('idEmpleado')
     }
     const {data}  = await getInfoEmpleado(idJSON)
-    setInfoEmpleado(data[0])
+    setInfoEmpleado(data)
   }
-  infoEmpleadoAux()
+  loadProfileInfo()
   /*
     Datos guardados en infoEmpleado:
      nombre, apellidopeterno, apellidomaterno, pais, genero,
