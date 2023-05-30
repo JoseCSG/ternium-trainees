@@ -8,7 +8,9 @@ import Login from './Pages/Login/Login';
 import NavbarComp from './Components/NavbarComp';
 import { useSelector } from 'react-redux';
 import Data from './Pages/Data/Data';
-import DataUsers from './Pages/Data/DataUsers';
+import NuevoEmpleado from './Pages/Data/NuevoEmpleado';
+import DataEdit from './Pages/Data/DataEdit';
+import DataCreate from './Pages/Data/DataCreate';
 //import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
@@ -26,8 +28,14 @@ function App() {
         <Route path='/courses' element={isAuth && !isAdmin ? <Courses/> : <Login/>}/>
         <Route path='/game' element={isAuth && !isAdmin ? <Game/> : <Login/>}/>
         <Route path='/login' element={!isAuth ? <Login/> : <Home/>}/>
+        
+        <Route path='/nuevousuario' element={isAuth && isAdmin ? <NuevoEmpleado/> : <Home/>}/>
         <Route path='/data' element={isAuth && isAdmin ? <Data/> : <Home/>}/>
-        <Route path='/datausers' element={isAuth && isAdmin ? <DataUsers/> : <Home/>}/>
+
+        <Route path='/data/create' element={isAuth && isAdmin ? <DataCreate/> : <Home/>}/>
+        <Route path='/data/:id/edit' element={isAuth && isAdmin ? <DataEdit/> : <Home/>}/>
+
+
       </Routes>
     </>
   );

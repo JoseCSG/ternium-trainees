@@ -2,6 +2,7 @@ import client from '../database.js';
 import pkg from 'jsonwebtoken'
 import {SECRET} from '../constants/index.js'
 const {sign} = pkg
+
 client.connect();
 
 
@@ -27,17 +28,66 @@ export const getUsers = async (req, res) => {
 //Inserta en la base de datos un neuvo usuario con contraseña y usuario
 //(Creo que esto seria mejor para un sign in, y no tanto para un login)
 export const postUser = async (req, res) => {
-	const username = req.body["username"]; //expecting a json object
-	const password = req.body["password"]; //expecting a json object
+	const nombre = req.body["nombre"]; //expecting a json object
+	const apellidopaterno = req.body["apellidopaterno"]; //expecting a json object
+	const apellidomaterno = req.body["apellidomaterno"]; //expecting a json object
+	const genero = req.body["genero"]; //expecting a json object
+	const fechanacimiento = req.body["fechanacimiento"]; //expecting a json object
+	const pais = req.body["pais"]; //expecting a json object
+	const idempleado = req.body["idempleado"]; //expecting a json object
+	const idarea = req.body["idarea"]; //expecting a json object
 
-	console.log("Username: " + username);
-	console.log("Password: " + password);
+	console.log("Nombre: " + nombre);
+	console.log("Apellido Paterno: " + apellidopaterno);
+	console.log("Apellido Materno: " + apellidomaterno);
+	console.log("Genero: " + genero);
+	console.log("Fecha Nacimiento: " + fechanacimiento);
+	console.log("Pais: " + pais);
+	console.log("ID Empleado: " + idempleado);
+	console.log("ID Area: " + idarea);
 
 	//const insert_USPS= 'INSERT INTO accounts (username , password) VALUES ($1,$2)', [username,password];
 
-	client.query("INSERT INTO accounts (username , password) VALUES ($1,$2)", [
-			username,
-			password,
+	client.query("INSERT INTO empleados_info (nombre , apellidopaterno, apellidomaterno, genero, fechanacimiento, pais, idempleado, idarea) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)", [
+			nombre,
+			apellidopaterno,
+			apellidomaterno,
+			genero,
+			fechanacimiento,
+			pais,
+			idempleado,
+			idarea
+		])
+		.then((response) => {
+			console.log("Data saved");
+			console.log(response);
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+
+	console.log(req.body);
+	res.send("Response received: " + req.body);
+};
+
+export const createUserInit = async (req, res) => {
+	const correo = req.body["correo"]; //expecting a json object
+	const contraseña = req.body["contraseña"]; //expecting a json object
+	const estado = req.body["estado"]; //expecting a json object
+	const idperfil = req.body["idperfil"]; //expecting a json object
+
+	console.log("Correo: " + correo);
+	console.log("Contraseña: " + contraseña);
+	console.log("Estado: " + estado);
+	console.log("ID Perfil: " + idperfil);
+
+	//const insert_USPS= 'INSERT INTO accounts (username , password) VALUES ($1,$2)', [username,password];
+
+	client.query("INSERT INTO empleados_login (correo , contraseña, estado, idperfil) VALUES ($1,$2,$3,$4)", [
+			correo,
+			contraseña,
+			estado,
+			idperfil
 		])
 		.then((response) => {
 			console.log("Data saved");
@@ -118,6 +168,48 @@ export const getIdPerfil = async (req, res) => {
 }
 
 export const getInfo = async (req, res) => {
+	try {
+		const idEmpleado = req.query.idempleado
+		const {rows} = await client.query('SELECT * FROM empleados_info WHERE idEmpleado = $1', [idEmpleado])
+		res.json(rows)
+
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+}
+
+export const getEmpleadosTodos = async (req, res) => {
+	try {
+		const {rows} = await client.query('SELECT * FROM empleados_info ')
+		res.json(rows)
+		console.log(rows)
+
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+}
+
+export const borrarUsuario=async(req,res) => {
+	try {
+		const idEmpleado = req.query.idempleado
+		const response= await client.query("DELETE FROM empleados_info WHERE idempleadoinfo =$1", [idEmpleado])
+		console.log("Data deleted");
+		console.log(response);
+		res.status(200).json({ message: 'Data deleted' });
+	}
+	catch(error) 
+	{
+		console.log(error);
+		res.status(500).json({ message: 'Error deleting data' });
+	};
+}
+
+//////////////
+export const getInfoUsuario = async (req, res) => {
 	try {
 		const idEmpleado = req.query.idempleado
 		const {rows} = await client.query('SELECT * FROM empleados_info WHERE idEmpleado = $1', [idEmpleado])

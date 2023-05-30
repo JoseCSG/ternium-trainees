@@ -1,5 +1,6 @@
 import React from "react";
 import './Sidebar.css';
+import {Link} from "react-router-dom";
 
 const Sidebar = ()=> {
     /*const {pathname} = useLocation();
@@ -24,7 +25,7 @@ const Sidebar = ()=> {
                                 </a>
                             </li>
                             <li class="nav-item text-white fs-4 my-1">
-                                <a href="/datacourses" class="nav-link text-white fs-5" aria-current="page">
+                                <a href="/nuevousuario" class="nav-link text-white fs-5" aria-current="page">
                                     <span className="ms-2">Cursos</span>
                                 </a>
                             </li>
