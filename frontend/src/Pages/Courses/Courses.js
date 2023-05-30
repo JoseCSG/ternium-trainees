@@ -41,7 +41,7 @@ const Courses =() => {
 
   useEffect(() => {
     calcularPorcentaje();
-  }, [cursosCompletados, cursosEnProceso]);
+  });
 
   return(
     <div>

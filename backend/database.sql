@@ -62,6 +62,11 @@ CREATE TABLE cursos_completados(
 	estado BOOLEAN NOT NULL 
 );
 
+CREATE TABLE datos_juego(
+	
+)
+
+
 ALTER TABLE empleados_login ADD CONSTRAINT fk_id_perfil FOREIGN KEY (idPerfil) REFERENCES perfiles(idPerfil);
 ALTER TABLE empleados_info ADD CONSTRAINT fk_id_empleado_perfil FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
 ALTER TABLE empleados_info ADD CONSTRAINT fk_id_area_empleado FOREIGN KEY (idArea) REFERENCES areas(idArea);
@@ -227,7 +232,6 @@ AS $$
 	INNER JOIN cursos c ON cc.idcurso = c.idcurso
 	WHERE cc.idempleado = $1;
 $$ LANGUAGE SQL;
-
 /*
 SELECT c.nombre
 FROM cursos c
