@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import {useState,useEffect} from 'react';
 import axios from 'axios';
 import { getEmpleadosTodos } from '../../api/auth';
+import { borrarUsuario } from '../../api/auth';
 
 const Data = () => {
 
@@ -23,11 +24,19 @@ const Data = () => {
 
   const borrarUsuarioInfo = (e, idempleadoinfo) => {
     e.preventDefault();
+
+    
     const thisClicked=e.currentTarget;
-    thisClicked.innerText="Deleting...";
+    //thisClicked.innerText="Deleting...";
 
-    axios.delete('http://localhost:4000/api/borrarusuario',idempleadoinfo);
-
+    axios.delete(`http://localhost:4000/api/empleados/delete/${idempleadoinfo}`)
+    .then (res => {
+      alert(res.data.message);
+      thisClicked.closest('tr').remove();
+    })
+    .catch (function(error) {
+      console.log(error)
+    })
   }
 
   var detallesUsuarios="";

@@ -19,9 +19,9 @@ router.get('/cursosEmpleado', getCursosEmpleados);
 //JEANNETTE
 router.post('/adduser', postUserLogin);  //post para el primer forms
 router.post('/adduserInfo', postUserInfo);  //post para el primer forms
-router.delete('/borrarusuario',borrarUsuario);
+router.delete('/empleados/delete/:id',borrarUsuario);
 router.get('/empleados',getEmpleadosTodos);
-router.get('/data/{id}/edit',getInfoUsuario);
+router.put('/data/{id}/edit',getInfoUsuario);
 
 
 export default router
