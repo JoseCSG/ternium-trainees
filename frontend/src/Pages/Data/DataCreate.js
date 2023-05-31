@@ -6,12 +6,7 @@ import axios from "axios"
 function DataCreate()
 {
     //CONSTANTES PARA AGREGAR A EMPLEADOS_LOGIN
-    const[usuario,setUsuario]=useState({
-        correo:'',
-        contraseña:'',
-        estado:'',
-        idperfil:''
-    })
+    const[usuario,setUsuario] = useState({})
 
     const handleInput = (e) => {
         e.persist();
@@ -19,14 +14,8 @@ function DataCreate()
     }
 
     const creaCorreoContraseña = (e) => {
-        const data = {
-            correo: usuario.correo,
-            contraseña: usuario.contraseña,
-            estado: usuario.estado,
-            idperfil: usuario.idperfil
-        }
 
-        axios.post('http://localhost:4000/api/adduser',data)
+        axios.post('http://localhost:4000/api/adduser',usuario)
         .then (res=> {
             alert(res.data.message)
         })
@@ -34,18 +23,8 @@ function DataCreate()
             console.error(error)
         })
     }
-
     //CONSTANTES PARA AGREGAR A EMPLEADOS_INFO
-    const[usuarioInfo,setUsuarioInfo]=useState({
-        nombre:'',
-        apellidopaterno:'',
-        apellidomaterno:'',
-        genero:'',
-        fechanacimiento:'',
-        pais:'',
-        idempleado:'',
-        idarea:''
-    })
+    const[usuarioInfo,setUsuarioInfo]=useState({})
 
     const handleInput2 = (e) => {
         e.persist();
@@ -53,18 +32,8 @@ function DataCreate()
     }
 
     const creaInfoUsuario = (e) => {
-        const data = {
-            nombre: usuarioInfo.nombre,
-            apellidopaterno: usuarioInfo.apellidopaterno,
-            apellidomaterno: usuarioInfo.apellidomaterno,
-            genero: usuarioInfo.genero,
-            fechanacimiento:usuarioInfo.fechanacimiento,
-            pais:usuarioInfo.pais,
-            idempleado:usuarioInfo.idempleado,
-            idarea:usuarioInfo.idarea
-        }
-
-        axios.post('http://localhost:4000/api/adduserInfo',data)
+        
+        axios.post('http://localhost:4000/api/adduserInfo',usuarioInfo)
         .then (res=> {
             alert(res.data.message)
         })
@@ -72,11 +41,6 @@ function DataCreate()
             console.error(error)
         })
     }
-
-
-
-
-
 
     return (
         <div>

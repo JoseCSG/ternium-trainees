@@ -22,14 +22,12 @@ const Data = () => {
     });
   },[]);
 
-  const borrarUsuarioInfo = (e, idempleadoinfo) => {
+  const borrarUsuarioInfo = (e, idEmpleado) => {
     e.preventDefault();
-
-    
     const thisClicked=e.currentTarget;
     //thisClicked.innerText="Deleting...";
 
-    axios.delete(`http://localhost:4000/api/empleados/delete/${idempleadoinfo}`)
+    axios.delete(`http://localhost:4000/api/empleados/delete/${idEmpleado}`)
     .then (res => {
       alert(res.data.message);
       thisClicked.closest('tr').remove();
@@ -38,33 +36,6 @@ const Data = () => {
       console.log(error)
     })
   }
-
-  var detallesUsuarios="";
-  detallesUsuarios=usuarios.map((item,index)=> {
-    return (
-      <tr key={index}>
-          <td>{item.idempleadoinfo}</td>
-          <td>{item.nombre}</td>
-          <td>{item.apellidopaterno}</td>
-          <td>{item.apellidomaterno}</td>
-          <td>{item.genero}</td>
-          <td>{item.fechanacimiento}</td>
-          <td>{item.pais}</td>
-          <td>{item.idempleado}</td>
-          <td>{item.idarea}</td>
-          <td>
-            <Link to={`/data/${item.idempleadoinfo}/edit`} className='btn btn-success'>EDIT</Link>
-          </td>
-          <td>
-            <button type="button" onClick={(e)=>borrarUsuarioInfo(e, item.idempleadoinfo)}  className='btn btn-danger'>BORRAR</button>
-          </td>
-      </tr>
-    );
-
-  });
-
-
-  
   return (
     <div className='container mt-5'>
       <div className='row'>
@@ -95,9 +66,29 @@ const Data = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {detallesUsuarios}
+                  {
+                    usuarios.map((usuario,index)=> {
+                      return (
+                        <tr key={index}>
+                            <td>{usuario.idempleadoinfo}</td>
+                            <td>{usuario.nombre}</td>
+                            <td>{usuario.apellidopaterno}</td>
+                            <td>{usuario.apellidomaterno}</td>
+                            <td>{usuario.genero}</td>
+                            <td>{usuario.fechanacimiento}</td>
+                            <td>{usuario.pais}</td>
+                            <td>{usuario.idempleado}</td>
+                            <td>{usuario.idarea}</td>
+                            <td>
+                              <Link to={`/data/${usuario.idempleado}/edit`} className='btn btn-success'>EDIT</Link>
+                            </td>
+                            <td>
+                              <button type="button" onClick={(e)=>borrarUsuarioInfo(e, usuario.idempleado)}  className='btn btn-danger'>BORRAR</button>
+                            </td>
+                        </tr>
+                      );
+                    })}
                 </tbody>
-
               </table>
             </div>
           </div>

@@ -51,3 +51,7 @@ export async function getInfoUsuario(idempleadoinfo)
 {
     return await axios.get('http://localhost:4000/api/data/{id}/edit',{params: idempleadoinfo});
 }
+
+export async function createUsuario(){
+
+}

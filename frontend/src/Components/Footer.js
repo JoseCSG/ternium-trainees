@@ -26,12 +26,8 @@ function Footer()
                                 8717341255
                             </p>
                         </div>
-
                     </div>
-
-
                 </div>
-
             </div>
 
         </section>

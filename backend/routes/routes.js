@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { getCourses, getUsers, postUserLogin, login, protectedRoute, logout, getIdEmpleado, getIdPerfil, getInfo, getCursosEmpleados, borrarUsuario,getEmpleadosTodos,getInfoUsuario, postUserInfo } from "../controllers/controllers.js";
+import { getCourses, getUsers, postUserLogin, 
+        login, protectedRoute, logout, getIdEmpleado, 
+        getIdPerfil, getInfo, getCursosEmpleados, borrarUsuario,getEmpleadosTodos,
+        getInfoUsuario, postUserInfo } from "../controllers/controllers.js";
 import {loginValidation} from '../validators/auth.js'
 import { validationMiddleware } from "../middlewares/validations-middleware.js";
 import { userAuth } from "../middlewares/auth-middleware.js";

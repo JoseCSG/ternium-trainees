@@ -29,9 +29,6 @@ export const postUser = async (req, res) => {
 	const username = req.body["username"]; //expecting a json object
 	const password = req.body["password"]; //expecting a json object
 
-	console.log("Username: " + username);
-	console.log("Password: " + password);
-
 	//const insert_USPS= 'INSERT INTO accounts (username , password) VALUES ($1,$2)', [username,password];
 
 	client.query("INSERT INTO accounts (username , password) VALUES ($1,$2)", [
@@ -148,7 +145,6 @@ export const getEmpleadosTodos = async (req, res) => {
 	try {
 		const {rows} = await client.query('SELECT * FROM empleados_info ')
 		res.json(rows)
-		console.log(rows)
 
 	} catch (error) {
 		return res.status(500).json({
@@ -159,10 +155,9 @@ export const getEmpleadosTodos = async (req, res) => {
 
 export const borrarUsuario=async(req,res) => {
 	try {
-		const idEmpleado = req.query.idempleado
-		const response= await client.query("DELETE FROM empleados_info WHERE idempleadoinfo =$1", [idEmpleado])
+		const idEmpleado = req.params.id
+		await client.query("DELETE CASCADE FROM empleados_login WHERE idempleadoinfo =$1", [idEmpleado])
 		console.log("Data deleted");
-		console.log(response);
 		res.status(200).json({ message: 'Data deleted' });
 	}
 	catch(error) 
@@ -184,3 +179,49 @@ export const getInfoUsuario = async (req, res) => {
 		})
 	}
 }
+
+//Inserta en la base de datos un nuevo usuario em empleados_login
+export const postUserLogin = async (req, res) => {
+	const correo = req.body["correo"]; //expecting a json object
+	const contraseña = req.body["contraseña"]; //expecting a json object
+	const estado = req.body["estado"]; //expecting a json object
+	const idperfil = req.body["idperfil"]; //expecting a json object
+
+	client.query("INSERT INTO empleados_login (correo , contraseña, estado, idperfil) VALUES ($1,$2,$3,$4)", [
+			correo,
+			contraseña,
+			estado,
+			idperfil
+		])
+		.then((response) => {
+			console.log("Data saved");
+			console.log(response);
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+
+	res.send("Response received: " + req.body);
+};
+
+//Inserta en la base de datos un nuevo usuario em empleados_login
+export const postUserInfo = async (req, res) => {
+	try {
+		const infoNuevoUsuario = req.body
+		await client.query("INSERT INTO empleados_info (nombre,apellidopaterno,apellidomaterno,genero,fechanacimiento,pais,idempleado,idarea, fechainicio) VALUES ($1,$2,$3,$4,$5,$6,$7,$8, now())", [
+			infoNuevoUsuario["nombre"],
+			infoNuevoUsuario["apellidopaterno"],
+			infoNuevoUsuario["apellidomaterno"],
+			infoNuevoUsuario["genero"],
+			infoNuevoUsuario["fechanacimiento"],
+			infoNuevoUsuario["pais"],
+			infoNuevoUsuario["idempleado"],
+			infoNuevoUsuario["idarea"]
+		])
+		res.send("Response received: " + req.body);
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+};

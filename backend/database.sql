@@ -21,7 +21,7 @@ CREATE TABLE empleados_info(
 	fechaNacimiento DATE NOT NULL,
 	pais VARCHAR(100) NOT NULL,
 	idEmpleado INT NOT NULL UNIQUE,
-	idArea INT NOT NULL UNIQUE,
+	idArea INT NOT NULL,
 	fotoPerfil VARCHAR(255),
 	fechaInicio DATE NOT NULL,
 	fechaGraduacion DATE,
@@ -227,11 +227,12 @@ $$ LANGUAGE SQL;
 CREATE OR REPLACE FUNCTION fun_cursos(idEmpleado INT)
 RETURNS JSON
 AS $$
-	SELECT json_build_object('nombre', c.nombre, 'Finalizado', estado)
-	FROM cursos_completados cc
-	INNER JOIN cursos c ON cc.idcurso = c.idcurso
-	WHERE cc.idempleado = $1;
+    SELECT json_agg(json_build_object('nombre', c.nombre, 'imagenURL', img ,'estado', estado))
+    FROM cursos_completados cc
+    INNER JOIN cursos c ON cc.idcurso = c.idcurso
+    WHERE cc.idempleado = $1;
 $$ LANGUAGE SQL;
+
 /*
 SELECT c.nombre
 FROM cursos c
