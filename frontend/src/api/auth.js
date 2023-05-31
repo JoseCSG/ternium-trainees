@@ -44,7 +44,7 @@ export async function nuevoEmpleado(correo, contraseña,estado,idperfil)
 
 export async function borrarUsuario(idempleadoinfo)
 {
-    return await axios.delete('http://localhost:4000/api/borrarusuario',{params: idempleadoinfo});
+    return await axios.delete('http://localhost:4000/api/empleados/delete',{params: idempleadoinfo});
 }
 
 export async function getInfoUsuario(idempleadoinfo)
