@@ -26,7 +26,7 @@ function DataCreate()
             idperfil: usuario.idperfil
         }
 
-        axios.post('http://localhost:4000/api/adduserInit',data)
+        axios.post('http://localhost:4000/api/adduser',data)
         .then (res=> {
             alert(res.data.message)
         })
@@ -64,7 +64,7 @@ function DataCreate()
             idarea:usuarioInfo.idarea
         }
 
-        axios.post('http://localhost:4000/api/adduser',data)
+        axios.post('http://localhost:4000/api/adduserInfo',data)
         .then (res=> {
             alert(res.data.message)
         })

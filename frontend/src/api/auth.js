@@ -33,12 +33,13 @@ export async function getEmpleadosTodos()
 
 export async function postEmpleado(nombre,apellidopaterno,apellidomaterno,genero,fechanacimiento,pais,idempleado,idarea)
 {
-    return await axios.get('http://localhost:4000/api/adduser',{params: nombre,apellidopaterno,apellidomaterno,genero,fechanacimiento,pais,idempleado,idarea});
+    return await axios.get('http://localhost:4000/api/adduserInfo',{params: nombre,apellidopaterno,apellidomaterno,genero,fechanacimiento,pais,idempleado,idarea});
 }
+
 
 export async function nuevoEmpleado(correo, contraseña,estado,idperfil)
 {
-    return await axios.delete('http://localhost:4000/api/adduserInit',{params: correo,contraseña,estado,idperfil});
+    return await axios.delete('http://localhost:4000/api/adduser',{params: correo,contraseña,estado,idperfil});
 }
 
 export async function borrarUsuario(idempleadoinfo)
