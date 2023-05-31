@@ -24,7 +24,6 @@ export const getUsers = async (req, res) => {
 	}
 };
 
-//Inserta en la base de datos un neuvo usuario con contraseña y usuario
 //(Creo que esto seria mejor para un sign in, y no tanto para un login)
 export const postUser = async (req, res) => {
 	const username = req.body["username"]; //expecting a json object
@@ -140,6 +139,48 @@ export const getCursosEmpleados = async (req, res) => {
 	} catch (error) {
 		return error.status(500).json({
 			error: error.message,		
+		})
+	}
+}
+
+//JEANNETTE
+export const getEmpleadosTodos = async (req, res) => {
+	try {
+		const {rows} = await client.query('SELECT * FROM empleados_info ')
+		res.json(rows)
+		console.log(rows)
+
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+}
+
+export const borrarUsuario=async(req,res) => {
+	try {
+		const idEmpleado = req.query.idempleado
+		const response= await client.query("DELETE FROM empleados_info WHERE idempleadoinfo =$1", [idEmpleado])
+		console.log("Data deleted");
+		console.log(response);
+		res.status(200).json({ message: 'Data deleted' });
+	}
+	catch(error) 
+	{
+		console.log(error);
+		res.status(500).json({ message: 'Error deleting data' });
+	};
+}
+
+export const getInfoUsuario = async (req, res) => {
+	try {
+		const idEmpleado = req.query.idempleado
+		const {rows} = await client.query('SELECT * FROM empleados_info WHERE idEmpleado = $1', [idEmpleado])
+		res.json(rows)
+
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
 		})
 	}
 }
