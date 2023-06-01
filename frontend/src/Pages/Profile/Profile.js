@@ -42,7 +42,7 @@ const Profile = () => {
             <br />
             <br />
 
-            <p className="px-2 my-3" style={{ textAlign: 'center', margin: 'auto' }}>{infoEmpleado.nombre + ' ' +  infoEmpleado.apellidopaterno}</p>
+            <p className="px-2 my-3" style={{ textAlign: 'center', margin: 'auto' }}>{infoEmpleado.nombre + ' ' + infoEmpleado.apellidoPaterno + ' ' + infoEmpleado.apellidoMaterno}</p>
             <br />
             <p className="px-2 my-3" style={{ textAlign: 'center', margin: 'auto' }}>correo@gmail.com</p>
 
@@ -75,7 +75,7 @@ const Profile = () => {
                   <br />
                   <br />
                   <br />
-                  <p className="p1">Area de trabajo</p>
+                  <p className="p1">{infoEmpleado.area}</p>
                   <br />
                   <br />
                   <br />
@@ -87,25 +87,60 @@ const Profile = () => {
             <div className="row px-5">
               <div className="row-content px-4 my-5" style={{ backgroundColor: 'rgb(212, 212, 212)' }}>
               
-              <h5 className="header5">Medallas ganadas</h5>
+              <h5 className="header5">Areas de Interes</h5>
               <br />
-                
-              <div className="col">
-                <div className="card px-4 my-5" style={{ width: '15rem', height: '25' }}>
-                  <img src="https://in-crescendo.org/wp-content/uploads/2017/11/teamwork.png" className="card-img-top" alt="..." />
-                  <div className="card-body d-flex flex-column justify-content-between">
-                    <div className="text-center">
-                      <h5 className="card-title">Teamwork</h5>
-                    </div>
-                    <div>
-                      <p className="card-text" style={{ textAlign: 'justify' }}>Al terminar el curso TC10274 te ganaste esta medalla ¡felicidades!</p>
-                    </div>
-                    <div className="text-center my-4">
-                      <a href="http://localhost:3000/courses" className="btn btn-custom">Ir a curso</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                <ul className="list-group">
+                  <column className="col-6">
+                    <li className="list-group-item">
+                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
+                      First checkbox
+                    </li>
+                    <li className="list-group-item">
+                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
+                      Second checkbox
+                    </li>
+                    <li className="list-group-item">
+                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
+                      Third checkbox
+                    </li>
+                    <li className="list-group-item">
+                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
+                      Third checkbox
+                    </li>
+                  </column>
+
+                  <column className="col-6">
+                    <li className="list-group-item">
+                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
+                      Fourth checkbox
+                    </li>
+                    <li className="list-group-item">
+                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
+                      Fifth checkbox
+                    </li>
+                    <li className="list-group-item">
+                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
+                      Sixth checkbox
+                    </li>
+                    
+                  </column>
+
+                  <column className="col-6">
+                    <li className="list-group-item">
+                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
+                      Seventh checkbox
+                    </li>
+                    <li className="list-group-item">
+                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
+                      Eigth checkbox
+                    </li>
+                    <li className="list-group-item">
+                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
+                      Ninth checkbox
+                    </li>
+                  </column>
+                  
+                </ul>
 
               </div>
             </div>

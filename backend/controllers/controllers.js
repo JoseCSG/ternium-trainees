@@ -4,49 +4,6 @@ import {SECRET} from '../constants/index.js'
 const {sign} = pkg
 client.connect();
 
-
-//Retorna los nombres, y URL de las imagenes de los cursos, en formato JSON
-export const getCourses = async (req, res) => {
-	try {
-		const { rows } = await client.query("SELECT nombre FROM cursos");
-		res.json(rows);
-	} catch (err) {
-		console.log(err.message);
-	}
-};
-
-export const getUsers = async (req, res) => {
-	try {
-		const { rows } = await client.query("SELECT idEmpleado, idPerfil FROM empleados_login");
-		res.json(rows);
-	} catch (err) {
-		console.log(err.message);
-	}
-};
-
-//(Creo que esto seria mejor para un sign in, y no tanto para un login)
-export const postUser = async (req, res) => {
-	const username = req.body["username"]; //expecting a json object
-	const password = req.body["password"]; //expecting a json object
-
-	//const insert_USPS= 'INSERT INTO accounts (username , password) VALUES ($1,$2)', [username,password];
-
-	client.query("INSERT INTO accounts (username , password) VALUES ($1,$2)", [
-			username,
-			password,
-		])
-		.then((response) => {
-			console.log("Data saved");
-			console.log(response);
-		})
-		.catch((err) => {
-			console.log(err);
-		});
-
-	console.log(req.body);
-	res.send("Response received: " + req.body);
-};
-
 export const login = async (req, res) => {
 	let user = req.user
 	let payload = {
@@ -54,7 +11,7 @@ export const login = async (req, res) => {
 		email: user.email,
 	}
 	try {
-		const token = await sign(payload, SECRET)
+		const token = sign(payload, SECRET)
 		return res.status(200).cookie('token', token, {httpOnly: true }).json({
 			success: true, 
 			message: 'Logged in succesfully'
@@ -92,8 +49,8 @@ export const logout = async (req, res) => {
 export const getIdEmpleado = async (req, res) => {
 	try {
 		const correo = req.query.correo
-		const {rows} = await client.query('SELECT idEmpleado FROM empleados_login WHERE correo = $1', [correo])
-		res.json(rows)
+		const {rows} = await client.query('SELECT fun_empleado_id($1)', [correo])
+		res.json(rows[0].fun_empleado_id)
 	} catch (error) {
 		return res.status(500).json({
 			error: error.error.message,
@@ -118,9 +75,9 @@ export const getInfo = async (req, res) => {
 		const idEmpleado = req.query.idempleado
 
 		//const {rows} = await client.query('SELECT * FROM empleados_info WHERE idEmpleado = $1', [idEmpleado])
-		const {rows} = await client.query('SELECT fun_empleados_login($1)', [idEmpleado])
+		const {rows} = await client.query('SELECT fun_empleados_perfil($1)', [idEmpleado])
 		//res.json(rows)
-		res.json(rows[0].fun_empleados_login)
+		res.json(rows[0].fun_empleados_perfil)
 	} catch (error) {
 		return res.status(500).json({
 			error: error.message,
@@ -156,8 +113,7 @@ export const getEmpleadosTodos = async (req, res) => {
 export const borrarUsuario=async(req,res) => {
 	try {
 		const idEmpleado = req.params.id
-		await client.query("DELETE CASCADE FROM empleados_login WHERE idempleadoinfo =$1", [idEmpleado])
-		console.log("Data deleted");
+		await client.query("DELETE FROM empleados_login WHERE idempleado =$1", [idEmpleado])
 		res.status(200).json({ message: 'Data deleted' });
 	}
 	catch(error) 

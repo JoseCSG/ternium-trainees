@@ -8,7 +8,7 @@ CREATE TABLE empleados_login(
 	correo VARCHAR(255) NOT NULL UNIQUE,
 	contraseña VARCHAR(255) NOT NULL,
 	estado BOOLEAN NOT NULL,
-	idPerfil INT
+	idPerfil INT NOT NULL
 );
 
 --Puede haber un empleado en varias areas?
@@ -16,11 +16,11 @@ CREATE TABLE empleados_info(
 	idEmpleadoInfo SERIAL NOT NULL PRIMARY KEY,
 	nombre VARCHAR(100) NOT NULL,
 	apellidoPaterno VARCHAR(100) NOT NULL,
-	apellidoMaterno VARCHAR(100) NOT NULL,
+	apellidoMaterno VARCHAR(100),
 	genero VARCHAR(50) NOT NULL,
 	fechaNacimiento DATE NOT NULL,
 	pais VARCHAR(100) NOT NULL,
-	idEmpleado INT NOT NULL UNIQUE,
+	idEmpleado INT NOT NULL,
 	idArea INT NOT NULL,
 	fotoPerfil VARCHAR(255),
 	fechaInicio DATE NOT NULL,
@@ -62,22 +62,17 @@ CREATE TABLE cursos_completados(
 	estado BOOLEAN NOT NULL 
 );
 
-CREATE TABLE datos_juego(
-	
-)
-
-
-ALTER TABLE empleados_login ADD CONSTRAINT fk_id_perfil FOREIGN KEY (idPerfil) REFERENCES perfiles(idPerfil);
-ALTER TABLE empleados_info ADD CONSTRAINT fk_id_empleado_perfil FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
-ALTER TABLE empleados_info ADD CONSTRAINT fk_id_area_empleado FOREIGN KEY (idArea) REFERENCES areas(idArea);
-ALTER TABLE empleados_info ADD CONSTRAINT fk_id_empleado_jefe FOREIGN KEY (idJefe) REFERENCES empleados_login(idEmpleado);
-ALTER TABLE cursos ADD CONSTRAINT fk_id_area_cursos FOREIGN KEY (idArea) REFERENCES areas(idArea);
-ALTER TABLE cursos_completados ADD CONSTRAINT fk_id_curso FOREIGN KEY (idCurso) REFERENCES cursos(idCurso);
-ALTER TABLE cursos_completados ADD CONSTRAINT fk_id_empleado_curso FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
-ALTER TABLE rotaciones ADD CONSTRAINT fk_id_empleado_rotacion FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
-ALTER TABLE rotaciones ADD CONSTRAINT fk_id_area_rotacion FOREIGN KEY (idArea) REFERENCES areas(idArea);
-ALTER TABLE areas_interes ADD CONSTRAINT fk_id_area_areainteres FOREIGN KEY (idArea) REFERENCES areas(idArea);
-ALTER TABLE areas_interes ADD CONSTRAINT fk_id_empleado_areainteres FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
+ALTER TABLE empleados_login ADD CONSTRAINT fk_id_perfil FOREIGN KEY (idPerfil) REFERENCES perfiles(idPerfil) ON DELETE CASCADE;
+ALTER TABLE empleados_info ADD CONSTRAINT fk_id_empleado_perfil FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
+ALTER TABLE empleados_info ADD CONSTRAINT fk_id_area_empleado FOREIGN KEY (idArea) REFERENCES areas(idArea) ON DELETE CASCADE;
+ALTER TABLE empleados_info ADD CONSTRAINT fk_id_empleado_jefe FOREIGN KEY (idJefe) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
+ALTER TABLE cursos ADD CONSTRAINT fk_id_area_cursos FOREIGN KEY (idArea) REFERENCES areas(idArea) ON DELETE CASCADE;
+ALTER TABLE cursos_completados ADD CONSTRAINT fk_id_curso FOREIGN KEY (idCurso) REFERENCES cursos(idCurso) ON DELETE CASCADE;
+ALTER TABLE cursos_completados ADD CONSTRAINT fk_id_empleado_curso FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
+ALTER TABLE rotaciones ADD CONSTRAINT fk_id_empleado_rotacion FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
+ALTER TABLE rotaciones ADD CONSTRAINT fk_id_area_rotacion FOREIGN KEY (idArea) REFERENCES areas(idArea) ON DELETE CASCADE;
+ALTER TABLE areas_interes ADD CONSTRAINT fk_id_area_areainteres FOREIGN KEY (idArea) REFERENCES areas(idArea) ON DELETE CASCADE;
+ALTER TABLE areas_interes ADD CONSTRAINT fk_id_empleado_areainteres FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
 
 INSERT INTO perfiles(nombre) VALUES ('Administrador');
 INSERT INTO perfiles(nombre) VALUES ('Empleado');
@@ -216,11 +211,14 @@ AS $$
 $$ LANGUAGE SQL;
 
 --Select
-CREATE OR REPLACE FUNCTION fun_empleados_login(idEmpleado INT)
+CREATE OR REPLACE FUNCTION fun_empleados_perfil(idEmpleado INT)
 RETURNS JSON
 AS $$
-  SELECT json_build_object('nombre', nombre, 'idArea', idArea) 
-  FROM empleados_info
+  SELECT json_build_object(
+	'nombre', nombre, 'apellidoPaterno', apellidopaterno, 'apellidoMaterno', apellidomaterno, 'genero', genero,
+	'fechaInicio', fechainicio, 'fechaGraduacion', fechagraduacion, 'nombreJefe', nombre_jefe, 'apellidoJefe', apellido_jefe,
+	'area', area) 
+  FROM info_empleados_individual
   WHERE idEmpleado = $1;
 $$ LANGUAGE SQL;
 
@@ -233,10 +231,56 @@ AS $$
     WHERE cc.idempleado = $1;
 $$ LANGUAGE SQL;
 
-/*
-SELECT c.nombre
-FROM cursos c
-INNER JOIN cursos_completados cc ON c.idCurso = cc.idCurso
-INNER JOIN empleados_login e ON cc.idEmpleado = e.idEmpleado
-WHERE cc.estado = false AND cc.idEmpleado = 1;
-*/
+CREATE OR REPLACE FUNCTION fun_empleado_id(correo VARCHAR(255))
+RETURNS JSON
+AS $$
+  SELECT json_build_object('idEmpleado', idEmpleado) 
+  FROM empleados_login
+  WHERE correo = $1;
+$$ LANGUAGE SQL;
+
+
+
+CREATE OR REPLACE FUNCTION trg_insert_cursos_completados()
+RETURNS TRIGGER
+AS $$
+BEGIN
+    INSERT INTO cursos_completados (idEmpleado, idCurso, estado)
+    SELECT NEW.idEmpleado, c.idCurso, FALSE
+    FROM cursos c
+    WHERE c.idArea = NEW.idArea;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER insert_cursos_completados_trigger
+AFTER INSERT ON empleados_info
+FOR EACH ROW
+EXECUTE FUNCTION trg_insert_cursos_completados();
+
+CREATE OR REPLACE FUNCTION trg_insert_nuevos_cursos()
+RETURNS TRIGGER
+AS $$
+BEGIN
+    INSERT INTO cursos_completados (idEmpleado, idCurso, estado)
+    SELECT ei.idEmpleado, NEW.idCurso, FALSE
+    FROM empleados_info ei
+    WHERE ei.idArea = NEW.idArea;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER insert_nuevos_cursos_trigger
+AFTER INSERT ON cursos
+FOR EACH ROW
+EXECUTE FUNCTION trg_insert_nuevos_cursos();
+
+CREATE VIEW info_empleados_individual AS
+SELECT ei.idempleado, ei.nombre, ei.apellidopaterno, ei.apellidomaterno, ei.genero, 
+		ei.fechainicio, ei.fechagraduacion, ej.nombre AS nombre_jefe, ej.apellidopaterno AS apellido_jefe,
+		a.nombre AS area
+FROM empleados_info ei
+JOIN empleados_info ej ON ei.idjefe = ej.idempleado
+JOIN areas a ON ei.idarea = a.idarea

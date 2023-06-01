@@ -35,7 +35,7 @@ const Login =() => {
           }
 
           response = await getIdEmpleado(correoJSON);
-          localStorage.setItem('idEmpleado', response.data[0].idempleado)
+          localStorage.setItem('idEmpleado', response.data.idEmpleado)
         }
         else setError(response.data.errors[0].msg)
       } catch (errorResponse) {

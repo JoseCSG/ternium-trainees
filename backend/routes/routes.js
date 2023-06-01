@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getCourses, getUsers, postUserLogin, 
+import { postUserLogin, 
         login, protectedRoute, logout, getIdEmpleado, 
         getIdPerfil, getInfo, getCursosEmpleados, borrarUsuario,getEmpleadosTodos,
         getInfoUsuario, postUserInfo } from "../controllers/controllers.js";
@@ -12,8 +12,6 @@ router.post('/login', loginValidation, validationMiddleware, login)
 router.get('/idEmpleado', getIdEmpleado);
 router.get('/idPerfil', getIdPerfil);
 
-router.get('/cursos', getCourses)
-router.get('/users', getUsers)
 router.get('/protected',userAuth ,protectedRoute)
 router.get('/logout' , logout)
 router.get('/infoEmpleado', getInfo);
