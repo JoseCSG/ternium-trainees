@@ -25,6 +25,11 @@ export async function getCursosEmpleado(idEmpleado){
     return await axios.get('http://localhost:4000/api/cursosEmpleado', {params: idEmpleado})
 }
 
+//VALE
+export async function getInfoJuego(idEmpleado){
+  return await axios.get('http://localhost:4000/api/infoJuego', {params: idEmpleado})
+}
+
 //JEANNETTE
 export async function getEmpleadosTodos()
 {

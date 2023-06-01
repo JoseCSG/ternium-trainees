@@ -1,9 +1,9 @@
-CREATE TABLE perfiles(
+CREATE TABLE perfiles (
 	idPerfil SERIAL NOT NULL PRIMARY KEY,
 	nombre VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE empleados_login(
+CREATE TABLE empleados_login (
 	idEmpleado SERIAL NOT NULL PRIMARY KEY,
 	correo VARCHAR(255) NOT NULL UNIQUE,
 	contraseña VARCHAR(255) NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE empleados_login(
 );
 
 --Puede haber un empleado en varias areas?
-CREATE TABLE empleados_info(
+CREATE TABLE empleados_info (
 	idEmpleadoInfo SERIAL NOT NULL PRIMARY KEY,
 	nombre VARCHAR(100) NOT NULL,
 	apellidoPaterno VARCHAR(100) NOT NULL,
@@ -28,12 +28,12 @@ CREATE TABLE empleados_info(
 	idJefe INT 
 );
 
-CREATE TABLE areas(
+CREATE TABLE areas (
 	idArea SERIAL NOT NULL PRIMARY KEY,
 	nombre VARCHAR(100) NOT NULL UNIQUE
 );
 
-CREATE TABLE areas_interes(
+CREATE TABLE areas_interes (
 	idAreaInteres SERIAL NOT NULL PRIMARY KEY,
 	idArea INT NOT NULL,
 	idEmpleado INT NOT NULL
@@ -48,31 +48,52 @@ CREATE TABLE rotaciones (
 );
 
 --Puede haber un curso para varias areas?
-CREATE TABLE cursos(
+CREATE TABLE cursos (
 	idCurso SERIAL NOT NULL PRIMARY KEY,
 	nombre VARCHAR(200) NOT NULL UNIQUE,
 	idArea INT NOT NULL,
 	img TEXT
 );
 
-CREATE TABLE cursos_completados(
+CREATE TABLE cursos_completados (
 	idCursoCompletado SERIAL NOT NULL PRIMARY KEY,
 	idEmpleado INT NOT NULL,
-	idCurso INT NOT NULL, 
-	estado BOOLEAN NOT NULL 
+	idCurso INT NOT NULL,
+	estado BOOLEAN NOT NULL
 );
 
-ALTER TABLE empleados_login ADD CONSTRAINT fk_id_perfil FOREIGN KEY (idPerfil) REFERENCES perfiles(idPerfil) ON DELETE CASCADE;
-ALTER TABLE empleados_info ADD CONSTRAINT fk_id_empleado_perfil FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
-ALTER TABLE empleados_info ADD CONSTRAINT fk_id_area_empleado FOREIGN KEY (idArea) REFERENCES areas(idArea) ON DELETE CASCADE;
-ALTER TABLE empleados_info ADD CONSTRAINT fk_id_empleado_jefe FOREIGN KEY (idJefe) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
-ALTER TABLE cursos ADD CONSTRAINT fk_id_area_cursos FOREIGN KEY (idArea) REFERENCES areas(idArea) ON DELETE CASCADE;
-ALTER TABLE cursos_completados ADD CONSTRAINT fk_id_curso FOREIGN KEY (idCurso) REFERENCES cursos(idCurso) ON DELETE CASCADE;
-ALTER TABLE cursos_completados ADD CONSTRAINT fk_id_empleado_curso FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
-ALTER TABLE rotaciones ADD CONSTRAINT fk_id_empleado_rotacion FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
-ALTER TABLE rotaciones ADD CONSTRAINT fk_id_area_rotacion FOREIGN KEY (idArea) REFERENCES areas(idArea) ON DELETE CASCADE;
-ALTER TABLE areas_interes ADD CONSTRAINT fk_id_area_areainteres FOREIGN KEY (idArea) REFERENCES areas(idArea) ON DELETE CASCADE;
-ALTER TABLE areas_interes ADD CONSTRAINT fk_id_empleado_areainteres FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
+CREATE TABLE empleados_juego (
+	idEmpleadoJuego SERIAL NOT NULL PRIMARY KEY,
+	cursosCompletados INT NOT NULL,
+	puntajeAlto INT NOT NULL,
+	idEmpleado INT NOT NULL UNIQUE
+);
+
+CREATE TABLE avatars (
+	idAvatar SERIAL NOT NULL PRIMARY KEY,
+	nombre VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE empleados_avatars (
+	idEmpleadoAvatar SERIAL NOT NULL PRIMARY KEY,
+	idEmpleado INT NOT NULL,
+  idAvatar INT NOT NULL UNIQUE
+);
+
+ALTER TABLE empleados_login ADD CONSTRAINT fk_id_perfil FOREIGN KEY (idPerfil) REFERENCES perfiles(idPerfil);
+ALTER TABLE empleados_info ADD CONSTRAINT fk_id_empleado_perfil FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
+ALTER TABLE empleados_info ADD CONSTRAINT fk_id_area_empleado FOREIGN KEY (idArea) REFERENCES areas(idArea);
+ALTER TABLE empleados_info ADD CONSTRAINT fk_id_empleado_jefe FOREIGN KEY (idJefe) REFERENCES empleados_login(idEmpleado);
+ALTER TABLE cursos ADD CONSTRAINT fk_id_area_cursos FOREIGN KEY (idArea) REFERENCES areas(idArea);
+ALTER TABLE cursos_completados ADD CONSTRAINT fk_id_curso FOREIGN KEY (idCurso) REFERENCES cursos(idCurso);
+ALTER TABLE cursos_completados ADD CONSTRAINT fk_id_empleado_curso FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
+ALTER TABLE rotaciones ADD CONSTRAINT fk_id_empleado_rotacion FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
+ALTER TABLE rotaciones ADD CONSTRAINT fk_id_area_rotacion FOREIGN KEY (idArea) REFERENCES areas(idArea);
+ALTER TABLE areas_interes ADD CONSTRAINT fk_id_area_areainteres FOREIGN KEY (idArea) REFERENCES areas(idArea);
+ALTER TABLE areas_interes ADD CONSTRAINT fk_id_empleado_areainteres FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
+ALTER TABLE empleados_juego ADD CONSTRAINT fk_id_empleado_juego FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
+ALTER TABLE empleados_avatars ADD CONSTRAINT fk_id_empleado_avatars FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
+ALTER TABLE empleados_avatars ADD CONSTRAINT fk_id_avatar_avatars FOREIGN KEY (idAvatar) REFERENCES avatars(idAvatar);
 
 INSERT INTO perfiles(nombre) VALUES ('Administrador');
 INSERT INTO perfiles(nombre) VALUES ('Empleado');
@@ -144,22 +165,30 @@ INSERT INTO cursos_completados(idEmpleado, idCurso, estado) VALUES(1, 2, TRUE);
 INSERT INTO cursos_completados(idEmpleado, idCurso, estado) VALUES(2, 3, TRUE);
 INSERT INTO cursos_completados(idEmpleado, idCurso, estado) VALUES(2, 4, FALSE);
 
+INSERT INTO empleados_juego(cursosCompletados, puntajeAlto,	idEmpleado) VALUES (1, 0, '1');
+INSERT INTO empleados_juego(cursosCompletados, puntajeAlto,	idEmpleado) VALUES (1, 0, '2');
+INSERT INTO empleados_juego(cursosCompletados, puntajeAlto,	idEmpleado) VALUES (0, 0, '3');
+
+INSERT INTO avatars(nombre) VALUES ('Avatar 1');
+INSERT INTO avatars(nombre) VALUES ('Avatar 2');
+INSERT INTO avatars(nombre) VALUES ('Avatar 3');
+
 --Stored Procedures empleados_login
 --Insert
-CREATE OR REPLACE PROCEDURE sp_empleados_login_insert(correo VARCHAR(255), contraseña VARCHAR(255), estado BOOLEAN,idPerfil INT)
+CREATE OR REPLACE PROCEDURE sp_empleados_login_insert(correo VARCHAR(255), contraseña VARCHAR(255), estado BOOLEAN, idPerfil INT)
 AS $$
 	INSERT INTO empleados_login(correo, contraseña, estado, idPerfil) VALUES ($1, $2, $3, $4);
 $$ LANGUAGE SQL;
 
 --Update
-CREATE OR REPLACE PROCEDURE sp_empleados_login_update(contraseña VARCHAR(255), empleadoId INT)
+CREATE OR REPLACE PROCEDURE sp_empleados_login_update(contraseña VARCHAR(255), idEmpleado INT)
 AS $$
 	UPDATE empleados_login SET contraseña = $1
-	WHERE empleadoId = $2;
+	WHERE idEmpleado = $2;
 $$ LANGUAGE SQL;
 
 --Delete
-CREATE OR REPLACE PROCEDURE sp_empleados_login_delete(empleadoId INT)
+CREATE OR REPLACE PROCEDURE sp_empleados_login_delete(idEmpleado INT)
 AS $$
 	DELETE FROM empleados_login
 	WHERE idEmpleado = $1
@@ -197,17 +226,40 @@ AS $$
 $$ LANGUAGE SQL;
 
 --Update
-CREATE OR REPLACE PROCEDURE sp_empleados_login_update(idArea INT, empleadoId INT)
+CREATE OR REPLACE PROCEDURE sp_empleados_login_update(idArea INT, idEmpleado INT)
 AS $$
 	UPDATE empleados_info SET idArea = $1
-	WHERE empleadoId = $2;
+	WHERE idEmpleado = $2;
 $$ LANGUAGE SQL;
 
 --Delete
-CREATE OR REPLACE PROCEDURE sp_empleados_login_delete(empleadoId INT)
+CREATE OR REPLACE PROCEDURE sp_empleados_login_delete(idEmpleado INT)
 AS $$
 	DELETE FROM empleados_info
 	WHERE idEmpleado = $1
+$$ LANGUAGE SQL;
+
+--Stored Procedures empleados_juego
+--Update cursosCompletados
+CREATE OR REPLACE PROCEDURE sp_empleados_juego_update_cursos(cursosCompletados INT, idEmpleado INT)
+AS $$
+	UPDATE empleados_juego SET cursosCompletados = $1
+	WHERE idEmpleado = $2;
+$$ LANGUAGE SQL;
+
+--Update puntajeAlto
+CREATE OR REPLACE PROCEDURE sp_empleados_juego_update_puntaje(puntajeAlto INT, idEmpleado INT)
+AS $$
+	UPDATE empleados_juego SET puntajeAlto = $1
+	WHERE idEmpleado = $2;
+$$ LANGUAGE SQL;
+
+--Stored Procedures empleados_avatar
+--Insert
+CREATE OR REPLACE PROCEDURE sp_empleados_avatars_insert(idEmpleado INT, idAvatar INT)
+AS $$
+	INSERT INTO empleados_avatars(idEmpleado, idAvatar)
+	VALUES ($1, $2);
 $$ LANGUAGE SQL;
 
 --Select
@@ -227,8 +279,17 @@ RETURNS JSON
 AS $$
     SELECT json_agg(json_build_object('nombre', c.nombre, 'imagenURL', img ,'estado', estado))
     FROM cursos_completados cc
-    INNER JOIN cursos c ON cc.idcurso = c.idcurso
-    WHERE cc.idempleado = $1;
+    INNER JOIN cursos c ON cc.idCurso = c.idCurso
+    WHERE cc.idEmpleado = $1;
+$$ LANGUAGE SQL;
+
+--Función empleados_juego
+CREATE OR REPLACE FUNCTION fun_empleados_juego(idEmpleado INT)
+RETURNS JSON
+AS $$
+	SELECT json_build_object('cursos', cursosCompletados, 'puntaje', puntajeAlto)
+  FROM empleados_juego
+  WHERE idEmpleado = $1;
 $$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION fun_empleado_id(correo VARCHAR(255))
