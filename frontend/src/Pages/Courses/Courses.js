@@ -45,24 +45,30 @@ const Courses =() => {
 
   return(
     <div>
-      <h1 className='text-center my-5'>Cursos</h1>
-      <div className='container' style={{backgroundColor: 'rgb(212, 212, 212)'}}>
-        <ProgressBar porcentaje={porcentaje}/>
-        {/*PRIMERA FILA */}
-        <div className='row'>
-          <h3 className='text-center my-3'>{porcentaje}%</h3>
+      <div className='container my-3'>
+        <h3 className='text-center my-5'>Cursos</h3 >
+      </div>
+      
+      <div className='container'>
+        <div className='column'>
+          <ProgressBar porcentaje={porcentaje}/>
+          <h6 className='text-center my-3'>{porcentaje}%</h6>
+        </div>
 
+        {/*PRIMERA FILA */}
+        <div className='row my-3 card-coruse' style={{ backgroundColor: 'rgb(212, 212, 212)' }}>
           {
             cursosEnProceso.map((course) => {
-              return <CardCourse nombre= {course.nombre} img = {course.imagenURL} status = {course.estado}/>;
+              return <CardCourse nombre={course.nombre} img={course.imagenURL} status={course.estado}/>;
             })
           }
           {
             cursosCompletados.map((course) => {
-              return <CardCourse nombre= {course.nombre} img = {course.imagenURL} status = {course.estado}/>;
+              return <CardCourse nombre={course.nombre} img={course.imagenURL} status={course.estado}/>;
             })
           }
         </div>
+
       </div>
     </div>
 
