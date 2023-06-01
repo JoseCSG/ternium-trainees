@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import './Profile.css';
 import foto from '../../Images/logo.png';
 import { getInfoEmpleado } from '../../api/auth';
+import Checkbox from '../../Components/Check box/Checkbox';
 
 const Profile = () => {
-  
   const [infoEmpleado, setInfoEmpleado] = useState({})
   const loadProfileInfo =  async () => {
     const idJSON = {
@@ -19,6 +19,7 @@ const Profile = () => {
      nombre, apellidopeterno, apellidomaterno, pais, genero,
      fechanacimiento, idempleado, idarea
   */
+
   return (
     <div>
 
@@ -83,68 +84,14 @@ const Profile = () => {
               </div>
             </div>
 
-            {/* SECTION 3 MEDALS */}
+            {/* SECTION 3 AREAS DE INTERES */}
             <div className="row px-5">
               <div className="row-content px-4 my-5" style={{ backgroundColor: 'rgb(212, 212, 212)' }}>
-              
-              <h5 className="header5">Areas de Interes</h5>
-              <br />
-                <ul className="list-group">
-                  <column className="col-6">
-                    <li className="list-group-item">
-                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
-                      First checkbox
-                    </li>
-                    <li className="list-group-item">
-                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
-                      Second checkbox
-                    </li>
-                    <li className="list-group-item">
-                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
-                      Third checkbox
-                    </li>
-                    <li className="list-group-item">
-                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
-                      Third checkbox
-                    </li>
-                  </column>
-
-                  <column className="col-6">
-                    <li className="list-group-item">
-                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
-                      Fourth checkbox
-                    </li>
-                    <li className="list-group-item">
-                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
-                      Fifth checkbox
-                    </li>
-                    <li className="list-group-item">
-                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
-                      Sixth checkbox
-                    </li>
-                    
-                  </column>
-
-                  <column className="col-6">
-                    <li className="list-group-item">
-                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
-                      Seventh checkbox
-                    </li>
-                    <li className="list-group-item">
-                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
-                      Eigth checkbox
-                    </li>
-                    <li className="list-group-item">
-                      <input className="form-check-input me-1" type="checkbox" value="" aria-label="..."></input>
-                      Ninth checkbox
-                    </li>
-                  </column>
-                  
-                </ul>
-
+                <h5 className="header5">Areas de Interes</h5>
+                <br />
+                <Checkbox/>
               </div>
             </div>
-
 
           </div>
 
