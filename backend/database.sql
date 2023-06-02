@@ -193,7 +193,8 @@ AS $$
 	fechaNacimiento,
 	pais,
 	idArea,
-	idEmpleado) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);
+	idEmpleado,
+	fechainicio) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, now());
 $$ LANGUAGE SQL;
 
 --Update
@@ -239,7 +240,39 @@ AS $$
   WHERE correo = $1;
 $$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION fun_empleado_perfil(correo VARCHAR(255))
+RETURNS JSON
+AS $$
+  SELECT json_build_object('idPerfil', idPerfil) 
+  FROM empleados_login
+  WHERE correo = $1;
+$$ LANGUAGE SQL;
 
+CREATE OR REPLACE PROCEDURE sp_delete_empleado(idEmpleado INT)
+AS $$
+	DELETE FROM empleados_login
+	WHERE idEmpleado = $1
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE PROCEDURE sp_insert_empleado(
+	correo VARCHAR(255),
+	contraseña VARCHAR(255),
+	idPerfil INT)
+AS $$
+	INSERT INTO empleados_login(correo, contraseña, idPerfil, estado) 
+	VALUES ($1, $2, $3, true);
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE PROCEDURE sp_insert_info_empleado(
+	nombre VARCHAR(100), apellidoPaterno VARCHAR(100), apellidoMaterno VARCHAR(100), 
+	genero VARCHAR(50), fechaNacimiento DATE, pais VARCHAR(100), idArea INT, 
+	idEmpleado INT)
+AS $$
+	INSERT INTO empleados_info(nombre, apellidoPaterno, 
+				apellidoMaterno, genero, fechaNacimiento, pais, idArea, 
+				idEmpleado, fechainicio)
+	VALUES($1, $2, $3, $4, $5, $6, $7, $8, now());
+$$ LANGUAGE SQL
 
 CREATE OR REPLACE FUNCTION trg_insert_cursos_completados()
 RETURNS TRIGGER

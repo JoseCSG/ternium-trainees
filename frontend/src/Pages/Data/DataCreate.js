@@ -1,11 +1,11 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import { useState } from "react"
-import axios from "axios"
+import { getIdEmpleado, nuevoEmpleado, nuevoEmpleadoInfo } from "../../api/auth"
 
-function DataCreate()
-{
+function DataCreate(){
     //CONSTANTES PARA AGREGAR A EMPLEADOS_LOGIN
+    const[correoEmpleadoNuevo, setCorreoEmpleadoNuevo] = useState({})
     const[usuario,setUsuario] = useState({})
 
     const handleInput = (e) => {
@@ -13,33 +13,46 @@ function DataCreate()
         setUsuario({...usuario,[e.target.name]:e.target.value})
     }
 
-    const creaCorreoContraseña = (e) => {
+    const creaCorreoContraseña = async (e) => {
+          e.preventDefault()
+        try {
+            setCorreoEmpleadoNuevo({"correo": usuario.correo})
+            await nuevoEmpleado(usuario);
+            alert("Usuario creado")
+            
+        } catch (error) {
+            console.log(error.message)
+        }
 
-        axios.post('http://localhost:4000/api/adduser',usuario)
-        .then (res=> {
-            alert(res.data.message)
-        })
-        .catch (function(error){
-            console.error(error)
-        })
     }
     //CONSTANTES PARA AGREGAR A EMPLEADOS_INFO
-    const[usuarioInfo,setUsuarioInfo]=useState({})
+    const[usuarioInfo,setUsuarioInfo]=useState({
+        idempleado: "",
+        nombre: "",
+        apellidopaterno: "",
+        apellidomaterno: "",
+        genero: "",
+        pais: "",
+        fechanacimiento: "",
+        idarea: ""
+    })
 
     const handleInput2 = (e) => {
         e.persist();
         setUsuarioInfo({...usuarioInfo,[e.target.name]:e.target.value})
     }
 
-    const creaInfoUsuario = (e) => {
-        
-        axios.post('http://localhost:4000/api/adduserInfo',usuarioInfo)
-        .then (res=> {
-            alert(res.data.message)
-        })
-        .catch (function(error){
-            console.error(error)
-        })
+    const creaInfoUsuario = async (e) => {
+        e.preventDefault()
+        try {
+            const {data} = await getIdEmpleado(correoEmpleadoNuevo)
+            usuarioInfo.idempleado = data.idEmpleado
+            await nuevoEmpleadoInfo(usuarioInfo);
+            alert("Informacion del nuevo usuario añadida")
+
+        } catch (error) {
+            console.log(error.message)
+        }
     }
 
     return (
@@ -49,7 +62,7 @@ function DataCreate()
                         <div className='col-md-12'>
                             <div className='card'>
                                 <div className='card-header'>
-                                    <h4> Agrega Usuario
+                                    <h4> Agrega Usuario {' ' + correoEmpleadoNuevo.correo}
                                         {/*<Link to="/nuevousuario" className='btn btn-primary float-end'>Agrega Usuario</Link>*/}
                                         <Link to="/data" className='btn btn-danger float-end'>Back</Link>
                                     </h4>
@@ -65,11 +78,6 @@ function DataCreate()
                                     <div className="mb-3">
                                         <label>Contraseña</label>
                                         <input type="text" name="contraseña" value={usuario.contraseña} onChange={handleInput} className="form-control"/>
-                                    </div>
-
-                                    <div className="mb-3">
-                                        <label>Estado</label>
-                                        <input type="number" name="estado" value={usuario.estado} onChange={handleInput} className="form-control"/>
                                     </div>
 
                                     <div className="mb-3">
@@ -130,11 +138,6 @@ function DataCreate()
                                     <div className="mb-3">
                                         <label>Pais</label>
                                         <input tEstadoype="text" name="pais" value={usuarioInfo.pais} onChange={handleInput2} className="form-control"/>
-                                    </div>
-
-                                    <div className="mb-3">
-                                        <label>ID Empleado</label>
-                                        <input type="number" name="idempleado" value={usuarioInfo.idempleado} onChange={handleInput2} className="form-control"/>
                                     </div>
 
                                     <div className="mb-3">
