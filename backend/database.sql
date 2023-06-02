@@ -248,6 +248,14 @@ AS $$
   WHERE correo = $1;
 $$ LANGUAGE SQL;
 
+CREATE OR REPLACE fun_get_empleados()
+RETURNS JSON
+AS $$
+	SELECT json_agg(json_build_object(
+		
+	))
+$$ LANGUAGE SQL;
+
 CREATE OR REPLACE PROCEDURE sp_delete_empleado(idEmpleado INT)
 AS $$
 	DELETE FROM empleados_login

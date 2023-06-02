@@ -113,7 +113,7 @@ export const getEmpleadosTodos = async (req, res) => {
 export const borrarUsuario=async(req,res) => {
 	try {
 		const idEmpleado = req.params.id
-		await client.query("CALL sp_delete_empado($1)", [idEmpleado])
+		await client.query("CALL sp_delete_empleado($1)", [idEmpleado])
 		res.status(200).json({ message: 'Data deleted' });
 	}
 	catch(error) 
@@ -160,7 +160,7 @@ export const postUserLogin = async (req, res) => {
 export const postUserInfo = async (req, res) => {
 	try {
 		const infoNuevoUsuario = req.body.params	
-		console.log('Info Nueva' + infoNuevoUsuario)
+		console.log(infoNuevoUsuario)
 		await client.query("CALL sp_empleados_info_insert($1, $2, $3, $4, $5, $6, $7, $8)", [
 			infoNuevoUsuario.nombre,
 			infoNuevoUsuario.apellidopaterno,
