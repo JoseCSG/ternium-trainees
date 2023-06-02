@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import './Profile.css';
 import foto from '../../Images/logo.png';
 import { getInfoEmpleado } from '../../api/auth';
+import Checkbox from '../../Components/Check box/Checkbox';
 
 const Profile = () => {
-  
   const [infoEmpleado, setInfoEmpleado] = useState({})
   const loadProfileInfo =  async () => {
     const idJSON = {
@@ -19,6 +19,7 @@ const Profile = () => {
      nombre, apellidopeterno, apellidomaterno, pais, genero,
      fechanacimiento, idempleado, idarea
   */
+
   return (
     <div>
 
@@ -42,7 +43,7 @@ const Profile = () => {
             <br />
             <br />
 
-            <p className="px-2 my-3" style={{ textAlign: 'center', margin: 'auto' }}>{infoEmpleado.nombre + ' ' +  infoEmpleado.apellidopaterno}</p>
+            <p className="px-2 my-3" style={{ textAlign: 'center', margin: 'auto' }}>{infoEmpleado.nombre + ' ' + infoEmpleado.apellidoPaterno + ' ' + infoEmpleado.apellidoMaterno}</p>
             <br />
             <p className="px-2 my-3" style={{ textAlign: 'center', margin: 'auto' }}>correo@gmail.com</p>
 
@@ -75,7 +76,7 @@ const Profile = () => {
                   <br />
                   <br />
                   <br />
-                  <p className="p1">Area de trabajo</p>
+                  <p className="p1">{infoEmpleado.area}</p>
                   <br />
                   <br />
                   <br />
@@ -83,33 +84,14 @@ const Profile = () => {
               </div>
             </div>
 
-            {/* SECTION 3 MEDALS */}
+            {/* SECTION 3 AREAS DE INTERES */}
             <div className="row px-5">
               <div className="row-content px-4 my-5" style={{ backgroundColor: 'rgb(212, 212, 212)' }}>
-              
-              <h5 className="header5">Medallas ganadas</h5>
-              <br />
-                
-              <div className="col">
-                <div className="card px-4 my-5" style={{ width: '15rem', height: '25' }}>
-                  <img src="https://in-crescendo.org/wp-content/uploads/2017/11/teamwork.png" className="card-img-top" alt="..." />
-                  <div className="card-body d-flex flex-column justify-content-between">
-                    <div className="text-center">
-                      <h5 className="card-title">Teamwork</h5>
-                    </div>
-                    <div>
-                      <p className="card-text" style={{ textAlign: 'justify' }}>Al terminar el curso TC10274 te ganaste esta medalla ¡felicidades!</p>
-                    </div>
-                    <div className="text-center my-4">
-                      <a href="http://localhost:3000/courses" className="btn btn-custom">Ir a curso</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
+                <h5 className="header5">Areas de Interes</h5>
+                <br />
+                <Checkbox/>
               </div>
             </div>
-
 
           </div>
 

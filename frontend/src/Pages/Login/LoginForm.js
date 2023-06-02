@@ -28,14 +28,14 @@ const Login =() => {
             "correo": values.email
           }
           let response = await getIdPerfil(correoJSON);
-          const perfil = response.data[0].idperfil;
+          const perfil = response.data.idPerfil;
           if(perfil === 1){
             dispatch(authenticateAdmin())
             localStorage.setItem('isAdmin', true);
           }
 
           response = await getIdEmpleado(correoJSON);
-          localStorage.setItem('idEmpleado', response.data[0].idempleado)
+          localStorage.setItem('idEmpleado', response.data.idEmpleado)
         }
         else setError(response.data.errors[0].msg)
       } catch (errorResponse) {

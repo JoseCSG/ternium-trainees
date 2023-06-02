@@ -25,28 +25,29 @@ export async function getCursosEmpleado(idEmpleado){
     return await axios.get('http://localhost:4000/api/cursosEmpleado', {params: idEmpleado})
 }
 
+//VALE
+export async function getInfoJuego(idEmpleado){
+  return await axios.get('http://localhost:4000/api/infoJuego', {params: idEmpleado})
+}
+
 //JEANNETTE
 export async function getEmpleadosTodos()
 {
     return await axios.get('http://localhost:4000/api/empleados');
 }
 
-export async function postEmpleado(nombre,apellidopaterno,apellidomaterno,genero,fechanacimiento,pais,idempleado,idarea)
-{
-    return await axios.get('http://localhost:4000/api/adduserInfo',{params: nombre,apellidopaterno,apellidomaterno,genero,fechanacimiento,pais,idempleado,idarea});
+export async function nuevoEmpleadoInfo(infoNuevoEmpleado){
+    return await axios.post('http://localhost:4000/api/adduserInfo',{params: infoNuevoEmpleado});
 }
 
 
-export async function nuevoEmpleado(correo, contraseña,estado,idperfil)
-{
-    return await axios.delete('http://localhost:4000/api/adduser',{params: correo,contraseña,estado,idperfil});
+export async function nuevoEmpleado(infoEmpleado){
+    return await axios.post('http://localhost:4000/api/adduser',{params: infoEmpleado});
 }
 
-export async function borrarUsuario(idempleadoinfo)
-{
+export async function borrarUsuario(idempleadoinfo){
     return await axios.delete('http://localhost:4000/api/empleados/delete',{params: idempleadoinfo});
 }
-
 export async function actualizarUsuario(idempleadoinfo)
 {
     return await axios.get('http://localhost:4000/api/data/edit',{params: idempleadoinfo});
@@ -56,3 +57,7 @@ export async function getSingleUsuario(idempleadoinfo)
 {
     return await axios.get('http://localhost:4000/api/data/get', {params: idempleadoinfo});
 }
+export async function getInfoUsuario(idempleadoinfo){
+    return await axios.get('http://localhost:4000/api/data/{id}/edit',{params: idempleadoinfo});
+}
+

@@ -17,11 +17,13 @@ const opts = {
 passport.use(
     new Strategy(opts, async ({id}, done) => {
         try {
-            const {rows} = await client.query('SELECT id FROM accounts WHERE id = $1', [id])
+            console.log(id)
+            const {rows} = await client.query('SELECT idEmpleado FROM empleados_login WHERE idEmpleado = $1', [id])
             if(!rows.length) throw new Error('401 Not Authorized')
             let user = {id: rows[0].id, email: rows[0].email}
             done(null, user)
-        } catch (error) {
+        } 
+        catch (error) {
             console.log(error.message)
             done(null, false)
         }

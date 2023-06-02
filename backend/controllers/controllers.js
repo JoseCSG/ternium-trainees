@@ -4,28 +4,6 @@ import {SECRET} from '../constants/index.js'
 const {sign} = pkg
 client.connect();
 
-
-//Retorna los nombres, y URL de las imagenes de los cursos, en formato JSON
-export const getCourses = async (req, res) => {
-	try {
-		const { rows } = await client.query("SELECT nombre FROM cursos");
-		res.json(rows);
-	} catch (err) {
-		console.log(err.message);
-	}
-};
-
-export const getUsers = async (req, res) => {
-	try {
-		const { rows } = await client.query("SELECT idEmpleado, idPerfil FROM empleados_login");
-		res.json(rows);
-	} catch (err) {
-		console.log(err.message);
-	}
-};
-
-
-
 export const login = async (req, res) => {
 	let user = req.user
 	let payload = {
@@ -33,7 +11,7 @@ export const login = async (req, res) => {
 		email: user.email,
 	}
 	try {
-		const token = await sign(payload, SECRET)
+		const token = sign(payload, SECRET)
 		return res.status(200).cookie('token', token, {httpOnly: true }).json({
 			success: true, 
 			message: 'Logged in succesfully'
@@ -71,8 +49,8 @@ export const logout = async (req, res) => {
 export const getIdEmpleado = async (req, res) => {
 	try {
 		const correo = req.query.correo
-		const {rows} = await client.query('SELECT idEmpleado FROM empleados_login WHERE correo = $1', [correo])
-		res.json(rows)
+		const {rows} = await client.query('SELECT fun_empleado_id($1)', [correo])
+		res.json(rows[0].fun_empleado_id)
 	} catch (error) {
 		return res.status(500).json({
 			error: error.error.message,
@@ -83,8 +61,8 @@ export const getIdEmpleado = async (req, res) => {
 export const getIdPerfil = async (req, res) => {
 	try {
 		const correo = req.query.correo
-		const {rows} = await client.query('SELECT idPerfil FROM empleados_login WHERE correo = $1', [correo])
-		res.json(rows)
+		const {rows} = await client.query('SELECT fun_empleado_perfil($1)', [correo])
+		res.json(rows[0].fun_empleado_perfil)
 	} catch (error) {
 		return res.status(500).json({
 			error: error.message,
@@ -97,9 +75,9 @@ export const getInfo = async (req, res) => {
 		const idEmpleado = req.query.idempleado
 
 		//const {rows} = await client.query('SELECT * FROM empleados_info WHERE idEmpleado = $1', [idEmpleado])
-		const {rows} = await client.query('SELECT fun_empleados_login($1)', [idEmpleado])
+		const {rows} = await client.query('SELECT fun_empleados_perfil($1)', [idEmpleado])
 		//res.json(rows)
-		res.json(rows[0].fun_empleados_login)
+		res.json(rows[0].fun_empleados_perfil)
 	} catch (error) {
 		return res.status(500).json({
 			error: error.message,
@@ -119,12 +97,78 @@ export const getCursosEmpleados = async (req, res) => {
 	}
 }
 
+//VALE
+export const getInfoJuego = async (req, res) => {
+	try {
+		const idEmpleado = req.query.idempleado
+		const {rows} = await client.query('SELECT fun_empleados_juego($1)', [idEmpleado])
+		res.json(rows[0].fun_empleados_juego)
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+}
+
+export const updateCursos = async (req, res) => {
+  const cursosCompletados = req.body["cursoscompletados"];
+  const idEmpleado = req.body["idempleado"];
+
+  console.log("Cursos Completados: " + cursosCompletados);
+	console.log("ID Empleado: " + idEmpleado);
+
+  client.query("CALL sp_empleados_juego_update_cursos($1, $2)", [cursosCompletados, idEmpleado])
+  .then((response) => {
+    console.log("Data saved");
+    console.log(response);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+  res.send("Response received: " + req.body);
+}
+
+export const updatePuntaje = async (req, res) => {
+  const puntajeAlto = req.body["puntajealto"];
+  const idEmpleado = req.body["idempleado"];
+
+  console.log("Puntaje Alto: " + puntajeAlto);
+	console.log("ID Empleado: " + idEmpleado);
+
+  client.query("CALL sp_empleados_juego_update_puntaje($1, $2)", [puntajeAlto, idEmpleado])
+  .then((response) => {
+    console.log("Data saved");
+    console.log(response);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+  res.send("Response received: " + req.body);
+}
+
+export const agregaAvatar = async (req, res) => {
+  const idEmpleado = req.body["idempleado"];
+  const idAvatar = req.body["idavatar"];
+
+  console.log("ID Empleado: " + idEmpleado);
+	console.log("ID Avatar: " + idAvatar);
+
+  client.query("CALL sp_empleados_avatars_insert($1, $2)", [idEmpleado, idAvatar])
+  .then((response) => {
+    console.log("Data saved");
+    console.log(response);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+  res.send("Response received: " + req.body);
+}
+
 //JEANNETTE
 export const getEmpleadosTodos = async (req, res) => {
 	try {
 		const {rows} = await client.query('SELECT * FROM empleados_info ')
 		res.json(rows)
-		console.log(rows)
 
 	} catch (error) {
 		return res.status(500).json({
@@ -211,10 +255,8 @@ export const postUserInfo = async (req, res) => {
 
 export const borrarUsuario=async(req,res) => {
 	try {
-		const idEmpleado = req.params.id;
-		const response= await client.query("DELETE FROM empleados_info WHERE idempleadoinfo =$1", [idEmpleado])
-		console.log("Data deleted");
-		console.log(response);
+		const idEmpleado = req.params.id
+		await client.query("CALL sp_delete_empleado($1)", [idEmpleado])
 		res.status(200).json({ message: 'Data deleted' });
 	}
 	catch(error) 
@@ -273,3 +315,47 @@ export const getInfoSingle = async (req, res) => {
 		})
 	}
 }
+
+//Inserta en la base de datos un nuevo usuario en empleados_login
+export const postUserLogin = async (req, res) => {
+	const nuevoUsuario = req.body.params
+
+	try {
+		await client.query("CALL sp_insert_empleado($1, $2, $3)", [
+			nuevoUsuario.correo,
+			nuevoUsuario.contraseña,
+			nuevoUsuario.idperfil
+		]);
+		return res.status(200).json({
+			message: "Data saved",
+		});
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		});
+	}
+};
+
+//Inserta en la base de datos un nuevo usuario en empleados_login
+export const postUserInfo = async (req, res) => {
+	try {
+		const infoNuevoUsuario = req.body.params	
+		console.log(infoNuevoUsuario)
+		await client.query("CALL sp_empleados_info_insert($1, $2, $3, $4, $5, $6, $7, $8)", [
+			infoNuevoUsuario.nombre,
+			infoNuevoUsuario.apellidopaterno,
+			infoNuevoUsuario.apellidomaterno,
+			infoNuevoUsuario.genero,
+			infoNuevoUsuario.fechanacimiento,
+			infoNuevoUsuario.pais,
+			infoNuevoUsuario.idarea,
+			infoNuevoUsuario.idempleado
+		])
+		res.send("Response received: " + req.body);
+	} catch (error) {
+		console.log(error)
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+};

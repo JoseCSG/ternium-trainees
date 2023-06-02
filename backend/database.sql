@@ -1,39 +1,39 @@
-CREATE TABLE perfiles(
+CREATE TABLE perfiles (
 	idPerfil SERIAL NOT NULL PRIMARY KEY,
 	nombre VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE empleados_login(
+CREATE TABLE empleados_login (
 	idEmpleado SERIAL NOT NULL PRIMARY KEY,
 	correo VARCHAR(255) NOT NULL UNIQUE,
 	contraseña VARCHAR(255) NOT NULL,
 	estado BOOLEAN NOT NULL,
-	idPerfil INT
+	idPerfil INT NOT NULL
 );
 
 --Puede haber un empleado en varias areas?
-CREATE TABLE empleados_info(
+CREATE TABLE empleados_info (
 	idEmpleadoInfo SERIAL NOT NULL PRIMARY KEY,
 	nombre VARCHAR(100) NOT NULL,
 	apellidoPaterno VARCHAR(100) NOT NULL,
-	apellidoMaterno VARCHAR(100) NOT NULL,
+	apellidoMaterno VARCHAR(100),
 	genero VARCHAR(50) NOT NULL,
 	fechaNacimiento DATE NOT NULL,
 	pais VARCHAR(100) NOT NULL,
-	idEmpleado INT NOT NULL UNIQUE,
-	idArea INT NOT NULL UNIQUE,
+	idEmpleado INT NOT NULL,
+	idArea INT NOT NULL,
 	fotoPerfil VARCHAR(255),
 	fechaInicio DATE NOT NULL,
 	fechaGraduacion DATE,
 	idJefe INT 
 );
 
-CREATE TABLE areas(
+CREATE TABLE areas (
 	idArea SERIAL NOT NULL PRIMARY KEY,
 	nombre VARCHAR(100) NOT NULL UNIQUE
 );
 
-CREATE TABLE areas_interes(
+CREATE TABLE areas_interes (
 	idAreaInteres SERIAL NOT NULL PRIMARY KEY,
 	idArea INT NOT NULL,
 	idEmpleado INT NOT NULL
@@ -48,24 +48,37 @@ CREATE TABLE rotaciones (
 );
 
 --Puede haber un curso para varias areas?
-CREATE TABLE cursos(
+CREATE TABLE cursos (
 	idCurso SERIAL NOT NULL PRIMARY KEY,
 	nombre VARCHAR(200) NOT NULL UNIQUE,
 	idArea INT NOT NULL,
 	img TEXT
 );
 
-CREATE TABLE cursos_completados(
+CREATE TABLE cursos_completados (
 	idCursoCompletado SERIAL NOT NULL PRIMARY KEY,
 	idEmpleado INT NOT NULL,
-	idCurso INT NOT NULL, 
-	estado BOOLEAN NOT NULL 
+	idCurso INT NOT NULL,
+	estado BOOLEAN NOT NULL
 );
 
-CREATE TABLE datos_juego(
-	
-)
+CREATE TABLE empleados_juego (
+	idEmpleadoJuego SERIAL NOT NULL PRIMARY KEY,
+	cursosCompletados INT NOT NULL,
+	puntajeAlto INT NOT NULL,
+	idEmpleado INT NOT NULL UNIQUE
+);
 
+CREATE TABLE avatars (
+	idAvatar SERIAL NOT NULL PRIMARY KEY,
+	nombre VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE empleados_avatars (
+	idEmpleadoAvatar SERIAL NOT NULL PRIMARY KEY,
+	idEmpleado INT NOT NULL,
+  idAvatar INT NOT NULL UNIQUE
+);
 
 ALTER TABLE empleados_login ADD CONSTRAINT fk_id_perfil FOREIGN KEY (idPerfil) REFERENCES perfiles(idPerfil);
 ALTER TABLE empleados_info ADD CONSTRAINT fk_id_empleado_perfil FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
@@ -78,6 +91,9 @@ ALTER TABLE rotaciones ADD CONSTRAINT fk_id_empleado_rotacion FOREIGN KEY (idEmp
 ALTER TABLE rotaciones ADD CONSTRAINT fk_id_area_rotacion FOREIGN KEY (idArea) REFERENCES areas(idArea);
 ALTER TABLE areas_interes ADD CONSTRAINT fk_id_area_areainteres FOREIGN KEY (idArea) REFERENCES areas(idArea);
 ALTER TABLE areas_interes ADD CONSTRAINT fk_id_empleado_areainteres FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
+ALTER TABLE empleados_juego ADD CONSTRAINT fk_id_empleado_juego FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
+ALTER TABLE empleados_avatars ADD CONSTRAINT fk_id_empleado_avatars FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
+ALTER TABLE empleados_avatars ADD CONSTRAINT fk_id_avatar_avatars FOREIGN KEY (idAvatar) REFERENCES avatars(idAvatar);
 
 INSERT INTO perfiles(nombre) VALUES ('Administrador');
 INSERT INTO perfiles(nombre) VALUES ('Empleado');
@@ -149,22 +165,30 @@ INSERT INTO cursos_completados(idEmpleado, idCurso, estado) VALUES(1, 2, TRUE);
 INSERT INTO cursos_completados(idEmpleado, idCurso, estado) VALUES(2, 3, TRUE);
 INSERT INTO cursos_completados(idEmpleado, idCurso, estado) VALUES(2, 4, FALSE);
 
+INSERT INTO empleados_juego(cursosCompletados, puntajeAlto,	idEmpleado) VALUES (1, 0, '1');
+INSERT INTO empleados_juego(cursosCompletados, puntajeAlto,	idEmpleado) VALUES (1, 0, '2');
+INSERT INTO empleados_juego(cursosCompletados, puntajeAlto,	idEmpleado) VALUES (0, 0, '3');
+
+INSERT INTO avatars(nombre) VALUES ('Avatar 1');
+INSERT INTO avatars(nombre) VALUES ('Avatar 2');
+INSERT INTO avatars(nombre) VALUES ('Avatar 3');
+
 --Stored Procedures empleados_login
 --Insert
-CREATE OR REPLACE PROCEDURE sp_empleados_login_insert(correo VARCHAR(255), contraseña VARCHAR(255), estado BOOLEAN,idPerfil INT)
+CREATE OR REPLACE PROCEDURE sp_empleados_login_insert(correo VARCHAR(255), contraseña VARCHAR(255), estado BOOLEAN, idPerfil INT)
 AS $$
 	INSERT INTO empleados_login(correo, contraseña, estado, idPerfil) VALUES ($1, $2, $3, $4);
 $$ LANGUAGE SQL;
 
 --Update
-CREATE OR REPLACE PROCEDURE sp_empleados_login_update(contraseña VARCHAR(255), empleadoId INT)
+CREATE OR REPLACE PROCEDURE sp_empleados_login_update(contraseña VARCHAR(255), idEmpleado INT)
 AS $$
 	UPDATE empleados_login SET contraseña = $1
-	WHERE empleadoId = $2;
+	WHERE idEmpleado = $2;
 $$ LANGUAGE SQL;
 
 --Delete
-CREATE OR REPLACE PROCEDURE sp_empleados_login_delete(empleadoId INT)
+CREATE OR REPLACE PROCEDURE sp_empleados_login_delete(idEmpleado INT)
 AS $$
 	DELETE FROM empleados_login
 	WHERE idEmpleado = $1
@@ -198,44 +222,167 @@ AS $$
 	fechaNacimiento,
 	pais,
 	idArea,
-	idEmpleado) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);
+	idEmpleado,
+	fechainicio) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, now());
 $$ LANGUAGE SQL;
 
 --Update
-CREATE OR REPLACE PROCEDURE sp_empleados_login_update(idArea INT, empleadoId INT)
+CREATE OR REPLACE PROCEDURE sp_empleados_login_update(idArea INT, idEmpleado INT)
 AS $$
 	UPDATE empleados_info SET idArea = $1
-	WHERE empleadoId = $2;
+	WHERE idEmpleado = $2;
 $$ LANGUAGE SQL;
 
 --Delete
-CREATE OR REPLACE PROCEDURE sp_empleados_login_delete(empleadoId INT)
+CREATE OR REPLACE PROCEDURE sp_empleados_login_delete(idEmpleado INT)
 AS $$
 	DELETE FROM empleados_info
 	WHERE idEmpleado = $1
 $$ LANGUAGE SQL;
 
+--Stored Procedures empleados_juego
+--Update cursosCompletados
+CREATE OR REPLACE PROCEDURE sp_empleados_juego_update_cursos(cursosCompletados INT, idEmpleado INT)
+AS $$
+	UPDATE empleados_juego SET cursosCompletados = $1
+	WHERE idEmpleado = $2;
+$$ LANGUAGE SQL;
+
+--Update puntajeAlto
+CREATE OR REPLACE PROCEDURE sp_empleados_juego_update_puntaje(puntajeAlto INT, idEmpleado INT)
+AS $$
+	UPDATE empleados_juego SET puntajeAlto = $1
+	WHERE idEmpleado = $2;
+$$ LANGUAGE SQL;
+
+--Stored Procedures empleados_avatar
+--Insert
+CREATE OR REPLACE PROCEDURE sp_empleados_avatars_insert(idEmpleado INT, idAvatar INT)
+AS $$
+	INSERT INTO empleados_avatars(idEmpleado, idAvatar)
+	VALUES ($1, $2);
+$$ LANGUAGE SQL;
+
 --Select
-CREATE OR REPLACE FUNCTION fun_empleados_login(idEmpleado INT)
+CREATE OR REPLACE FUNCTION fun_empleados_perfil(idEmpleado INT)
 RETURNS JSON
 AS $$
-  SELECT json_build_object('nombre', nombre, 'idArea', idArea) 
-  FROM empleados_info
+  SELECT json_build_object(
+	'nombre', nombre, 'apellidoPaterno', apellidopaterno, 'apellidoMaterno', apellidomaterno, 'genero', genero,
+	'fechaInicio', fechainicio, 'fechaGraduacion', fechagraduacion, 'nombreJefe', nombre_jefe, 'apellidoJefe', apellido_jefe,
+	'area', area) 
+  FROM info_empleados_individual
   WHERE idEmpleado = $1;
 $$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION fun_cursos(idEmpleado INT)
 RETURNS JSON
 AS $$
-	SELECT json_build_object('nombre', c.nombre, 'Finalizado', estado)
-	FROM cursos_completados cc
-	INNER JOIN cursos c ON cc.idcurso = c.idcurso
-	WHERE cc.idempleado = $1;
+    SELECT json_agg(json_build_object('nombre', c.nombre, 'imagenURL', img ,'estado', estado))
+    FROM cursos_completados cc
+    INNER JOIN cursos c ON cc.idCurso = c.idCurso
+    WHERE cc.idEmpleado = $1;
 $$ LANGUAGE SQL;
-/*
-SELECT c.nombre
-FROM cursos c
-INNER JOIN cursos_completados cc ON c.idCurso = cc.idCurso
-INNER JOIN empleados_login e ON cc.idEmpleado = e.idEmpleado
-WHERE cc.estado = false AND cc.idEmpleado = 1;
-*/
+
+--Función empleados_juego
+CREATE OR REPLACE FUNCTION fun_empleados_juego(idEmpleado INT)
+RETURNS JSON
+AS $$
+	SELECT json_build_object('cursos', cursosCompletados, 'puntaje', puntajeAlto)
+  FROM empleados_juego
+  WHERE idEmpleado = $1;
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION fun_empleado_id(correo VARCHAR(255))
+RETURNS JSON
+AS $$
+  SELECT json_build_object('idEmpleado', idEmpleado) 
+  FROM empleados_login
+  WHERE correo = $1;
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION fun_empleado_perfil(correo VARCHAR(255))
+RETURNS JSON
+AS $$
+  SELECT json_build_object('idPerfil', idPerfil) 
+  FROM empleados_login
+  WHERE correo = $1;
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE fun_get_empleados()
+RETURNS JSON
+AS $$
+	SELECT json_agg(json_build_object(
+		
+	))
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE PROCEDURE sp_delete_empleado(idEmpleado INT)
+AS $$
+	DELETE FROM empleados_login
+	WHERE idEmpleado = $1
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE PROCEDURE sp_insert_empleado(
+	correo VARCHAR(255),
+	contraseña VARCHAR(255),
+	idPerfil INT)
+AS $$
+	INSERT INTO empleados_login(correo, contraseña, idPerfil, estado) 
+	VALUES ($1, $2, $3, true);
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE PROCEDURE sp_insert_info_empleado(
+	nombre VARCHAR(100), apellidoPaterno VARCHAR(100), apellidoMaterno VARCHAR(100), 
+	genero VARCHAR(50), fechaNacimiento DATE, pais VARCHAR(100), idArea INT, 
+	idEmpleado INT)
+AS $$
+	INSERT INTO empleados_info(nombre, apellidoPaterno, 
+				apellidoMaterno, genero, fechaNacimiento, pais, idArea, 
+				idEmpleado, fechainicio)
+	VALUES($1, $2, $3, $4, $5, $6, $7, $8, now());
+$$ LANGUAGE SQL
+
+CREATE OR REPLACE FUNCTION trg_insert_cursos_completados()
+RETURNS TRIGGER
+AS $$
+BEGIN
+    INSERT INTO cursos_completados (idEmpleado, idCurso, estado)
+    SELECT NEW.idEmpleado, c.idCurso, FALSE
+    FROM cursos c
+    WHERE c.idArea = NEW.idArea;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER insert_cursos_completados_trigger
+AFTER INSERT ON empleados_info
+FOR EACH ROW
+EXECUTE FUNCTION trg_insert_cursos_completados();
+
+CREATE OR REPLACE FUNCTION trg_insert_nuevos_cursos()
+RETURNS TRIGGER
+AS $$
+BEGIN
+    INSERT INTO cursos_completados (idEmpleado, idCurso, estado)
+    SELECT ei.idEmpleado, NEW.idCurso, FALSE
+    FROM empleados_info ei
+    WHERE ei.idArea = NEW.idArea;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER insert_nuevos_cursos_trigger
+AFTER INSERT ON cursos
+FOR EACH ROW
+EXECUTE FUNCTION trg_insert_nuevos_cursos();
+
+CREATE VIEW info_empleados_individual AS
+SELECT ei.idempleado, ei.nombre, ei.apellidopaterno, ei.apellidomaterno, ei.genero, 
+		ei.fechainicio, ei.fechagraduacion, ej.nombre AS nombre_jefe, ej.apellidopaterno AS apellido_jefe,
+		a.nombre AS area
+FROM empleados_info ei
+JOIN empleados_info ej ON ei.idjefe = ej.idempleado
+JOIN areas a ON ei.idarea = a.idarea
