@@ -55,11 +55,12 @@ function DataEdit ()
         axios.put(`http://localhost:4000/api/data/edit/${idempleadoinfo}`,data) //aqui tiene que ir un put
         .then (res=> {
             alert(res.data.message);
-            navigate("/data"); // Navigate to the page '/data'
         })
         .catch (function(error){
             console.error(error)
         });
+        navigate("/data"); // Navigate to the page '/data'
+
     };
 
     return (
@@ -104,11 +105,6 @@ function DataEdit ()
                                     <div className="mb-3">
                                         <label>Pais</label>
                                         <input tEstadoype="text" name="pais" value={usuario.pais} onChange={handleInput2} className="form-control"/>
-                                    </div>
-
-                                    <div className="mb-3">
-                                        <label>ID Empleado</label>
-                                        <input type="number" name="idempleado" value={usuario.idempleado} onChange={handleInput2} className="form-control"/>
                                     </div>
 
                                     <div className="mb-3">
