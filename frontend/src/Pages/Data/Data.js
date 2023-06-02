@@ -10,12 +10,14 @@ import { borrarUsuario } from '../../api/auth';
 const Data = () => {
 
   const[usuarios,setUsuarios]=useState([]);
-
+  
   useEffect(() => {
     axios.get('http://localhost:4000/api/empleados')
     .then(res => {
       console.log(res)
       setUsuarios(res.data)
+      localStorage.setItem("correo", ""); // Initialize correo item if it doesn't exist
+
     })
     .catch(error => {
       console.error(error);
@@ -24,7 +26,7 @@ const Data = () => {
 
   const borrarUsuarioInfo = (e, idEmpleado) => {
     e.preventDefault();
-    const thisClicked=e.currentTarget;
+    const thisClicked=e.currentTarget
     //thisClicked.innerText="Deleting...";
 
     axios.delete(`http://localhost:4000/api/empleados/delete/${idEmpleado}`)

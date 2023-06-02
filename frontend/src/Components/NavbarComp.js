@@ -16,6 +16,7 @@ const NavbarComp = ({ isAuth, isAdmin, dispatch }) => {
       localStorage.removeItem("isAuth");
       localStorage.removeItem("isAdmin");
       localStorage.removeItem("idEmpleado");
+      localStorage.removeItem("correo");
       navigate('/');
     } catch (error) {
       console.log(error.response);

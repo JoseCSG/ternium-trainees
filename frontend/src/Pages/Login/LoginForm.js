@@ -28,7 +28,7 @@ const Login =() => {
             "correo": values.email
           }
           let response = await getIdPerfil(correoJSON);
-          const perfil = response.data[0].idperfil;
+          const perfil = response.data.idPerfil;
           if(perfil === 1){
             dispatch(authenticateAdmin())
             localStorage.setItem('isAdmin', true);
