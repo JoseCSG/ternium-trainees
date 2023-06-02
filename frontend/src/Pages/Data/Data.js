@@ -53,7 +53,7 @@ const Data = () => {
           <td>{item.idempleado}</td>
           <td>{item.idarea}</td>
           <td>
-            <Link to={`/data/${item.idempleadoinfo}/edit`} className='btn btn-success'>EDIT</Link>
+            <Link to={`/data/edit/${item.idempleadoinfo}`} className='btn btn-success'>EDIT</Link>
           </td>
           <td>
             <button type="button" onClick={(e)=>borrarUsuarioInfo(e, item.idempleadoinfo)}  className='btn btn-danger'>BORRAR</button>
