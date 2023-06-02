@@ -177,6 +177,82 @@ export const getEmpleadosTodos = async (req, res) => {
 	}
 }
 
+//Inserta en la base de datos un nuevo usuario em empleados_login
+export const postUserLogin = async (req, res) => {
+	const correo = req.body["correo"]; //expecting a json object
+	const contraseña = req.body["contraseña"]; //expecting a json object
+	const estado = req.body["estado"]; //expecting a json object
+	const idperfil = req.body["idperfil"]; //expecting a json object
+
+	console.log("Correo: " + correo);
+	console.log("Contraseña: " + contraseña);
+	console.log("Estado: " + estado);
+	console.log("ID Perfil: " + idperfil);
+	
+
+
+	client.query("INSERT INTO empleados_login (correo , contraseña, estado, idperfil) VALUES ($1,$2,$3,$4)", [
+			correo,
+			contraseña,
+			estado,
+			idperfil
+		])
+		.then((response) => {
+			console.log("Data saved");
+			console.log(response);
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+
+	console.log(req.body);
+	res.send("Response received: " + req.body);
+};
+
+//Inserta en la base de datos un nuevo usuario em empleados_login
+export const postUserInfo = async (req, res) => {
+	const nombre = req.body["nombre"]; //expecting a json object
+	const apellidopaterno = req.body["apellidopaterno"]; //expecting a json object
+	const apellidomaterno = req.body["apellidomaterno"]; //expecting a json object
+	const genero = req.body["genero"]; //expecting a json object
+	const fechanacimiento = req.body["fechanacimiento"]; //expecting a json object
+	const pais = req.body["pais"]; //expecting a json object
+	const idempleado = req.body["idempleado"]; //expecting a json object
+	const idarea = req.body["idarea"]; //expecting a json object
+
+	console.log("Nombre: " + nombre);
+	console.log("Apellido Paterno: " + apellidopaterno);
+	console.log("Apellido Materno: " + apellidomaterno);
+	console.log("Genero: " + genero);
+	console.log("Fecha Nacimiento: " + fechanacimiento);
+	console.log("Pais: " + pais);
+	console.log("ID empleado: " + idempleado);
+	console.log("ID Area: " + idarea);
+	
+
+
+	client.query("INSERT INTO empleados_info (nombre,apellidopaterno,apellidomaterno,genero,fechanacimiento,pais,idempleado,idarea) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)", [
+			nombre,
+			apellidopaterno,
+			apellidomaterno,
+			genero,
+			fechanacimiento,
+			pais,
+			idempleado,
+			idarea
+		])
+		.then((response) => {
+			console.log("Data saved");
+			console.log(response);
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+
+	console.log(req.body);
+	res.send("Response received: " + req.body);
+};
+
 export const borrarUsuario=async(req,res) => {
 	try {
 		const idEmpleado = req.params.id
@@ -190,12 +266,49 @@ export const borrarUsuario=async(req,res) => {
 	};
 }
 
-export const getInfoUsuario = async (req, res) => {
+export const actualizarUsuario = async (req, res) => {
+	const idEmpleado = req.params.id
+	const {
+		nombre,
+		apellidopaterno,
+		apellidomaterno,
+		genero,
+		fechanacimiento,
+		pais,
+		idempleado,
+		idarea
+	  } = req.body; // Datos actualizados del usuario
 	try {
-		const idEmpleado = req.query.idempleado
-		const {rows} = await client.query('SELECT * FROM empleados_info WHERE idEmpleado = $1', [idEmpleado])
-		res.json(rows)
+		// Buscar el usuario por su ID
+		//const usuario = await Usuario.findById(idEmpleado);
+		client.query("UPDATE empleados_info SET nombre=$1, apellidopaterno = $2, apellidomaterno = $3, genero = $4, fechanacimiento = $5, pais = $6, idempleado = $7, idarea = $8 WHERE idempleadoinfo=$9", [
+			nombre,
+			apellidopaterno,
+			apellidomaterno,
+			genero,
+			fechanacimiento,
+			pais,
+			idempleado,
+			idarea,
+			idEmpleado
+		])
 
+	}
+	catch (error) {
+		console.error(error);
+    	res.status(500).json({ message: 'Error al actualizar el usuario' });
+	}
+};
+
+export const getInfoSingle = async (req, res) => {
+	try {
+		const idEmpleado = req.params.id
+
+		//const {rows} = await client.query('SELECT * FROM empleados_info WHERE idEmpleado = $1', [idEmpleado])
+		const {rows} = await client.query('SELECT * from empleados_info WHERE idempleado=$1', [idEmpleado])
+		//res.json(rows)
+		res.json(rows)
+		console.log(rows)
 	} catch (error) {
 		return res.status(500).json({
 			error: error.message,

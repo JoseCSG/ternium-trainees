@@ -9,6 +9,7 @@ import NavbarComp from './Components/NavbarComp';
 import { useSelector } from 'react-redux';
 import Data from './Pages/Data/Data';
 import DataCreate from './Pages/Data/DataCreate';
+import DataEdit from './Pages/Data/DataEdit';
 //import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path='/login' element={!isAuth ? <Login/> : <Home/>}/>
         <Route path='/data' element={isAuth && isAdmin ? <Data/> : <Home/>}/>
         <Route path='/data/create' element={isAuth && isAdmin ? <DataCreate/> : <Home/>}/>
+        <Route path='/data/edit/:idempleadoinfo' element={isAuth && isAdmin ? <DataEdit/> : <Home/>}/>
       </Routes>
     </>
   );

@@ -48,11 +48,16 @@ export async function nuevoEmpleado(infoEmpleado){
 export async function borrarUsuario(idempleadoinfo){
     return await axios.delete('http://localhost:4000/api/empleados/delete',{params: idempleadoinfo});
 }
+export async function actualizarUsuario(idempleadoinfo)
+{
+    return await axios.get('http://localhost:4000/api/data/edit',{params: idempleadoinfo});
+}
 
+export async function getSingleUsuario(idempleadoinfo)
+{
+    return await axios.get('http://localhost:4000/api/data/get', {params: idempleadoinfo});
+}
 export async function getInfoUsuario(idempleadoinfo){
     return await axios.get('http://localhost:4000/api/data/{id}/edit',{params: idempleadoinfo});
 }
 
-export async function createUsuario(){
-
-}
