@@ -27,7 +27,19 @@ export async function getCursosEmpleado(idEmpleado){
 
 //VALE
 export async function getInfoJuego(idEmpleado){
-  return await axios.get('http://localhost:4000/api/infoJuego', {params: idEmpleado})
+  return await axios.get('http://localhost:4000/api/getInfoJuego', {params: idEmpleado})
+}
+
+export async function setCursos(infoCursos){
+  return await axios.post('http://localhost:4000/api/setCursos',{params: infoCursos});
+}
+
+export async function setPuntaje(infoPuntaje){
+  return await axios.post('http://localhost:4000/api/setPuntaje',{params: infoPuntaje});
+}
+
+export async function addAvatar(infoAvatar){
+  return await axios.post('http://localhost:4000/api/addAvatar',{params: infoAvatar});
 }
 
 //JEANNETTE

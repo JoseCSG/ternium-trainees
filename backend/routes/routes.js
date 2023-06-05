@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { login, getIdEmpleado, getIdPerfil,
         protectedRoute, logout, getInfo, getCursosEmpleados,
-        getInfoJuego, updateCursos, updatePuntaje, agregaAvatar,
+        getInfoJuego, setCursos, setPuntaje, addAvatar,
         postUserLogin, postUserInfo, borrarUsuario, getEmpleadosTodos,
         getInfoSingle,
         actualizarUsuario} from "../controllers/controllers.js";
@@ -20,10 +20,10 @@ router.get('/infoEmpleado', getInfo);
 router.get('/cursosEmpleado', getCursosEmpleados);
 
 //VALE
-router.get('/infoJuego', getInfoJuego);
-router.post('/subeCursos', updateCursos);
-router.post('/subePuntaje', updatePuntaje);
-router.post('/agregaAvatar', agregaAvatar);
+router.get('/getInfoJuego', getInfoJuego);
+router.post('/setCursos', setCursos);
+router.post('/setPuntaje', setPuntaje);
+router.post('/addAvatar', addAvatar);
 
 //JEANNETTE
 router.post('/adduser', postUserLogin);  //post para el primer forms

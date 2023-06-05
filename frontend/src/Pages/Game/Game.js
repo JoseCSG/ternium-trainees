@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
-import { getInfoJuego } from '../../api/auth';
-import axios from "axios";
+import { getInfoJuego, setPuntaje, setCursos, addAvatar } from '../../api/auth';
 
 const Game = () => {
   // WebGL build loader de Unity
@@ -13,23 +12,38 @@ const Game = () => {
   });
 
   // Carga el puntaje más alto y los cursos completados de la base de datos
-  const [infoJuego, setInfoJuego] = useState({})
-  const cargaInfoJuego =  async () => {
+  const idEmpleado = localStorage.getItem('idEmpleado');
+  const [infoJuego, setInfoJuego] = useState({});
+  const cargaInfoJuego = async () => {
     const idJSON = {
-      "idempleado": localStorage.getItem('idEmpleado')
-    }
-    const {data}  = await getInfoJuego(idJSON)
-    setInfoJuego(data)
-  }
+      "idempleado": idEmpleado
+    };
+    const {data}  = await getInfoJuego(idJSON);
+    setInfoJuego(data);
+  };
   cargaInfoJuego();
 
   // Despliega el puntaje máximo actual en el juego
   sendMessage("GameController", "despliegaPuntaje", infoJuego.puntaje);
 
-  // Actualiza el puntaje más alto en la base de datos cuando sucede un GameOver
+  // Realiza cambios necesarios en la base de datos cuando sucede un GameOver
   const handleGameOver = useCallback((puntaje) => {
-    subePuntaje(puntaje);
-  }, []);
+    // Actualiza el puntaje más alto
+    const subePuntaje = async () => {
+      const puntajeJSON = {
+        "puntajealto": puntaje,
+        "idempleado": idEmpleado
+      };
+      try {
+        await setPuntaje(puntajeJSON);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    if (puntaje > infoJuego.puntaje) {
+      subePuntaje();
+    }
+  }, [infoJuego, idEmpleado]);
 
   // Detecta cuando comienza el evento GameOver
   useEffect(() => {
@@ -39,16 +53,31 @@ const Game = () => {
     };
   }, [addEventListener, removeEventListener, handleGameOver]);
 
-  const subePuntaje = (puntaje) => {
-    const puntajeJSON = {
-      "puntajealto": puntaje,
-      "idempleado": localStorage.getItem('idEmpleado')
+  // Actualiza los cursos completados
+  const subeCursos = async (cursos) => {
+    const cursosJSON = {
+      "cursoscompletados": cursos,
+      "idempleado": idEmpleado
     };
-    axios.post('http://localhost:4000/api/subePuntaje', puntajeJSON)
-    .catch (function(error){
-        console.error(error)
-    })
-  }
+    try {
+      await setCursos(cursosJSON);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  // Desbloquea nuevo avatar para el usuario
+  const agregaAvatar = async (idavatar) => {
+    const avatarJSON = {
+      "idavatar": idavatar,
+      "idempleado": idEmpleado
+    };
+    try {
+      await addAvatar(avatarJSON);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "90vh" }}>

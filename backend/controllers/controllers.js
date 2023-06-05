@@ -110,58 +110,52 @@ export const getInfoJuego = async (req, res) => {
 	}
 }
 
-export const updateCursos = async (req, res) => {
-  const cursosCompletados = req.body["cursoscompletados"];
-  const idEmpleado = req.body["idempleado"];
+export const setCursos = async (req, res) => {
+  const infoCursos = req.body.params
+  const cursosCompletados = infoCursos.cursoscompletados
+  const idEmpleado = infoCursos.idempleado
 
-  console.log("Cursos Completados: " + cursosCompletados);
-	console.log("ID Empleado: " + idEmpleado);
-
-  client.query("CALL sp_empleados_juego_update_cursos($1, $2)", [cursosCompletados, idEmpleado])
-  .then((response) => {
-    console.log("Data saved");
-    console.log(response);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-  res.send("Response received: " + req.body);
+  try {
+		await client.query("CALL sp_empleados_juego_update_cursos($1, $2)", [cursosCompletados, idEmpleado])
+		res.send("Response received: " + req.body);
+	} catch (error) {
+		console.log(error)
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
 }
 
-export const updatePuntaje = async (req, res) => {
-  const puntajeAlto = req.body["puntajealto"];
-  const idEmpleado = req.body["idempleado"];
+export const setPuntaje = async (req, res) => {
+  const infoPuntaje = req.body.params
+  const puntajeAlto = infoPuntaje.puntajealto
+  const idEmpleado = infoPuntaje.idempleado
 
-  console.log("Puntaje Alto: " + puntajeAlto);
-	console.log("ID Empleado: " + idEmpleado);
-
-  client.query("CALL sp_empleados_juego_update_puntaje($1, $2)", [puntajeAlto, idEmpleado])
-  .then((response) => {
-    console.log("Data saved");
-    console.log(response);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-  res.send("Response received: " + req.body);
+  try {
+		await client.query("CALL sp_empleados_juego_update_puntaje($1, $2)", [puntajeAlto, idEmpleado])
+		res.send("Response received: " + req.body);
+	} catch (error) {
+		console.log(error)
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
 }
 
-export const agregaAvatar = async (req, res) => {
-  const idEmpleado = req.body["idempleado"];
-  const idAvatar = req.body["idavatar"];
+export const addAvatar = async (req, res) => {
+  const infoAvatar = req.body.params
+  const idEmpleado = infoAvatar.idempleado
+  const idAvatar = infoAvatar.idavatar
 
-  console.log("ID Empleado: " + idEmpleado);
-	console.log("ID Avatar: " + idAvatar);
-
-  client.query("CALL sp_empleados_avatars_insert($1, $2)", [idEmpleado, idAvatar])
-  .then((response) => {
-    console.log("Data saved");
-    console.log(response);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-  res.send("Response received: " + req.body);
+  try {
+		await client.query("CALL sp_empleados_avatars_insert($1, $2)", [idEmpleado, idAvatar])
+		res.send("Response received: " + req.body);
+	} catch (error) {
+		console.log(error)
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
 }
 
 //JEANNETTE
