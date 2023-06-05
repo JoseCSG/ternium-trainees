@@ -1,0 +1,12 @@
+.form {
+    display: flexbox;
+    flex-direction: column;  
+}
+
+.button-center {
+    background-color: rgb(212,212,212); 
+    color: #ffffff !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
