@@ -63,7 +63,11 @@ const DataCreateInfo = () => {
 
                             <div className="mb-3">
                                 <label>Genero</label>
-                                <input tEstadoype="text" name="genero" value={usuarioInfo.genero} onChange={handleInput} className="form-control" required/>
+                                <select type="text" name="genero" value={usuarioInfo.genero} onChange={handleInput} className="form-control">
+                                        <option value="Masculino">Masculino</option>
+                                        <option value="Femenino">Femenino</option>
+                                        <option value="Otro">Otro</option>
+                                </select>
                             </div>
                             <div className="mb-3">
                                 <label>Fecha Nacimiento</label>
@@ -76,7 +80,19 @@ const DataCreateInfo = () => {
 
                             <div className="mb-3">
                                 <label>ID Area</label>
-                                <input type="number" name="idarea" value={usuarioInfo.idarea} onChange={handleInput} className="form-control" required/>
+                                <select type="number" name="idarea" value={usuarioInfo.idarea} onChange={handleInput} className="form-control">
+                                        <option value="1">Recursos Humanos</option>
+                                        <option value="2">Mantenimiento</option>
+                                        <option value="3">Operaciones</option>
+                                        <option value="4">Supply Chain</option>
+                                        <option value="5">Ingenieria y Proyectos</option>
+                                        <option value="6">Medio Ambiente</option>
+                                        <option value="7">Seguridad</option>
+                                        <option value="8">Comercial</option>
+                                        <option value="9">Administracion y Finanzas</option>
+                                        <option value="10">Auditoria y Legal</option>
+                                        <option value="11">Comunicaciones</option>
+                                </select>
                             </div>
 
                             <div className="mb-3">

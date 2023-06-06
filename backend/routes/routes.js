@@ -4,7 +4,7 @@ import { login, getIdEmpleado, getIdPerfil,
         getInfoJuego, updateCursos, updatePuntaje, agregaAvatar,
         postUserLogin, postUserInfo, borrarUsuario, getEmpleadosTodos,
         getInfoSingle,
-        actualizarUsuario} from "../controllers/controllers.js";
+        actualizarUsuario, postCurso, getRotaciones} from "../controllers/controllers.js";
 import { loginValidation } from '../validators/auth.js'
 import { validationMiddleware } from "../middlewares/validations-middleware.js";
 import { userAuth } from "../middlewares/auth-middleware.js";
@@ -30,6 +30,8 @@ router.post('/adduser', postUserLogin);  //post para el primer forms
 router.post('/adduserInfo', postUserInfo);  //post para el primer forms
 router.delete('/empleados/delete/:id',borrarUsuario);
 router.get('/empleados',getEmpleadosTodos);
+router.post('/addcurso',postCurso);
+router.get('/data/getRotaciones/:id',getRotaciones);
 //para el update
 router.put('/data/edit/:id',actualizarUsuario);
 router.get('/data/get/:id',getInfoSingle);
