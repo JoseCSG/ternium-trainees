@@ -127,6 +127,24 @@ export const getInfoUsuario = async (req, res) => {
 	try {
 		const idEmpleado = req.query.idempleado
 		const {rows} = await client.query('SELECT * FROM empleados_info WHERE idEmpleado = $1', [idEmpleado])
+
+		await client.query("CALL sp_update_empleados_info($1, $2, $3, $4, $5, $6, $7, $8)", 
+		[nombre, apellidopaterno, apellidomaterno, genero, fechanacimiento, pais, idarea, idEmpleado])
+
+	}
+	catch (error) {
+		console.error(error);
+    	res.status(500).json({ message: 'Error al actualizar el usuario' });
+	}
+};
+
+export const getInfoSingle = async (req, res) => {
+	try {
+		const idEmpleado = req.params.id
+
+		//const {rows} = await client.query('SELECT * FROM empleados_info WHERE idEmpleado = $1', [idEmpleado])
+		const {rows} = await client.query('SELECT * from empleados_info WHERE idempleado=$1', [idEmpleado])
+		//res.json(rows)
 		res.json(rows)
 
 	} catch (error) {
@@ -160,7 +178,6 @@ export const postUserLogin = async (req, res) => {
 export const postUserInfo = async (req, res) => {
 	try {
 		const infoNuevoUsuario = req.body.params	
-		console.log(infoNuevoUsuario)
 		await client.query("CALL sp_empleados_info_insert($1, $2, $3, $4, $5, $6, $7, $8)", [
 			infoNuevoUsuario.nombre,
 			infoNuevoUsuario.apellidopaterno,
