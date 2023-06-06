@@ -72,4 +72,11 @@ export async function getSingleUsuario(idempleadoinfo)
 export async function getInfoUsuario(idempleadoinfo){
     return await axios.get('http://localhost:4000/api/data/{id}/edit',{params: idempleadoinfo});
 }
+export async function nuevoCurso(infoNuevoCurso){
+    return await axios.post('http://localhost:4000/api/addcurso',{params: infoNuevoCurso});
+}
 
+export async function getRotaciones(idempleado)
+{
+    return await axios.get(`http://localhost:4000/api/data/getRotaciones/${idempleado}`,{params: idempleado});
+}

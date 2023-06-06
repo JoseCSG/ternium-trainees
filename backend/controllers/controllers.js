@@ -278,3 +278,45 @@ export const postUserInfo = async (req, res) => {
 		})
 	}
 };
+
+//inserta curso jeannette
+export const postCurso = async(req,res) => {
+	const nombre = req.body["nombre"]; //expecting a json object
+	const idarea = req.body["idarea"]; //expecting a json object
+	//const img = req.body["img"]; //expecting a json object
+
+	console.log("Nombre: " + nombre);
+	console.log("ID Area: " + idarea);
+	//console.log("Img: " + img);
+
+	client.query("INSERT INTO cursos (nombre , idarea) VALUES ($1,$2)", [
+		nombre,
+		idarea
+	])
+	.then((response) => {
+		console.log("Data saved");
+		console.log(response);
+	})
+	.catch((err) => {
+		console.log(err);
+	});
+
+	console.log(req.body);
+	res.send("Response received: " + req.body);
+
+};
+
+//get de rotaciones
+export const getRotaciones = async (req, res) => {
+	try {
+		const idEmpleado = req.params.id
+
+		const {rows} = await client.query('SELECT * FROM rotaciones WHERE idempleado=$1', [idEmpleado])
+		res.json(rows)
+		console.log(rows)
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+}
