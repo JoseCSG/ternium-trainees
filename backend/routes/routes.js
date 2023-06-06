@@ -4,7 +4,7 @@ import { login, getIdEmpleado, getIdPerfil,
         getInfoJuego, setCursos, setPuntaje, addAvatar,
         postUserLogin, postUserInfo, borrarUsuario, getEmpleadosTodos,
         getInfoSingle,
-        actualizarUsuario, postCurso, getRotaciones} from "../controllers/controllers.js";
+        actualizarUsuario, postCurso, getRotaciones, getAreas} from "../controllers/controllers.js";
 import { loginValidation } from '../validators/auth.js'
 import { validationMiddleware } from "../middlewares/validations-middleware.js";
 import { userAuth } from "../middlewares/auth-middleware.js";
@@ -17,6 +17,7 @@ router.get('/idPerfil', getIdPerfil);
 router.get('/protected', userAuth, protectedRoute)
 router.get('/logout' , logout)
 router.get('/infoEmpleado', getInfo);
+router.get('/areas', getAreas);
 router.get('/cursosEmpleado', getCursosEmpleados);
 
 //VALE

@@ -18,7 +18,9 @@ const Login = () => {
               <h6 className='text-center my-3'> Ingresa a tu cuenta </h6>
 
               {/*LOGIN*/}
-              <LoginForm />
+              <div className="text-center">
+                <LoginForm />
+              </div>
 
               <br />
               <div className="text-center">

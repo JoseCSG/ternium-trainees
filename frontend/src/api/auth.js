@@ -21,6 +21,10 @@ export async function getInfoEmpleado(idEmpleado){
     return await axios.get('http://localhost:4000/api/infoEmpleado', {params: idEmpleado})
 }
 
+export async function getAreas(){
+    return await axios.get('http://localhost:4000/api/areas')
+}
+
 export async function getCursosEmpleado(idEmpleado){
     return await axios.get('http://localhost:4000/api/cursosEmpleado', {params: idEmpleado})
 }
@@ -51,7 +55,6 @@ export async function getEmpleadosTodos()
 export async function nuevoEmpleadoInfo(infoNuevoEmpleado){
     return await axios.post('http://localhost:4000/api/adduserInfo',{params: infoNuevoEmpleado});
 }
-
 
 export async function nuevoEmpleado(infoEmpleado){
     return await axios.post('http://localhost:4000/api/adduser',{params: infoEmpleado});

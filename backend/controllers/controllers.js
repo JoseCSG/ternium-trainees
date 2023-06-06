@@ -85,6 +85,18 @@ export const getInfo = async (req, res) => {
 	}
 }
 
+export const getAreas = async (req, res) => {
+	try {
+		const {rows} = await client.query('SELECT fun_areas()')
+		res.json(rows[0].fun_areas)
+
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+}
+
 export const getCursosEmpleados = async (req, res) => {
 	try {
 		const idEmpleado = req.query.idempleado
@@ -186,7 +198,6 @@ export const borrarUsuario=async(req,res) => {
 }
 
 export const actualizarUsuario = async (req, res) => {
-	const idEmpleado = req.params.id
 	const {
 		nombre,
 		apellidopaterno,
@@ -194,12 +205,10 @@ export const actualizarUsuario = async (req, res) => {
 		genero,
 		fechanacimiento,
 		pais,
-		idempleado,
 		idarea
 	  } = req.body; // Datos actualizados del usuario
 	try {
-		const idEmpleado = req.query.idempleado
-		const {rows} = await client.query('SELECT * FROM empleados_info WHERE idEmpleado = $1', [idEmpleado])
+		const idEmpleado = req.params.id
 
 		await client.query("CALL sp_update_empleados_info($1, $2, $3, $4, $5, $6, $7, $8)", 
 		[nombre, apellidopaterno, apellidomaterno, genero, fechanacimiento, pais, idarea, idEmpleado])
@@ -225,22 +234,6 @@ export const getInfoSingle = async (req, res) => {
     	res.status(500).json({ message: 'Error al actualizar el usuario' });
 	}
 };
-
-export const getInfoSingle = async (req, res) => {
-	try {
-		const idEmpleado = req.params.id
-
-		//const {rows} = await client.query('SELECT * FROM empleados_info WHERE idEmpleado = $1', [idEmpleado])
-		const {rows} = await client.query('SELECT * from empleados_info WHERE idempleado=$1', [idEmpleado])
-		//res.json(rows)
-		res.json(rows)
-		console.log(rows)
-	} catch (error) {
-		return res.status(500).json({
-			error: error.message,
-		})
-	}
-}
 
 //Inserta en la base de datos un nuevo usuario en empleados_login
 export const postUserLogin = async (req, res) => {

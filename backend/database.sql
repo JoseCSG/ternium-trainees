@@ -11,6 +11,14 @@ CREATE TABLE empleados_login (
 	idPerfil INT NOT NULL
 );
 
+CREATE TABLE remuneraciones (
+	idRenumeracion SERIAL NOT NULL PRIMARY KEY,
+	sueldo INT NOT NULL,
+	ptu DATE NOT NULL,
+	fondoAhorro DATE NOT NULL,
+	idEmpleado INT NOT NULL
+);
+
 --Puede haber un empleado en varias areas?
 CREATE TABLE empleados_info (
 	idEmpleadoInfo SERIAL NOT NULL PRIMARY KEY,
@@ -81,23 +89,20 @@ CREATE TABLE empleados_avatars (
 );
 
 ALTER TABLE empleados_login ADD CONSTRAINT fk_id_perfil FOREIGN KEY (idPerfil) REFERENCES perfiles(idPerfil);
-ALTER TABLE empleados_info ADD CONSTRAINT fk_id_empleado_perfil FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
+ALTER TABLE empleados_info ADD CONSTRAINT fk_id_empleado_perfil FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
 ALTER TABLE empleados_info ADD CONSTRAINT fk_id_area_empleado FOREIGN KEY (idArea) REFERENCES areas(idArea);
-ALTER TABLE empleados_info ADD CONSTRAINT fk_id_empleado_jefe FOREIGN KEY (idJefe) REFERENCES empleados_login(idEmpleado);
-ALTER TABLE cursos ADD CONSTRAINT fk_id_area_cursos FOREIGN KEY (idArea) REFERENCES areas(idArea);
+ALTER TABLE empleados_info ADD CONSTRAINT fk_id_empleado_jefe FOREIGN KEY (idJefe) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
+ALTER TABLE cursos ADD CONSTRAINT fk_id_area_cursos FOREIGN KEY (idArea) REFERENCES areas(idArea) ON DELETE CASCADE;
 ALTER TABLE cursos_completados ADD CONSTRAINT fk_id_curso FOREIGN KEY (idCurso) REFERENCES cursos(idCurso);
-ALTER TABLE cursos_completados ADD CONSTRAINT fk_id_empleado_curso FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
+ALTER TABLE cursos_completados ADD CONSTRAINT fk_id_empleado_curso FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
 ALTER TABLE rotaciones ADD CONSTRAINT fk_id_empleado_rotacion FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
 ALTER TABLE rotaciones ADD CONSTRAINT fk_id_area_rotacion FOREIGN KEY (idArea) REFERENCES areas(idArea);
 ALTER TABLE areas_interes ADD CONSTRAINT fk_id_area_areainteres FOREIGN KEY (idArea) REFERENCES areas(idArea);
-ALTER TABLE areas_interes ADD CONSTRAINT fk_id_empleado_areainteres FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
-ALTER TABLE empleados_juego ADD CONSTRAINT fk_id_empleado_juego FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
-ALTER TABLE empleados_avatars ADD CONSTRAINT fk_id_empleado_avatars FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado);
+ALTER TABLE areas_interes ADD CONSTRAINT fk_id_empleado_areainteres FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
+ALTER TABLE empleados_juego ADD CONSTRAINT fk_id_empleado_juego FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
+ALTER TABLE empleados_avatars ADD CONSTRAINT fk_id_empleado_avatars FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
 ALTER TABLE empleados_avatars ADD CONSTRAINT fk_id_avatar_avatars FOREIGN KEY (idAvatar) REFERENCES avatars(idAvatar);
-
-INSERT INTO empleados_juego(cursosCompletados, puntajeAlto,	idEmpleado) VALUES (1, 0, '1');
-INSERT INTO empleados_juego(cursosCompletados, puntajeAlto,	idEmpleado) VALUES (1, 0, '2');
-INSERT INTO empleados_juego(cursosCompletados, puntajeAlto,	idEmpleado) VALUES (0, 0, '3');
+ALTER TABLE remuneraciones ADD CONSTRAINT fk_id_empleado_renumeracion FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELEte CASCADE;
 
 INSERT INTO avatars(nombre) VALUES ('Avatar 1');
 INSERT INTO avatars(nombre) VALUES ('Avatar 2');
@@ -201,16 +206,27 @@ FROM empleados_info ei
 JOIN empleados_info ej ON ei.idjefe = ej.idempleado
 JOIN areas a ON ei.idarea = a.idarea;
 
+CREATE OR REPLACE FUNCTION fun_areas()
+RETURNS JSON
+AS $$
+    SELECT json_agg(json_build_object('nombre', nombre))
+	FROM areas; 
+$$ LANGUAGE SQL;
+
 --Select
 CREATE OR REPLACE FUNCTION fun_empleados_perfil(idEmpleado INT)
 RETURNS JSON
 AS $$
   SELECT json_build_object(
-	'nombre', nombre, 'apellidoPaterno', apellidopaterno, 'apellidoMaterno', apellidomaterno, 'genero', genero,
-	'fechaInicio', fechainicio, 'fechaGraduacion', fechagraduacion, 'nombreJefe', nombre_jefe, 'apellidoJefe', apellido_jefe,
-	'area', area) 
-  FROM info_empleados_individual
-  WHERE idEmpleado = $1;
+	'nombre', e.nombre, 'apellidoPaterno', e.apellidopaterno, 'apellidoMaterno', e.apellidomaterno, 'genero', e.genero,
+	'fechaInicio', e.fechainicio, 'fechaGraduacion', e.fechagraduacion,'area', ar.nombre, 'correo', el.correo, 'jefe', jefe.nombre,
+  	'sueldo', r.sueldo, 'PTU', r.ptu, 'fondoAhorro', r.fondoAhorro) 
+  FROM empleados_info AS e
+  INNER JOIN areas AS ar ON e.idArea = ar.idArea
+  INNER JOIN empleados_login AS el ON e.idempleadoinfo = el.idempleado
+  INNER JOIN remuneraciones AS r ON el.idempleado = r.idempleado
+  INNER JOIN empleados_info AS jefe ON e.idJefe = jefe.idEmpleadoInfo
+  WHERE e.idEmpleado = $1;
 $$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION fun_cursos(idEmpleado INT)
@@ -226,7 +242,7 @@ $$ LANGUAGE SQL;
 CREATE OR REPLACE FUNCTION fun_empleados_juego(idEmpleado INT)
 RETURNS JSON
 AS $$
-	SELECT json_build_object('cursos', cursosCompletados, 'puntaje', puntajeAlto)
+	SELECT json_build_object('monedas', monedas, 'puntaje', puntajeAlto)
   FROM empleados_juego
   WHERE idEmpleado = $1;
 $$ LANGUAGE SQL;
@@ -365,10 +381,6 @@ EXECUTE FUNCTION trg_monedas();
 INSERT INTO perfiles(nombre) VALUES ('Administrador');
 INSERT INTO perfiles(nombre) VALUES ('Empleado');
 
-INSERT INTO empleados_login(correo, contraseña, idPerfil, estado) VALUES ('j@outlook.com', '1234', 2, true);
-INSERT INTO empleados_login(correo, contraseña, idPerfil, estado) VALUES ('i@outlook.com', '32', 2, true);
-INSERT INTO empleados_login(correo, contraseña, idPerfil, estado) VALUES ('j@gmail.com', '26', 1, true);
-
 INSERT INTO areas(nombre) VALUES('Recursos Humanos');
 INSERT INTO areas(nombre) VALUES('Mantenimiento');
 INSERT INTO areas(nombre) VALUES('Operaciones');
@@ -382,6 +394,26 @@ INSERT INTO areas(nombre) VALUES('Auditoria y Legal');
 INSERT INTO areas(nombre) VALUES('Comunicaciones');
 
 --Hacer otro perfil para jefes en dónde vean unicamente el rendimiento de los empleados que tienen a cargo
+INSERT INTO avatars(nombre) VALUES ('Avatar 1');
+INSERT INTO avatars(nombre) VALUES ('Avatar 2');
+INSERT INTO avatars(nombre) VALUES ('Avatar 3');
+
+INSERT INTO cursos(nombre, idarea) VALUES ('Intro a React', 1);
+INSERT INTO cursos(nombre, idarea) VALUES ('Intro a SQL', 1);
+INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder', 2);
+INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder1', 3);
+INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder2', 4);
+INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder3', 5);
+INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder4', 6);
+INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder5', 7);
+INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder6', 8);
+INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder7', 9);
+INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder8', 10);
+INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder9', 11);
+
+INSERT INTO empleados_login(correo, contraseña, idPerfil, estado) VALUES ('j@outlook.com', '1234', 2, true);
+INSERT INTO empleados_login(correo, contraseña, idPerfil, estado) VALUES ('i@outlook.com', '32', 2, true);
+INSERT INTO empleados_login(correo, contraseña, idPerfil, estado) VALUES ('j@gmail.com', '26', 1, true);
 
 INSERT INTO empleados_info(
 	nombre,
@@ -421,17 +453,6 @@ INSERT INTO empleados_info(
 	fechaInicio,
 	fechaGraduacion) VALUES ('Jeannette', 'Arjona', 'Hernandez', 'Femenino', '2002-09-26', 'Argentina', 3, 3, 'https://i.pinimg.com/originals/0f/6a/9e/0f6a9e1a1a4b5b6b0b0b0b0b0b0b0b0b.jpg', '2019-04-19', '2021-02-4');
 
-INSERT INTO cursos(nombre, idArea) VALUES('Ciberseguridad 101', 1);
-INSERT INTO cursos(nombre, idArea) VALUES('Bases de datos en SQL Server', 1);
-INSERT INTO cursos(nombre, idArea) VALUES('Diseño digital', 2);
-INSERT INTO cursos(nombre, idArea) VALUES('Técnicas de Marketing', 2);
-INSERT INTO cursos(nombre, idArea) VALUES('¿Cómo lidiar con personas díficiles?', 3);
-
-INSERT INTO cursos_completados(idEmpleado, idCurso, estado) VALUES(1, 1, FALSE);
-INSERT INTO cursos_completados(idEmpleado, idCurso, estado) VALUES(1, 2, TRUE);
-INSERT INTO cursos_completados(idEmpleado, idCurso, estado) VALUES(2, 3, TRUE);
-INSERT INTO cursos_completados(idEmpleado, idCurso, estado) VALUES(2, 4, FALSE);
-
-INSERT INTO avatars(nombre) VALUES ('Avatar 1');
-INSERT INTO avatars(nombre) VALUES ('Avatar 2');
-INSERT INTO avatars(nombre) VALUES ('Avatar 3');
+INSERT INTO remuneraciones(sueldo, ptu, fondoAhorro, idEmpleado) VALUES (10000, '2023-10-30', '2023-12-10', 1);
+INSERT INTO remuneraciones(sueldo, ptu, fondoAhorro, idEmpleado) VALUES (15000, '2023-10-30', '2023-12-10', 2);
+INSERT INTO remuneraciones(sueldo, ptu, fondoAhorro, idEmpleado) VALUES (20000, '2023-10-30', '2023-12-10', 3);
