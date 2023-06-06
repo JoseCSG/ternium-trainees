@@ -1,0 +1,16 @@
+Pestaña para view en admin
+    -Historial de rotaciones
+    -Poner toda la informacion del trainee
+
+Perfil
+    Area de interes 
+    Remuneracion
+    Poner la información
+
+Admin 
+    Encuadre
+    Agregar Cursos
+
+Base de Datos
+    Trigger cuando agregas cursos
+    

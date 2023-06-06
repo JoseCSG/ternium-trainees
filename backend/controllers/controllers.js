@@ -97,6 +97,67 @@ export const getCursosEmpleados = async (req, res) => {
 	}
 }
 
+//VALE
+export const getInfoJuego = async (req, res) => {
+	try {
+		const idEmpleado = req.query.idempleado
+		const {rows} = await client.query('SELECT fun_empleados_juego($1)', [idEmpleado])
+		res.json(rows[0].fun_empleados_juego)
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+}
+
+export const setCursos = async (req, res) => {
+  const infoCursos = req.body.params
+  const cursosCompletados = infoCursos.cursoscompletados
+  const idEmpleado = infoCursos.idempleado
+
+  try {
+		await client.query("CALL sp_empleados_juego_update_cursos($1, $2)", [cursosCompletados, idEmpleado])
+		res.send("Response received: " + req.body);
+	} catch (error) {
+		console.log(error)
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+}
+
+export const setPuntaje = async (req, res) => {
+  const infoPuntaje = req.body.params
+  const puntajeAlto = infoPuntaje.puntajealto
+  const idEmpleado = infoPuntaje.idempleado
+
+  try {
+		await client.query("CALL sp_empleados_juego_update_puntaje($1, $2)", [puntajeAlto, idEmpleado])
+		res.send("Response received: " + req.body);
+	} catch (error) {
+		console.log(error)
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+}
+
+export const addAvatar = async (req, res) => {
+  const infoAvatar = req.body.params
+  const idEmpleado = infoAvatar.idempleado
+  const idAvatar = infoAvatar.idavatar
+
+  try {
+		await client.query("CALL sp_empleados_avatars_insert($1, $2)", [idEmpleado, idAvatar])
+		res.send("Response received: " + req.body);
+	} catch (error) {
+		console.log(error)
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+}
+
 //JEANNETTE
 export const getEmpleadosTodos = async (req, res) => {
 	try {
@@ -109,6 +170,7 @@ export const getEmpleadosTodos = async (req, res) => {
 		})
 	}
 }
+
 
 export const borrarUsuario=async(req,res) => {
 	try {
@@ -123,7 +185,18 @@ export const borrarUsuario=async(req,res) => {
 	};
 }
 
-export const getInfoUsuario = async (req, res) => {
+export const actualizarUsuario = async (req, res) => {
+	const idEmpleado = req.params.id
+	const {
+		nombre,
+		apellidopaterno,
+		apellidomaterno,
+		genero,
+		fechanacimiento,
+		pais,
+		idempleado,
+		idarea
+	  } = req.body; // Datos actualizados del usuario
 	try {
 		const idEmpleado = req.query.idempleado
 		const {rows} = await client.query('SELECT * FROM empleados_info WHERE idEmpleado = $1', [idEmpleado])
@@ -146,7 +219,22 @@ export const getInfoSingle = async (req, res) => {
 		const {rows} = await client.query('SELECT * from empleados_info WHERE idempleado=$1', [idEmpleado])
 		//res.json(rows)
 		res.json(rows)
+	}
+	catch (error) {
+		console.error(error);
+    	res.status(500).json({ message: 'Error al actualizar el usuario' });
+	}
+};
 
+export const getInfoSingle = async (req, res) => {
+	try {
+		const idEmpleado = req.params.id
+
+		//const {rows} = await client.query('SELECT * FROM empleados_info WHERE idEmpleado = $1', [idEmpleado])
+		const {rows} = await client.query('SELECT * from empleados_info WHERE idempleado=$1', [idEmpleado])
+		//res.json(rows)
+		res.json(rows)
+		console.log(rows)
 	} catch (error) {
 		return res.status(500).json({
 			error: error.message,
@@ -154,7 +242,7 @@ export const getInfoSingle = async (req, res) => {
 	}
 }
 
-//Inserta en la base de datos un nuevo usuario em empleados_login
+//Inserta en la base de datos un nuevo usuario en empleados_login
 export const postUserLogin = async (req, res) => {
 	const nuevoUsuario = req.body.params
 
@@ -174,7 +262,7 @@ export const postUserLogin = async (req, res) => {
 	}
 };
 
-//Inserta en la base de datos un nuevo usuario em empleados_login
+//Inserta en la base de datos un nuevo usuario en empleados_login
 export const postUserInfo = async (req, res) => {
 	try {
 		const infoNuevoUsuario = req.body.params	
@@ -188,7 +276,7 @@ export const postUserInfo = async (req, res) => {
 			infoNuevoUsuario.idarea,
 			infoNuevoUsuario.idempleado
 		])
-		res.send("Response received: " + req.body);
+		res.send("Response received: " + req.body);
 	} catch (error) {
 		console.log(error)
 		return res.status(500).json({
@@ -196,3 +284,45 @@ export const postUserInfo = async (req, res) => {
 		})
 	}
 };
+
+//inserta curso jeannette
+export const postCurso = async(req,res) => {
+	const nombre = req.body["nombre"]; //expecting a json object
+	const idarea = req.body["idarea"]; //expecting a json object
+	//const img = req.body["img"]; //expecting a json object
+
+	console.log("Nombre: " + nombre);
+	console.log("ID Area: " + idarea);
+	//console.log("Img: " + img);
+
+	client.query("INSERT INTO cursos (nombre , idarea) VALUES ($1,$2)", [
+		nombre,
+		idarea
+	])
+	.then((response) => {
+		console.log("Data saved");
+		console.log(response);
+	})
+	.catch((err) => {
+		console.log(err);
+	});
+
+	console.log(req.body);
+	res.send("Response received: " + req.body);
+
+};
+
+//get de rotaciones
+export const getRotaciones = async (req, res) => {
+	try {
+		const idEmpleado = req.params.id
+
+		const {rows} = await client.query('SELECT * FROM rotaciones WHERE idempleado=$1', [idEmpleado])
+		res.json(rows)
+		console.log(rows)
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+}
