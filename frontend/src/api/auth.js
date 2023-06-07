@@ -34,6 +34,10 @@ export async function getInfoJuego(idEmpleado){
   return await axios.get('http://localhost:4000/api/getInfoJuego', {params: idEmpleado})
 }
 
+export async function getAvatars(idEmpleado){
+  return await axios.get('http://localhost:4000/api/getAvatars', {params: idEmpleado})
+}
+
 export async function setCursos(infoCursos){
   return await axios.post('http://localhost:4000/api/setCursos',{params: infoCursos});
 }
@@ -82,4 +86,9 @@ export async function nuevoCurso(infoNuevoCurso){
 export async function getRotaciones(idempleado)
 {
     return await axios.get(`http://localhost:4000/api/data/getRotaciones/${idempleado}`,{params: idempleado});
+}
+
+export async function getAreasInteres(idempleado)
+{
+    return await axios.get(`http://localhost:4000/api/data/getAreasInteres/${idempleado}`,{params: idempleado});
 }

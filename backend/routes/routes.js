@@ -4,7 +4,7 @@ import { login, getIdEmpleado, getIdPerfil,
         getInfoJuego, setCursos, setPuntaje, addAvatar,
         postUserLogin, postUserInfo, borrarUsuario, getEmpleadosTodos,
         getInfoSingle,
-        actualizarUsuario, postCurso, getRotaciones, getAreas} from "../controllers/controllers.js";
+        actualizarUsuario, postCurso, getRotaciones, getAreas, getAreasInteres} from "../controllers/controllers.js";
 import { loginValidation } from '../validators/auth.js'
 import { validationMiddleware } from "../middlewares/validations-middleware.js";
 import { userAuth } from "../middlewares/auth-middleware.js";
@@ -22,6 +22,7 @@ router.get('/cursosEmpleado', getCursosEmpleados);
 
 //VALE
 router.get('/getInfoJuego', getInfoJuego);
+router.get('/getAvatars', getAvatars);
 router.post('/setCursos', setCursos);
 router.post('/setPuntaje', setPuntaje);
 router.post('/addAvatar', addAvatar);
@@ -33,6 +34,7 @@ router.delete('/empleados/delete/:id',borrarUsuario);
 router.get('/empleados',getEmpleadosTodos);
 router.post('/addcurso',postCurso);
 router.get('/data/getRotaciones/:id',getRotaciones);
+router.get('/data/getAreasInteres/:id',getAreasInteres);
 //para el update
 router.put('/data/edit/:id',actualizarUsuario);
 router.get('/data/get/:id',getInfoSingle);

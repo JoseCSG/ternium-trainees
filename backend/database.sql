@@ -1,3 +1,4 @@
+-- Crear las tablas
 CREATE TABLE perfiles (
 	idPerfil SERIAL NOT NULL PRIMARY KEY,
 	nombre VARCHAR(100) NOT NULL
@@ -19,7 +20,6 @@ CREATE TABLE remuneraciones (
 	idEmpleado INT NOT NULL
 );
 
---Puede haber un empleado en varias areas?
 CREATE TABLE empleados_info (
 	idEmpleadoInfo SERIAL NOT NULL PRIMARY KEY,
 	nombre VARCHAR(100) NOT NULL,
@@ -55,7 +55,6 @@ CREATE TABLE rotaciones (
 	fechaFin DATE
 );
 
---Puede haber un curso para varias areas?
 CREATE TABLE cursos (
 	idCurso SERIAL NOT NULL PRIMARY KEY,
 	nombre VARCHAR(200) NOT NULL UNIQUE,
@@ -88,6 +87,7 @@ CREATE TABLE empleados_avatars (
   idAvatar INT NOT NULL UNIQUE
 );
 
+-- Crear las llaves foráneas
 ALTER TABLE empleados_login ADD CONSTRAINT fk_id_perfil FOREIGN KEY (idPerfil) REFERENCES perfiles(idPerfil);
 ALTER TABLE empleados_info ADD CONSTRAINT fk_id_empleado_perfil FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
 ALTER TABLE empleados_info ADD CONSTRAINT fk_id_area_empleado FOREIGN KEY (idArea) REFERENCES areas(idArea);
@@ -103,10 +103,6 @@ ALTER TABLE empleados_juego ADD CONSTRAINT fk_id_empleado_juego FOREIGN KEY (idE
 ALTER TABLE empleados_avatars ADD CONSTRAINT fk_id_empleado_avatars FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
 ALTER TABLE empleados_avatars ADD CONSTRAINT fk_id_avatar_avatars FOREIGN KEY (idAvatar) REFERENCES avatars(idAvatar);
 ALTER TABLE remuneraciones ADD CONSTRAINT fk_id_empleado_renumeracion FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELEte CASCADE;
-
-INSERT INTO avatars(nombre) VALUES ('Avatar 1');
-INSERT INTO avatars(nombre) VALUES ('Avatar 2');
-INSERT INTO avatars(nombre) VALUES ('Avatar 3');
 
 --Stored Procedures empleados_login
 --Insert
@@ -180,13 +176,6 @@ AS $$
 $$ LANGUAGE SQL;
 
 --Stored Procedures empleados_juego
---Update cursosCompletados
-CREATE OR REPLACE PROCEDURE sp_empleados_juego_update_cursos(cursosCompletados INT, idEmpleado INT)
-AS $$
-	UPDATE empleados_juego SET cursosCompletados = $1
-	WHERE idEmpleado = $2;
-$$ LANGUAGE SQL;
-
 --Update puntajeAlto
 CREATE OR REPLACE PROCEDURE sp_empleados_juego_update_puntaje(puntajeAlto INT, idEmpleado INT)
 AS $$
@@ -202,6 +191,7 @@ AS $$
 	VALUES ($1, $2);
 $$ LANGUAGE SQL;
 
+--Muestra los empleados con su información
 CREATE VIEW info_empleados_individual AS
 SELECT ei.idempleado, ei.nombre, ei.apellidopaterno, ei.apellidomaterno, ei.genero, 
 		ei.fechainicio, ei.fechagraduacion, ej.nombre AS nombre_jefe, ej.apellidopaterno AS apellido_jefe,
@@ -210,6 +200,8 @@ FROM empleados_info ei
 JOIN empleados_info ej ON ei.idjefe = ej.idempleado
 JOIN areas a ON ei.idarea = a.idarea;
 
+--Stored Procedures Areas
+--Select
 CREATE OR REPLACE FUNCTION fun_areas()
 RETURNS JSON
 AS $$
@@ -217,12 +209,13 @@ AS $$
 	FROM areas; 
 $$ LANGUAGE SQL;
 
---Select
+--Stored Procedures empleados perfil
+-- Select
 CREATE OR REPLACE FUNCTION fun_empleados_perfil(idEmpleado INT)
 RETURNS JSON
 AS $$
   SELECT json_build_object(
-	'nombre', e.nombre, 'apellidoPaterno', e.apellidopaterno, 'apellidoMaterno', e.apellidomaterno, 'genero', e.genero,
+	'nombre', e.nombre, 'apellidoPaterno', e.apellidopaterno, 'apellidoMaterno', e.apellidomaterno, 'genero', e.genero, 'fotoPerfil', e.fotoPerfil,
 	'fechaInicio', e.fechainicio, 'fechaGraduacion', e.fechagraduacion,'area', ar.nombre, 'correo', el.correo, 'jefe', jefe.nombre,
   	'sueldo', r.sueldo, 'PTU', r.ptu, 'fondoAhorro', r.fondoAhorro) 
   FROM empleados_info AS e
@@ -233,6 +226,8 @@ AS $$
   WHERE e.idEmpleado = $1;
 $$ LANGUAGE SQL;
 
+--Stored Procedures cursos
+--Select
 CREATE OR REPLACE FUNCTION fun_cursos(idEmpleado INT)
 RETURNS JSON
 AS $$
@@ -242,24 +237,27 @@ AS $$
     WHERE cc.idEmpleado = $1;
 $$ LANGUAGE SQL;
 
---Función empleados_juego
+--Stored Procedures empleados_juego
+--Select monedas
 CREATE OR REPLACE FUNCTION fun_empleados_juego(idEmpleado INT)
 RETURNS JSON
 AS $$
-	SELECT json_build_object('monedas', monedas, 'puntaje', puntajeAlto)
+  SELECT json_build_object('monedas', monedas, 'puntaje', puntajeAlto)
   FROM empleados_juego
   WHERE idEmpleado = $1;
 $$ LANGUAGE SQL;
 
---Función empleados_juego
-CREATE OR REPLACE FUNCTION fun_empleados_juego(idEmpleado INT)
+--Función avatars
+CREATE OR REPLACE FUNCTION fun_empleados_avatars(idEmpleado INT)
 RETURNS JSON
 AS $$
-	SELECT json_build_object('monedas', monedas, 'puntaje', puntajeAlto)
-  FROM empleados_juego
+	SELECT json_agg(json_build_object('idavatar', idAvatar))
+  FROM empleados_avatars
   WHERE idEmpleado = $1;
 $$ LANGUAGE SQL;
 
+--Stored Procedures empleados id
+--Select id (id del empleado)
 CREATE OR REPLACE FUNCTION fun_empleado_id(correo VARCHAR(255))
 RETURNS JSON
 AS $$
@@ -268,6 +266,8 @@ AS $$
   WHERE correo = $1;
 $$ LANGUAGE SQL;
 
+--Stored Procedures empleados login
+--Select perfil (administrador o empleado)
 CREATE OR REPLACE FUNCTION fun_empleado_perfil(correo VARCHAR(255))
 RETURNS JSON
 AS $$
@@ -276,12 +276,14 @@ AS $$
   WHERE correo = $1;
 $$ LANGUAGE SQL;
 
+--Delete empleado
 CREATE OR REPLACE PROCEDURE sp_delete_empleado(idEmpleado INT)
 AS $$
 	DELETE FROM empleados_login
 	WHERE idEmpleado = $1
 $$ LANGUAGE SQL;
 
+--Insertar empleado
 CREATE OR REPLACE PROCEDURE sp_insert_empleado(
 	correo VARCHAR(255),
 	contraseña VARCHAR(255),
@@ -291,6 +293,7 @@ AS $$
 	VALUES ($1, $2, $3, true);
 $$ LANGUAGE SQL;
 
+--Insertar empleado con su información
 CREATE OR REPLACE PROCEDURE sp_insert_info_empleado(
 	nombre VARCHAR(100), apellidoPaterno VARCHAR(100), apellidoMaterno VARCHAR(100), 
 	genero VARCHAR(50), fechaNacimiento DATE, pais VARCHAR(100), idArea INT, 
@@ -382,6 +385,7 @@ AFTER UPDATE ON cursos_completados
 FOR EACH ROW
 EXECUTE FUNCTION trg_monedas();
 
+-- Insertar datos
 INSERT INTO perfiles(nombre) VALUES ('Administrador');
 INSERT INTO perfiles(nombre) VALUES ('Empleado');
 
@@ -397,23 +401,28 @@ INSERT INTO areas(nombre) VALUES('Administración y Finanzas');
 INSERT INTO areas(nombre) VALUES('Auditoria y Legal');
 INSERT INTO areas(nombre) VALUES('Comunicaciones');
 
---Hacer otro perfil para jefes en dónde vean unicamente el rendimiento de los empleados que tienen a cargo
 INSERT INTO avatars(nombre) VALUES ('Avatar 1');
 INSERT INTO avatars(nombre) VALUES ('Avatar 2');
 INSERT INTO avatars(nombre) VALUES ('Avatar 3');
 
-INSERT INTO cursos(nombre, idarea) VALUES ('Intro a React', 1);
-INSERT INTO cursos(nombre, idarea) VALUES ('Intro a SQL', 1);
-INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder', 2);
-INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder1', 3);
-INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder2', 4);
-INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder3', 5);
-INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder4', 6);
-INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder5', 7);
-INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder6', 8);
-INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder7', 9);
-INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder8', 10);
-INSERT INTO cursos(nombre, idarea) VALUES ('Placeholder9', 11);
+INSERT INTO cursos(nombre, idarea) VALUES ('Como lidear con las personas', 1);
+INSERT INTO cursos(nombre, idarea) VALUES ('¿Qué cosas necesitan mantenimiento?', 2);
+INSERT INTO cursos(nombre, idarea) VALUES ('Top 5 operaciones de la empresa', 3);
+INSERT INTO cursos(nombre, idarea) VALUES ('¿Qué es supply chain', 4);
+INSERT INTO cursos(nombre, idarea) VALUES ('Proyectos actuales', 5);
+INSERT INTO cursos(nombre, idarea, img) VALUES ('¿Cómo proteger el medio ambiente?', 6, 'https://cdn0.ecologiaverde.com/es/posts/4/7/6/que_es_el_medio_ambiente_definicion_y_resumen_1674_orig.jpg');
+INSERT INTO cursos(nombre, idarea, img) VALUES ('La importancia de los árboles', 6, 'https://www.henkel.es/resource/image/1084248/16x9/1920/1080/7a7530443937d70f83dbb22c6423158c/F34BFB3EAF33429AAFA08601DD0B63E2/2020-06-05-d%C3%ADa-mundial-del-medio-ambiente-jpg.webp');
+INSERT INTO cursos(nombre, idarea, img) VALUES ('Factores importantes', 6, 'https://cdn0.ecologiaverde.com/es/posts/9/8/7/como_cuidar_el_medio_ambiente_3789_orig.jpg');
+INSERT INTO cursos(nombre, idarea, img) VALUES ('Diversidad en riesgo', 6, 'https://www.bbva.com/wp-content/uploads/2019/06/A-0406-DiaMedioAmbiente-BBVA.jpg');
+INSERT INTO cursos(nombre, idarea, img) VALUES ('Intro a React', 7, 'https://sigdeletras.com/images/blog/202004_react_leaflet/react.png');
+INSERT INTO cursos(nombre, idarea, img) VALUES ('Intro a SQL', 7, 'https://techkrowd.com/wp-content/uploads/2022/12/banner_bbdd_3.png');
+INSERT INTO cursos(nombre, idarea, img) VALUES ('Ciberseguridad', 7, 'https://thelogisticsworld.com/wp-content/uploads/2023/01/ilustracion-de-seguridad-cibernetica.jpg');
+INSERT INTO cursos(nombre, idarea, img) VALUES ('Cookies', 7, 'https://i0.wp.com/codigoespagueti.com/wp-content/uploads/2021/02/cookies-internet.jpg');
+INSERT INTO cursos(nombre, idarea, img) VALUES ('¿Cómo proteger tu información?', 7, 'https://cdn.computerhoy.com/sites/navi.axelspringer.es/public/media/image/2020/02/5-tendencias-van-cambiar-ciberseguridad-2020-1858639.jpg?tf=3840x');
+INSERT INTO cursos(nombre, idarea) VALUES ('Importancia del área comercial', 8);
+INSERT INTO cursos(nombre, idarea) VALUES ('Estátistica', 9);
+INSERT INTO cursos(nombre, idarea) VALUES ('Leyes Mexicanas', 10);
+INSERT INTO cursos(nombre, idarea) VALUES ('Diferentes maneras de comunicarte', 11);
 
 INSERT INTO empleados_login(correo, contraseña, idPerfil, estado) VALUES ('j@outlook.com', '1234', 2, true);
 INSERT INTO empleados_login(correo, contraseña, idPerfil, estado) VALUES ('i@outlook.com', '32', 2, true);
@@ -428,21 +437,10 @@ INSERT INTO empleados_info(
 	pais,
 	idEmpleado,
 	idArea,
-	fechaInicio,
-	idJefe) VALUES ('Jose', 'Sanchez', 'Gomez', 'Masculino', '2003-09-09', 'Mexico', 1, 1, '2022-09-20', 3);
-
-INSERT INTO empleados_info(
-	nombre,
-	apellidoPaterno,
-	apellidoMaterno,
-	genero,
-	fechaNacimiento,
-	pais,
-	idEmpleado,
-	idArea,
+	fotoPerfil,
 	fechaInicio,
 	fechaGraduacion,
-	idJefe) VALUES ('Isabella', 'Garduño', 'Horneffer', 'Femenino', '2003-02-20', 'Colombia', 2, 2, '2021-08-30', '2023-01-15', 3);
+	idJefe) VALUES ('Jose', 'Sanchez', 'Gomez', 'Masculino', '2003-09-09', 'Mexico', 1, 7, 'https://i.pinimg.com/originals/a2/a2/2f/a2a22fc7eda2da304c5345ed25fad6d8.jpg','2022-09-20','2023-09-20', 3);
 
 INSERT INTO empleados_info(
 	nombre,
@@ -455,8 +453,39 @@ INSERT INTO empleados_info(
 	idArea,
 	fotoPerfil,
 	fechaInicio,
-	fechaGraduacion) VALUES ('Jeannette', 'Arjona', 'Hernandez', 'Femenino', '2002-09-26', 'Argentina', 3, 3, 'https://i.pinimg.com/originals/0f/6a/9e/0f6a9e1a1a4b5b6b0b0b0b0b0b0b0b0b.jpg', '2019-04-19', '2021-02-4');
+	fechaGraduacion,
+	idJefe) VALUES ('Isabella', 'Garduño', 'Horneffer', 'Femenino', '2003-02-20', 'Colombia', 2, 6, 'https://pbs.twimg.com/media/EEeRD-tVAAEV8b9.jpg','2021-08-30', '2023-01-15', 3);
+
+INSERT INTO empleados_info(
+	nombre,
+	apellidoPaterno,
+	apellidoMaterno,
+	genero,
+	fechaNacimiento,
+	pais,
+	idEmpleado,
+	idArea,
+	fotoPerfil,
+	fechaInicio,
+	fechaGraduacion) VALUES ('Jeannette', 'Arjona', 'Hernandez', 'Femenino', '2002-09-26', 'Argentina', 3, 1, 'https://depor.com/resizer/B101W_zhl85VHZyCRLYbUst__rQ=/1200x900/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/2SXEVQEC3NGJFJSVAKXS2GXXMM.jpg', '2019-04-19', '2021-02-4');
 
 INSERT INTO remuneraciones(sueldo, ptu, fondoAhorro, idEmpleado) VALUES (10000, '2023-10-30', '2023-12-10', 1);
 INSERT INTO remuneraciones(sueldo, ptu, fondoAhorro, idEmpleado) VALUES (15000, '2023-10-30', '2023-12-10', 2);
 INSERT INTO remuneraciones(sueldo, ptu, fondoAhorro, idEmpleado) VALUES (20000, '2023-10-30', '2023-12-10', 3);
+
+INSERT INTO rotaciones(idempleado, idarea,	fechainicio, fechafin) VALUES (1, 2, '2022-01-01','2022-06-06');
+INSERT INTO rotaciones(idempleado, idarea,	fechainicio, fechafin) VALUES (1, 2, '2023-01-01','2023-06-06');
+INSERT INTO rotaciones(idempleado, idarea,	fechainicio, fechafin) VALUES (1, 1, '2023-01-01','2023-06-06');
+
+INSERT INTO rotaciones(idempleado, idarea,	fechainicio, fechafin) VALUES (2, 2, '2022-01-01','2022-06-06');
+INSERT INTO rotaciones(idempleado, idarea,	fechainicio, fechafin) VALUES (2, 2, '2023-01-01','2023-06-06');
+INSERT INTO rotaciones(idempleado, idarea,	fechainicio, fechafin) VALUES (2, 1, '2023-01-01','2023-06-06');
+
+-- Update
+UPDATE cursos_completados
+SET estado = true
+WHERE idcurso IN (6, 7);
+
+UPDATE cursos_completados
+SET estado = true
+WHERE idcurso IN (11, 13);

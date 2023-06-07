@@ -122,6 +122,18 @@ export const getInfoJuego = async (req, res) => {
 	}
 }
 
+export const getAvatars = async (req, res) => {
+	try {
+		const idEmpleado = req.query.idempleado
+		const {rows} = await client.query('SELECT fun_empleados_avatars($1)', [idEmpleado])
+		res.json(rows[0].fun_empleados_avatars)
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+}
+
 export const setCursos = async (req, res) => {
   const infoCursos = req.body.params
   const cursosCompletados = infoCursos.cursoscompletados
@@ -314,6 +326,22 @@ export const getRotaciones = async (req, res) => {
 
 		const {rows} = await client.query('SELECT * FROM rotaciones WHERE idempleado=$1', [idEmpleado])
 		res.json(rows)
+		//console.log(rows)
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+}
+
+//get de areas interes
+export const getAreasInteres = async (req, res) => {
+	try {
+		const idEmpleado = req.params.id
+
+		const {rows} = await client.query('SELECT * FROM areas_interes INNER JOIN areas ON areas_interes.idarea=areas.idarea WHERE idempleado=$1', [idEmpleado])
+		res.json(rows)
+		console.log(rows)
 	} catch (error) {
 		return res.status(500).json({
 			error: error.message,

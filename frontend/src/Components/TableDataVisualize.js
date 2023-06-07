@@ -11,12 +11,12 @@ const TableDataVisualize = () =>
     const loadRotaciones = async () => 
     {
       try {
-        console.log(idempleadoinfo)
+        //console.log(idempleadoinfo)
         const res = await axios.get(`http://localhost:4000/api/data/getRotaciones/${idempleadoinfo}`)
-        console.log(res)
+        //console.log(res)
         setRotaciones(res.data)
       } catch (error) {
-        console.log(error.message)
+        //console.log(error.message)
       }
       //getRotaciones(id)
 
@@ -34,8 +34,8 @@ const TableDataVisualize = () =>
           <td>{item.idrotacion}</td>
           <td>{item.idempleado}</td>
           <td>{item.idarea}</td>
-          <td>{item.fechainicio}</td>
-          <td>{item.fechafin}</td>
+          <td>{item.fechainicio.split('T')[0]}</td>
+          <td>{item.fechafin.split('T')[0]}</td>
       </tr>
     );
 
