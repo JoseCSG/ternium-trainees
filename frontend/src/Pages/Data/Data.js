@@ -36,7 +36,7 @@ const Data = () => {
     })
   }
 
-  var detallesUsuarios="";
+  let detallesUsuarios="";
   detallesUsuarios=usuarios.map((item,index)=> {
     return (
       <tr key={index}>
@@ -53,7 +53,7 @@ const Data = () => {
             <Link to={`/data/edit/${item.idempleadoinfo}`} className='btn btn-success'>EDIT</Link>
           </td>
           <td>
-            <button type="button" onClick={(e)=>borrarUsuarioInfo(e, item.idempleadoinfo)}  className='btn btn-danger'>BORRAR</button>
+            <button type="button" onClick={(e)=>borrarUsuarioInfo(e, item.idempleado)}  className='btn btn-danger'>BORRAR</button>
           </td>
           <td>
             <Link to={`/data/getRotaciones/${item.idempleadoinfo}`} className='btn btn-info'>VER</Link>
