@@ -1,25 +1,26 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
-import {useState,useEffect} from 'react';
+import {useState} from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; //sin esto no me funcionaba el dropdown
+import { getAreas } from '../../api/auth';
 
 
 const Data = () => {
 
   const[usuarios,setUsuarios]=useState([]);
+  const [areas, setAreas] = useState([]);
   
-  useEffect(() => {
-    axios.get('http://localhost:4000/api/empleados')
-    .then(res => {
-      setUsuarios(res.data)
-      localStorage.setItem("correo", ""); // Initialize correo item if it doesn't exist
+  const loadUsuarios = async () => {
+    const { data } = await axios.get('http://localhost:4000/api/empleados');
+    setUsuarios(data)
+    localStorage.setItem('correo', '');
+  }
 
-    })
-    .catch(error => {
-      console.error(error);
-    });
-  },[]);
+  const loadAreas = async () => {
+    const { data } = await getAreas();
+    setAreas(data);
+  };
 
   const borrarUsuarioInfo = (e, idEmpleado) => {
     e.preventDefault();
@@ -36,8 +37,11 @@ const Data = () => {
     })
   }
 
-  let detallesUsuarios="";
-  detallesUsuarios=usuarios.map((item,index)=> {
+  loadAreas();
+  loadUsuarios();
+
+  let detallesUsuarios = usuarios.map((item,index)=> {
+    const areaUsuario = areas.find((area) => area.idArea === item.idarea);
     return (
       <tr key={index}>
           <td>{item.idempleadoinfo}</td>
@@ -48,9 +52,9 @@ const Data = () => {
           <td>{(item.fechanacimiento).split('T')[0]}</td>
           <td>{item.pais}</td>
           <td>{item.idempleado}</td>
-          <td>{item.idarea}</td>
+          <td>{areaUsuario.nombre}</td>
           <td>
-            <Link to={`/data/edit/${item.idempleadoinfo}`} className='btn btn-success'>EDIT</Link>
+            <Link to={`/data/edit/${item.idempleado}`} className='btn btn-success'>EDIT</Link>
           </td>
           <td>
             <button type="button" onClick={(e)=>borrarUsuarioInfo(e, item.idempleado)}  className='btn btn-danger'>BORRAR</button>
@@ -62,7 +66,7 @@ const Data = () => {
     );
 
   });
-  
+
   return (
     <div className='container mt-5'>
       <div className='row'>
@@ -97,7 +101,7 @@ const Data = () => {
                     <th>FECHA NAC</th>
                     <th>PAIS</th>
                     <th>ID EMP</th>
-                    <th>ID AREA </th>
+                    <th>AREA </th>
                     <th>EDITAR</th>
                     <th>BORRAR</th>
                     <th>VER</th>

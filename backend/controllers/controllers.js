@@ -259,7 +259,6 @@ export const postUserLogin = async (req, res) => {
 export const postUserInfo = async (req, res) => {
 	try {
 		const infoNuevoUsuario = req.body.params	
-		console.log(infoNuevoUsuario)
 		await client.query("CALL sp_empleados_info_insert($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", [
 			infoNuevoUsuario.nombre,
 			infoNuevoUsuario.apellidopaterno,
@@ -315,7 +314,6 @@ export const getRotaciones = async (req, res) => {
 
 		const {rows} = await client.query('SELECT * FROM rotaciones WHERE idempleado=$1', [idEmpleado])
 		res.json(rows)
-		console.log(rows)
 	} catch (error) {
 		return res.status(500).json({
 			error: error.message,

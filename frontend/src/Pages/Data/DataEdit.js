@@ -2,13 +2,12 @@ import React from "react";
 import { useState,useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { actualizarUsuario } from "../../api/auth";
 
 
 function DataEdit ()
 {
-    let {idempleadoinfo} = useParams();
     const navigate = useNavigate();
+    let {idempleadoinfo} = useParams();
 
     const [usuario,setUsuario]=useState({
         nombre: "",
@@ -21,14 +20,20 @@ function DataEdit ()
         idarea: ""
     });
 
-    useEffect(()=>{
-        axios.get(`http://localhost:4000/api/data/get/${idempleadoinfo}`) ///aqui tiene que ir un get
-        .then(res=> {
-            console.log(res)
-            setUsuario(res.data[0])
-        });
-    },[idempleadoinfo]);
-
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const { data } = await axios.get(`http://localhost:4000/api/data/get/${idempleadoinfo}`);
+            setUsuario(data[0]);
+          } catch (error) {
+            console.log(error);
+            alert("Error al cargar el usuario");
+          }
+        };
+      
+        fetchData();
+      }, [idempleadoinfo]);
+      
     const handleInput2 = (e) => {
        // e.persist();
         //setUsuario({...usuario,[e.target.name]:e.target.value})
@@ -38,29 +43,26 @@ function DataEdit ()
         }));
     };
 
-    const actualizarUsuario = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const data = {
-            nombre: usuario.nombre,
-            apellidopaterno: usuario.apellidopaterno,
-            apellidomaterno: usuario.apellidomaterno,
-            genero: usuario.genero,
-            fechanacimiento:usuario.fechanacimiento,
-            pais:usuario.pais,
-            idempleado:usuario.idempleado,
-            idarea:usuario.idarea
+        try {
+            const data = {
+                nombre: usuario.nombre,
+                apellidopaterno: usuario.apellidopaterno,
+                apellidomaterno: usuario.apellidomaterno,
+                genero: usuario.genero,
+                fechanacimiento:usuario.fechanacimiento,
+                pais:usuario.pais,
+                idempleado:usuario.idempleado,
+                idarea:usuario.idarea
+            }
+            console.log("Antes del post")
+            await axios.put(`http://localhost:4000/api/data/edit/${usuario.idempleado}`,data) //aqui tiene que ir un put
+            navigate('/data')
+        } catch (error) {
+            console.log(error)
+            alert("Error al editar el usuario")
         }
-
-        axios.put(`http://localhost:4000/api/data/edit/${idempleadoinfo}`,data) //aqui tiene que ir un put
-        .then (res=> {
-            alert(res.data.message);
-        })
-        .catch (function(error){
-            console.error(error)
-        });
-        navigate("/data"); // Navigate to the page '/data'
-
     };
 
     return (
@@ -76,7 +78,7 @@ function DataEdit ()
                             </h4>
                         </div>
                         <div className="card-body">
-                            <form onSubmit={actualizarUsuario}>
+                            <form onSubmit={handleSubmit}>
                                     <div className="mb-3">
                                         <label>Nombre</label>
                                         <input type="text" name="nombre" value={usuario.nombre} onChange={handleInput2} className="form-control"/>
@@ -108,7 +110,7 @@ function DataEdit ()
                                     </div>
 
                                     <div className="mb-3">
-                                        <label>ID Area</label>
+                                        <label>Area</label>
                                         <input type="number" name="idarea" value={usuario.idarea} onChange={handleInput2} className="form-control"/>
                                     </div>
 
