@@ -59,16 +59,15 @@ function DataVisualize ()
 
                 {/*tarjeta de areas de interes*/}
 
-                <div className="cardareas">
+                {/*<div className="cardareas">
                     <div className="cardprofile_title">ÁREAS DE INTERÉS</div>
                     <div className="cardprofile_body">
-                        {/*Areas: {areasInteres.nombre}<br/>*/}
                         {areasInteres.map((area) => (
                             <span key={area.idareainteres}>{area.nombre} <br /></span>
                         ))}
                         <div className="card_image"></div>
                     </div>
-                </div>
+                        </div>*/}
             </div>
         
         </div>
