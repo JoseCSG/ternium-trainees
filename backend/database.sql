@@ -243,6 +243,15 @@ AS $$
   WHERE idEmpleado = $1;
 $$ LANGUAGE SQL;
 
+--Función avatars
+CREATE OR REPLACE FUNCTION fun_empleados_avatars(idEmpleado INT)
+RETURNS JSON
+AS $$
+	SELECT json_agg(json_build_object('idavatar', idAvatar))
+  FROM empleados_avatars
+  WHERE idEmpleado = $1;
+$$ LANGUAGE SQL;
+
 --Stored Procedures empleados id
 --Select id (id del empleado)
 CREATE OR REPLACE FUNCTION fun_empleado_id(correo VARCHAR(255))
@@ -467,3 +476,12 @@ INSERT INTO rotaciones(idempleado, idarea,	fechainicio, fechafin) VALUES (1, 1, 
 INSERT INTO rotaciones(idempleado, idarea,	fechainicio, fechafin) VALUES (2, 2, '2022-01-01','2022-06-06');
 INSERT INTO rotaciones(idempleado, idarea,	fechainicio, fechafin) VALUES (2, 2, '2023-01-01','2023-06-06');
 INSERT INTO rotaciones(idempleado, idarea,	fechainicio, fechafin) VALUES (2, 1, '2023-01-01','2023-06-06');
+
+-- Update
+UPDATE cursos_completados
+SET estado = true
+WHERE idcurso IN (6, 7);
+
+UPDATE cursos_completados
+SET estado = true
+WHERE idcurso IN (11, 13);

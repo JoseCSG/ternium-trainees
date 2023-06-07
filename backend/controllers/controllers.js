@@ -122,6 +122,18 @@ export const getInfoJuego = async (req, res) => {
 	}
 }
 
+export const getAvatars = async (req, res) => {
+	try {
+		const idEmpleado = req.query.idempleado
+		const {rows} = await client.query('SELECT fun_empleados_avatars($1)', [idEmpleado])
+		res.json(rows[0].fun_empleados_avatars)
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+}
+
 export const setCursos = async (req, res) => {
   const infoCursos = req.body.params
   const cursosCompletados = infoCursos.cursoscompletados

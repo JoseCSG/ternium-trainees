@@ -22,6 +22,7 @@ router.get('/cursosEmpleado', getCursosEmpleados);
 
 //VALE
 router.get('/getInfoJuego', getInfoJuego);
+router.get('/getAvatars', getAvatars);
 router.post('/setCursos', setCursos);
 router.post('/setPuntaje', setPuntaje);
 router.post('/addAvatar', addAvatar);
