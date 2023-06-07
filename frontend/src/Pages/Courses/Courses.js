@@ -56,7 +56,7 @@ const Courses =() => {
         </div>
 
         {/*PRIMERA FILA */}
-        <div className='row my-3 card-coruse' style={{ backgroundColor: 'rgb(212, 212, 212)' }}>
+        <div className='row my-3 card-coruse border-custom' style={{ backgroundColor: 'rgb(212, 212, 212)' }}>
           {
             cursosEnProceso.map((course) => {
               return <CardCourse nombre={course.nombre} img={course.imagenURL} status={course.estado}/>;
