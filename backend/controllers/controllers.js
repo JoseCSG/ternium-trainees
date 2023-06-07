@@ -215,7 +215,7 @@ export const actualizarUsuario = async (req, res) => {
 
 	}
 	catch (error) {
-		console.error(error);
+		console.error(error.message);
     	res.status(500).json({ message: 'Error al actualizar el usuario' });
 	}
 };
@@ -230,7 +230,7 @@ export const getInfoSingle = async (req, res) => {
 		res.json(rows)
 	}
 	catch (error) {
-		console.error(error);
+		console.error(error.message);
     	res.status(500).json({ message: 'Error al actualizar el usuario' });
 	}
 };
@@ -259,7 +259,8 @@ export const postUserLogin = async (req, res) => {
 export const postUserInfo = async (req, res) => {
 	try {
 		const infoNuevoUsuario = req.body.params	
-		await client.query("CALL sp_empleados_info_insert($1, $2, $3, $4, $5, $6, $7, $8)", [
+		console.log(infoNuevoUsuario)
+		await client.query("CALL sp_empleados_info_insert($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", [
 			infoNuevoUsuario.nombre,
 			infoNuevoUsuario.apellidopaterno,
 			infoNuevoUsuario.apellidomaterno,
@@ -267,11 +268,13 @@ export const postUserInfo = async (req, res) => {
 			infoNuevoUsuario.fechanacimiento,
 			infoNuevoUsuario.pais,
 			infoNuevoUsuario.idarea,
-			infoNuevoUsuario.idempleado
-		])
+			infoNuevoUsuario.idempleado,
+			infoNuevoUsuario.fechagraduacion,
+			infoNuevoUsuario.idJefe
+		]);
 		res.send("Response received: " + req.body);
 	} catch (error) {
-		console.log(error)
+		console.log(error.message)
 		return res.status(500).json({
 			error: error.message,
 		})

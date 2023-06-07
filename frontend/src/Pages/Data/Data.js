@@ -12,7 +12,6 @@ const Data = () => {
   useEffect(() => {
     axios.get('http://localhost:4000/api/empleados')
     .then(res => {
-      console.log(res)
       setUsuarios(res.data)
       localStorage.setItem("correo", ""); // Initialize correo item if it doesn't exist
 

@@ -3,11 +3,19 @@ import { Link } from 'react-router-dom'
 import { nuevoEmpleado } from '../../api/auth'
 
 const DataCreateCuenta = () => {
-    const[usuario,setUsuario] = useState({})
+    const[usuario,setUsuario] = useState({
+        correo:"",
+        contraseña:"",
+        idperfil:1
+    })
 
     const handleInput = (e) => {
         e.persist();
         setUsuario({...usuario,[e.target.name]:e.target.value})
+    }
+
+    const handlePerfilInput = (e) => {
+        setUsuario({...usuario,idperfil:parseInt(e.target.value)});
     }
 
     const creaCorreoContraseña = async (e) => {
@@ -18,7 +26,6 @@ const DataCreateCuenta = () => {
         } catch (error) {
             console.log(error.message)
         }
-
     }
   return (
     <div className='container mt-5'>
@@ -44,9 +51,9 @@ const DataCreateCuenta = () => {
                             </div>
 
                             <div className="mb-3">
-                                <label>ID Perfil</label>
+                                <label>Perfil</label>
                                 {/*<input type="number" name="idperfil" value={usuario.idperfil} onChange={handleInput} className="form-control"/>*/}
-                                    <select type="number" name="idperfil" value={usuario.idperfil} onChange={handleInput} className="form-control">
+                                    <select type="number" name="idperfil" value={usuario.idperfil} onChange={handlePerfilInput} className="form-control">
                                         <option value="1">Admin</option>
                                         <option value="2">Trainee</option>
                                     </select>
