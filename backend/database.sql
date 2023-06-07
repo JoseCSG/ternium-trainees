@@ -459,3 +459,11 @@ INSERT INTO empleados_info(
 INSERT INTO remuneraciones(sueldo, ptu, fondoAhorro, idEmpleado) VALUES (10000, '2023-10-30', '2023-12-10', 1);
 INSERT INTO remuneraciones(sueldo, ptu, fondoAhorro, idEmpleado) VALUES (15000, '2023-10-30', '2023-12-10', 2);
 INSERT INTO remuneraciones(sueldo, ptu, fondoAhorro, idEmpleado) VALUES (20000, '2023-10-30', '2023-12-10', 3);
+
+INSERT INTO rotaciones(idempleado, idarea,	fechainicio, fechafin) VALUES (1, 2, '2022-01-01','2022-06-06');
+INSERT INTO rotaciones(idempleado, idarea,	fechainicio, fechafin) VALUES (1, 2, '2023-01-01','2023-06-06');
+INSERT INTO rotaciones(idempleado, idarea,	fechainicio, fechafin) VALUES (1, 1, '2023-01-01','2023-06-06');
+
+INSERT INTO rotaciones(idempleado, idarea,	fechainicio, fechafin) VALUES (2, 2, '2022-01-01','2022-06-06');
+INSERT INTO rotaciones(idempleado, idarea,	fechainicio, fechafin) VALUES (2, 2, '2023-01-01','2023-06-06');
+INSERT INTO rotaciones(idempleado, idarea,	fechainicio, fechafin) VALUES (2, 1, '2023-01-01','2023-06-06');
