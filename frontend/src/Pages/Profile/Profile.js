@@ -76,12 +76,6 @@ const Profile = () => {
                     />
                   </div>
 
-                  <h5 className="header5">Nombre de usuario</h5>
-                  <br />
-                  <br />
-                  <br />
-                  <br />
-                  <h6 className="header5">Datos</h6>
                   <div className="col-4">
                     <p>Encuadre actual:</p>
                     <p>Fecha inicio:</p>
@@ -116,6 +110,7 @@ const Profile = () => {
                 </div>
               </div>
             </div>
+            
             {/* SECTION 4 RENUMERACIÓN */}
             <div className="row px-5 my-3">
               <div className="column px-4" style={{ backgroundColor: 'rgb(212, 212, 212)'}}>
