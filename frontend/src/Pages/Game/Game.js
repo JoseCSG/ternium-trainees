@@ -20,7 +20,7 @@ const Game = () => {
   const cargaInfoEmpleado = useCallback(async () => {
     const {data} = await getInfoEmpleado(idJSON.current);
     console.log("Enviando nombre", data.nombre);
-    sendMessage("GameController", "despliegaNombre", data.nombre);
+    sendMessage("Game Manager", "getNombre", data.nombre);
   }, [sendMessage]);
 
   // Carga el puntaje alto y los cursos completados del usuario desde la base de datos
@@ -29,8 +29,8 @@ const Game = () => {
     setInfoJuego(data);
     console.log("Enviando puntaje", data.puntaje);
     console.log("Enviando tokens", data.cursos);
-    sendMessage("GameController", "despliegaPuntaje", data.puntaje);
-    sendMessage("GameController", "despliegaTokens", data.cursos);
+    sendMessage("Game Manager", "setHighScore", data.puntaje);
+    sendMessage("Game Manager", "getTokens", data.cursos);
   }, [sendMessage]);
 
   // Carga los avatars del usuario desde la base de datos
@@ -38,7 +38,7 @@ const Game = () => {
     const {data} = await getAvatars(idJSON.current);
     const avatars = data.map(avatar => avatar.idavatar);
     console.log("Enviando avatars", avatars.toString());
-    sendMessage("GameController", "avatarsUsuario", avatars.toString());
+    sendMessage("Game Manager", "userAvatars", avatars.toString());
   }, [sendMessage]);
 
   // Actualiza los cursos completados
@@ -86,17 +86,15 @@ const Game = () => {
         "idempleado": idEmpleado.current
       };
       try {
+        console.log("Actualizando puntaje alto:", puntaje);
         await setPuntaje(puntajeJSON);
         cargaInfoJuego();
       } catch (error) {
         console.log(error.message);
       }
     }
-    if (puntaje > infoJuego.puntaje) {
-      console.log("Actualizando puntaje alto:", puntaje);
-      subePuntaje();
-    }
-  }, [cargaInfoJuego, infoJuego]);
+    subePuntaje();
+  }, [cargaInfoJuego]);
   
   // Inicialización del juego
   useEffect(() => {
