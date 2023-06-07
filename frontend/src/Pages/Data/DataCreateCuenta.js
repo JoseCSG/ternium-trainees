@@ -45,7 +45,11 @@ const DataCreateCuenta = () => {
 
                             <div className="mb-3">
                                 <label>ID Perfil</label>
-                                <input type="number" name="idperfil" value={usuario.idperfil} onChange={handleInput} className="form-control"/>
+                                {/*<input type="number" name="idperfil" value={usuario.idperfil} onChange={handleInput} className="form-control"/>*/}
+                                    <select type="number" name="idperfil" value={usuario.idperfil} onChange={handleInput} className="form-control">
+                                        <option value="1">Admin</option>
+                                        <option value="2">Trainee</option>
+                                    </select>
                             </div>
 
                             <div className="mb-3">

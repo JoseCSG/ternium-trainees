@@ -1,11 +1,9 @@
 import React from 'react'
-//import {Route, Routes} from 'react-router-dom'
-//import NuevoEmpleado from './NuevoEmpleado';
 import { Link } from 'react-router-dom';
 import {useState,useEffect} from 'react';
 import axios from 'axios';
-import { getEmpleadosTodos } from '../../api/auth';
-import { borrarUsuario } from '../../api/auth';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; //sin esto no me funcionaba el dropdown
+
 
 const Data = () => {
 
@@ -48,7 +46,7 @@ const Data = () => {
           <td>{item.apellidopaterno}</td>
           <td>{item.apellidomaterno}</td>
           <td>{item.genero}</td>
-          <td>{item.fechanacimiento}</td>
+          <td>{(item.fechanacimiento).split('T')[0]}</td>
           <td>{item.pais}</td>
           <td>{item.idempleado}</td>
           <td>{item.idarea}</td>
@@ -57,6 +55,9 @@ const Data = () => {
           </td>
           <td>
             <button type="button" onClick={(e)=>borrarUsuarioInfo(e, item.idempleadoinfo)}  className='btn btn-danger'>BORRAR</button>
+          </td>
+          <td>
+            <Link to={`/data/getRotaciones/${item.idempleadoinfo}`} className='btn btn-info'>VER</Link>
           </td>
       </tr>
     );
@@ -70,12 +71,22 @@ const Data = () => {
           <div className='card'>
             <div className='card-header'>
               <h4> Lista de Usuarios
-                {/*<Link to="/nuevousuario" className='btn btn-primary float-end'>Agrega Usuario</Link>*/}
-                <Link to="/data/create" className='btn btn-primary float-end'>Agrega Usuario</Link>
+                {/*<Link to="/data/create/usuario" className='btn btn-primary float-end'>Agrega Usuario</Link>
+                <Link to="/data/create/curso" className='btn btn-primary float-end'>Agrega Curso</Link>*/}
+                <div className='dropdown mt-3'>
+                  <button className='btn btn-primary dropdown-toggle' type='button' id='triggerId' data-bs-toggle="dropdown">
+                    Agregar
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="triggerId">
+                    <li><Link to="/data/create/usuario" className='dropdown-item'>Agrega Usuario</Link></li>
+                    <li><Link to="/data/create/curso" className='dropdown-item'>Agrega Curso</Link></li>
+                  </ul>
+                </div>
               </h4>
             </div>
 
             <div className='card-body'>
+              <div className='table table-responsive'>
               <table className='table table-stripped'>
                 <thead>
                   <tr>
@@ -90,12 +101,14 @@ const Data = () => {
                     <th>ID AREA </th>
                     <th>EDITAR</th>
                     <th>BORRAR</th>
+                    <th>VER</th>
                   </tr>
                 </thead>
                 <tbody>
                   {detallesUsuarios}
                 </tbody>
               </table>
+              </div>
             </div>
           </div>
         </div>
