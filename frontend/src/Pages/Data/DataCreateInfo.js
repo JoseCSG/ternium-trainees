@@ -1,39 +1,60 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { getIdEmpleado, nuevoEmpleadoInfo } from '../../api/auth'
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getIdEmpleado, nuevoEmpleadoInfo } from '../../api/auth';
+import { getAreas } from '../../api/auth';
 
 const DataCreateInfo = () => {
-    const navigator = useNavigate()
-    const[usuarioInfo,setUsuarioInfo]=useState({
-        idempleado: "",
-        nombre: "",
-        apellidopaterno: "",
-        apellidomaterno: "",
-        genero: "",
-        pais: "",
-        fechanacimiento: "",
-        idarea: ""
-    })
+  const navigator = useNavigate();
+  const [usuarioInfo, setUsuarioInfo] = useState({
+    idempleado: "",
+    nombre: "",
+    apellidopaterno: "",
+    apellidomaterno: "",
+    genero: "Masculino",
+    pais: "",
+    fechanacimiento: "",
+    fechagraduacion: "",
+    idarea: 1,
+    idJefe: ""
+  });
+  const [areas, setAreas] = useState([]);
 
-    const handleInput = (e) => {
-        e.persist();
-        setUsuarioInfo({...usuarioInfo,[e.target.name]:e.target.value})
+  useEffect(() => {
+    loadAreas();
+  }, []);
+
+  const loadAreas = async () => {
+    const { data } = await getAreas();
+    setAreas(data);
+  };
+
+  const handleInput = (e) => {
+    e.persist();
+    setUsuarioInfo({ ...usuarioInfo, [e.target.name]: e.target.value });
+  };
+
+  const handleAreaSelection = (e) => {
+    const area = areas.find((area) => area.nombre === e.target.value);
+    setUsuarioInfo({ ...usuarioInfo, idarea: area.idArea });
+  };
+
+  const handleGenderSelection = (e) => {
+    setUsuarioInfo({ ...usuarioInfo, genero: e.target.value });
+  };
+
+  const creaInfoUsuario = async (e) => {
+    e.preventDefault();
+    try {
+      const {data} = await getIdEmpleado({ correo: localStorage.getItem("correo") });
+      const updatedUsuarioInfo = { ...usuarioInfo, idempleado: data.idEmpleado };
+      await nuevoEmpleadoInfo(updatedUsuarioInfo);
+      navigator("/data");
+    } catch (error) {
+      console.log(error);
     }
+  };
 
-    const creaInfoUsuario = async (e) => {
-        e.preventDefault()
-        try {
-            const {data} = await getIdEmpleado({"correo": localStorage.getItem("correo")})
-            usuarioInfo.idempleado = data.idEmpleado
-            await nuevoEmpleadoInfo(usuarioInfo);
-            navigator("/data")
-
-        } catch (error) {
-            console.log(error.message)
-        }
-    }
-
-  return (
+    return (
     <div className='container mt-5'>
         <div className='row'>
             <div className='col-md-12'>
@@ -63,7 +84,7 @@ const DataCreateInfo = () => {
 
                             <div className="mb-3">
                                 <label>Genero</label>
-                                <select type="text" name="genero" value={usuarioInfo.genero} onChange={handleInput} className="form-control">
+                                <select type="text" name="genero" value={usuarioInfo.genero} onChange={handleGenderSelection} className="form-control">
                                         <option value="Masculino">Masculino</option>
                                         <option value="Femenino">Femenino</option>
                                         <option value="Otro">Otro</option>
@@ -79,22 +100,21 @@ const DataCreateInfo = () => {
                             </div>
 
                             <div className="mb-3">
-                                <label>ID Area</label>
-                                <select type="number" name="idarea" value={usuarioInfo.idarea} onChange={handleInput} className="form-control">
-                                        <option value="1">Recursos Humanos</option>
-                                        <option value="2">Mantenimiento</option>
-                                        <option value="3">Operaciones</option>
-                                        <option value="4">Supply Chain</option>
-                                        <option value="5">Ingenieria y Proyectos</option>
-                                        <option value="6">Medio Ambiente</option>
-                                        <option value="7">Seguridad</option>
-                                        <option value="8">Comercial</option>
-                                        <option value="9">Administracion y Finanzas</option>
-                                        <option value="10">Auditoria y Legal</option>
-                                        <option value="11">Comunicaciones</option>
+                                <label>Area</label>
+                                <select type="number" name="idarea" value={usuarioInfo.idArea} onChange={handleAreaSelection} className="form-control">
+                                        {areas.map((area) => (
+                                            <option key={area.idArea} value={area.nombre}>{area.nombre}</option>
+                                        ))}
                                 </select>
                             </div>
-
+                            <div className="mb-3">
+                                <label>Fecha Graduacion</label>
+                                <input type="date" name="fechagraduacion" value={usuarioInfo.fechagraduacion} onChange={handleInput} className="form-control" required/>
+                            </div>
+                            <div className="mb-3">
+                                <label>Jefe</label>
+                                <input type="number" name="idJefe" value={usuarioInfo.idJefe} onChange={handleInput} className="form-control" required/>
+                            </div>
                             <div className="mb-3">
                                 <button type="submit" className="btn btn-primary"  onClick={creaInfoUsuario}>Agregar Info Usuario</button>
                             </div>

@@ -19,7 +19,6 @@ function App() {
   const {isAuth} = useSelector((state) => state.auth)
   //const {isAdmin} =  useSelector((state) => state.auth)
   const {isAdmin} = useSelector((state) => state.auth)
-
   return (
     <>
       <NavbarComp/>

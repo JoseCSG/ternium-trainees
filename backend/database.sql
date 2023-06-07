@@ -143,7 +143,9 @@ CREATE OR REPLACE PROCEDURE sp_empleados_info_insert(
 	fechaNacimiento DATE, 
 	pais VARCHAR(100), 
 	idArea INT, 
-	idEmpleado INT)
+	idEmpleado INT,
+	fechaFinal DATE,
+	idJefe INT)
 AS $$
 	INSERT INTO empleados_info(
 	nombre,
@@ -154,7 +156,9 @@ AS $$
 	pais,
 	idArea,
 	idEmpleado,
-	fechainicio) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, now());
+	fechainicio,
+	fechagraduacion,
+	idjefe) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, now(), $9, $10);
 $$ LANGUAGE SQL;
 
 --Update
@@ -201,7 +205,7 @@ JOIN areas a ON ei.idarea = a.idarea;
 CREATE OR REPLACE FUNCTION fun_areas()
 RETURNS JSON
 AS $$
-    SELECT json_agg(json_build_object('nombre', nombre))
+    SELECT json_agg(json_build_object('nombre', nombre, 'idArea', idArea))
 	FROM areas; 
 $$ LANGUAGE SQL;
 
