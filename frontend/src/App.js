@@ -10,8 +10,6 @@ import { useSelector } from 'react-redux';
 import Data from './Pages/Data/Data';
 import DataCreate from './Pages/Data/DataCreate';
 import DataEdit from './Pages/Data/DataEdit';
-import DataVisualize from './Pages/Data/DataVisualize';
-import CursoCreate from './Pages/Data/CursoCreate';
 //import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
@@ -30,10 +28,8 @@ function App() {
         <Route path='/game' element={isAuth && !isAdmin ? <Game/> : <Login/>}/>
         <Route path='/login' element={!isAuth ? <Login/> : <Home/>}/>
         <Route path='/data' element={isAuth && isAdmin ? <Data/> : <Home/>}/>
-        <Route path='/data/create/usuario' element={isAuth && isAdmin ? <DataCreate/> : <Home/>}/>
-        <Route path='/data/create/curso' element={isAuth && isAdmin ? <CursoCreate/> : <Home/>}/>
+        <Route path='/data/create' element={isAuth && isAdmin ? <DataCreate/> : <Home/>}/>
         <Route path='/data/edit/:idempleadoinfo' element={isAuth && isAdmin ? <DataEdit/> : <Home/>}/>
-        <Route path='/data/getRotaciones/:idempleadoinfo' element={isAuth && isAdmin ? <DataVisualize/> : <Home/>}/>
       </Routes>
     </>
   );

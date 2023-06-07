@@ -85,18 +85,6 @@ export const getInfo = async (req, res) => {
 	}
 }
 
-export const getAreas = async (req, res) => {
-	try {
-		const {rows} = await client.query('SELECT fun_areas()')
-		res.json(rows[0].fun_areas)
-
-	} catch (error) {
-		return res.status(500).json({
-			error: error.message,
-		})
-	}
-}
-
 export const getCursosEmpleados = async (req, res) => {
 	try {
 		const idEmpleado = req.query.idempleado
@@ -210,6 +198,7 @@ export const borrarUsuario=async(req,res) => {
 }
 
 export const actualizarUsuario = async (req, res) => {
+	const idEmpleado = req.params.id
 	const {
 		nombre,
 		apellidopaterno,
@@ -217,13 +206,23 @@ export const actualizarUsuario = async (req, res) => {
 		genero,
 		fechanacimiento,
 		pais,
+		idempleado,
 		idarea
 	  } = req.body; // Datos actualizados del usuario
 	try {
-		const idEmpleado = req.params.id
-
-		await client.query("CALL sp_update_empleados_info($1, $2, $3, $4, $5, $6, $7, $8)", 
-		[nombre, apellidopaterno, apellidomaterno, genero, fechanacimiento, pais, idarea, idEmpleado])
+		// Buscar el usuario por su ID
+		//const usuario = await Usuario.findById(idEmpleado);
+		client.query("UPDATE empleados_info SET nombre=$1, apellidopaterno = $2, apellidomaterno = $3, genero = $4, fechanacimiento = $5, pais = $6, idempleado = $7, idarea = $8 WHERE idempleadoinfo=$9", [
+			nombre,
+			apellidopaterno,
+			apellidomaterno,
+			genero,
+			fechanacimiento,
+			pais,
+			idempleado,
+			idarea,
+			idEmpleado
+		])
 
 	}
 	catch (error) {
@@ -240,12 +239,13 @@ export const getInfoSingle = async (req, res) => {
 		const {rows} = await client.query('SELECT * from empleados_info WHERE idempleado=$1', [idEmpleado])
 		//res.json(rows)
 		res.json(rows)
+		console.log(rows)
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		})
 	}
-	catch (error) {
-		console.error(error);
-    	res.status(500).json({ message: 'Error al actualizar el usuario' });
-	}
-};
+}
 
 //Inserta en la base de datos un nuevo usuario en empleados_login
 export const postUserLogin = async (req, res) => {
@@ -271,6 +271,7 @@ export const postUserLogin = async (req, res) => {
 export const postUserInfo = async (req, res) => {
 	try {
 		const infoNuevoUsuario = req.body.params	
+		console.log(infoNuevoUsuario)
 		await client.query("CALL sp_empleados_info_insert($1, $2, $3, $4, $5, $6, $7, $8)", [
 			infoNuevoUsuario.nombre,
 			infoNuevoUsuario.apellidopaterno,
@@ -289,45 +290,3 @@ export const postUserInfo = async (req, res) => {
 		})
 	}
 };
-
-//inserta curso jeannette
-export const postCurso = async(req,res) => {
-	const nombre = req.body["nombre"]; //expecting a json object
-	const idarea = req.body["idarea"]; //expecting a json object
-	//const img = req.body["img"]; //expecting a json object
-
-	console.log("Nombre: " + nombre);
-	console.log("ID Area: " + idarea);
-	//console.log("Img: " + img);
-
-	client.query("INSERT INTO cursos (nombre , idarea) VALUES ($1,$2)", [
-		nombre,
-		idarea
-	])
-	.then((response) => {
-		console.log("Data saved");
-		console.log(response);
-	})
-	.catch((err) => {
-		console.log(err);
-	});
-
-	console.log(req.body);
-	res.send("Response received: " + req.body);
-
-};
-
-//get de rotaciones
-export const getRotaciones = async (req, res) => {
-	try {
-		const idEmpleado = req.params.id
-
-		const {rows} = await client.query('SELECT * FROM rotaciones WHERE idempleado=$1', [idEmpleado])
-		res.json(rows)
-		console.log(rows)
-	} catch (error) {
-		return res.status(500).json({
-			error: error.message,
-		})
-	}
-}

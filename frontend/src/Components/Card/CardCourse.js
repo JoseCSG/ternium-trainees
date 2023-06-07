@@ -11,7 +11,7 @@ const CardCourse = ({nombre, img, status}) => {
   
   return (
     <div className='col-md-3 px-3 my-3'>
-      <Card className = 'h-100 bg-light' style={{ width: '18rem'}}>
+      <Card className = 'h-100' style={{ width: '18rem'}}>
           <Card.Img variant="top" src={img} />
           <Card.Body style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: getBackgroundColor() , justifyContent: 'space-between', height: '100%' }}>
             <div style={{ textAlign: 'center' }}>
