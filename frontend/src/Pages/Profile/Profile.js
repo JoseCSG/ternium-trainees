@@ -47,7 +47,7 @@ const Profile = () => {
             <div className="underline mx-auto"></div>
 
             <img 
-              src="https://jarroba.com/foro/?qa=image&qa_blobid=11099619010778415938&qa_size=200" 
+              src={infoEmpleado.fotoPerfil} 
               className="card-img-top profile-image" 
               alt="Foto de perfil"
             />
@@ -66,11 +66,11 @@ const Profile = () => {
             <div className="row px-5">
             <div className="column px-4 my-3" style={{ backgroundColor: 'rgb(212, 212, 212)' }}>
                 <div className="row my-3">
-                  <h5 className="header5 px-3">Información Personal</h5>
+                  <h5 className="header5 px-3 my-2">Información Personal</h5>
                   
                   <div className="col-4">
                     <img 
-                      src="https://jarroba.com/foro/?qa=image&qa_blobid=11099619010778415938&qa_size=200" 
+                      src={infoEmpleado.fotoPerfil}
                       className="card-img-top profile-image-2" 
                       alt="Foto de perfil 2"
                     />
@@ -101,7 +101,7 @@ const Profile = () => {
             <div className="row px-5">
               <div className="column px-4 my-4" style={{ backgroundColor: 'rgb(212, 212, 212)' }}>
                 <div className="row my-3">
-                  <h5 className="header5 px-3">Áreas de Interés</h5>
+                  <h5 className="header5 px-3 my-2">Áreas de Interés</h5>
                   {
                     areas.map((area) => {
                       return <Checkbox nombre={area.nombre} idArea = {area.idarea}/>;
@@ -115,7 +115,7 @@ const Profile = () => {
             <div className="row px-5 my-3">
               <div className="column px-4" style={{ backgroundColor: 'rgb(212, 212, 212)'}}>
                 <div className="row my-3 justify-content-center">
-                  <h5 className="header5 px-3">Renumeración</h5>
+                  <h5 className="header5 px-3 my-2">Renumeración</h5>
                     <div className="col-3 my-2 px-3" style={{ backgroundColor: 'white' }}>
                       <br />
                       <p className="">Sueldo correspondiente:</p>
