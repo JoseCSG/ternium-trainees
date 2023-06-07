@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { login, getIdEmpleado, getIdPerfil,
         protectedRoute, logout, getInfo, getCursosEmpleados,
-        getInfoJuego, setCursos, setPuntaje, addAvatar,
+        getInfoJuego, getAvatars, setCursos, setPuntaje, addAvatar,
         postUserLogin, postUserInfo, borrarUsuario, getEmpleadosTodos,
         getInfoSingle,
         actualizarUsuario} from "../controllers/controllers.js";
@@ -21,6 +21,7 @@ router.get('/cursosEmpleado', getCursosEmpleados);
 
 //VALE
 router.get('/getInfoJuego', getInfoJuego);
+router.get('/getAvatars', getAvatars);
 router.post('/setCursos', setCursos);
 router.post('/setPuntaje', setPuntaje);
 router.post('/addAvatar', addAvatar);

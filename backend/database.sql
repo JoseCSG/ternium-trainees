@@ -293,6 +293,15 @@ AS $$
   WHERE idEmpleado = $1;
 $$ LANGUAGE SQL;
 
+--Función avatars
+CREATE OR REPLACE FUNCTION fun_empleados_avatars(idEmpleado INT)
+RETURNS JSON
+AS $$
+	SELECT json_agg(json_build_object('idavatar', idAvatar))
+  FROM empleados_avatars
+  WHERE idEmpleado = $1;
+$$ LANGUAGE SQL;
+
 CREATE OR REPLACE FUNCTION fun_empleado_id(correo VARCHAR(255))
 RETURNS JSON
 AS $$
