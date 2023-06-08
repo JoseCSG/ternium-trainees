@@ -17,7 +17,11 @@ function DataEdit ()
         fechanacimiento: "",
         pais: "",
         idempleado: "",
-        idarea: ""
+        idarea: "",
+        fotoperfil: "",
+        fechainicio: "",
+        fechagraduacion: "",
+        idjefe: ""
     });
 
     useEffect(() => {
@@ -54,7 +58,11 @@ function DataEdit ()
                 fechanacimiento:usuario.fechanacimiento,
                 pais:usuario.pais,
                 idempleado:usuario.idempleado,
-                idarea:usuario.idarea
+                idarea:usuario.idarea,
+                fotoperfil:usuario.fotoperfil,
+                fechainicio:usuario.fechainicio,
+                fechagraduacion:usuario.fechagraduacion,
+                idjefe:usuario.idjefe,
             }
             console.log("Antes del post")
             await axios.put(`http://localhost:4000/api/data/edit/${usuario.idempleado}`,data) //aqui tiene que ir un put
@@ -86,17 +94,17 @@ function DataEdit ()
 
                                     <div className="mb-3">
                                         <label>Apellido Paterno</label>
-                                        <input tEstadoype="text" name="apellidopaterno" value={usuario.apellidopaterno} onChange={handleInput2} className="form-control"/>
+                                        <input type="text" name="apellidopaterno" value={usuario.apellidopaterno} onChange={handleInput2} className="form-control"/>
                                     </div>
 
                                     <div className="mb-3">
                                         <label>Apellido Materno</label>
-                                        <input tEstadoype="text" name="apellidomaterno" value={usuario.apellidomaterno} onChange={handleInput2} className="form-control"/>
+                                        <input type="text" name="apellidomaterno" value={usuario.apellidomaterno} onChange={handleInput2} className="form-control"/>
                                     </div>
 
                                     <div className="mb-3">
                                         <label>Genero</label>
-                                        <input tEstadoype="text" name="genero" value={usuario.genero} onChange={handleInput2} className="form-control"/>
+                                        <input type="text" name="genero" value={usuario.genero} onChange={handleInput2} className="form-control"/>
                                     </div>
 
                                     <div className="mb-3">
@@ -106,7 +114,7 @@ function DataEdit ()
 
                                     <div className="mb-3">
                                         <label>Pais</label>
-                                        <input tEstadoype="text" name="pais" value={usuario.pais} onChange={handleInput2} className="form-control"/>
+                                        <input type="text" name="pais" value={usuario.pais} onChange={handleInput2} className="form-control"/>
                                     </div>
 
                                     <div className="mb-3">

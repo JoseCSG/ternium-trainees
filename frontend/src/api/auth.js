@@ -38,8 +38,8 @@ export async function getAvatars(idEmpleado){
   return await axios.get('http://localhost:4000/api/getAvatars', {params: idEmpleado})
 }
 
-export async function setCursos(infoCursos){
-  return await axios.post('http://localhost:4000/api/setCursos',{params: infoCursos});
+export async function setMonedas(infoMonedas){
+  return await axios.post('http://localhost:4000/api/setMonedas',{params: infoMonedas});
 }
 
 export async function setPuntaje(infoPuntaje){

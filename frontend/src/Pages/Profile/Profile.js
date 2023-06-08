@@ -61,10 +61,10 @@ const Profile = () => {
           </div>
 
           <div className="col-9">
-          <h3 className="px-2 my-3" style={{ textAlign: 'center', margin: 'auto' }}>Perfil</h3>
+          <h3 className="px-2 my-1" style={{ textAlign: 'center', margin: 'auto' }}>Perfil</h3>
             {/* SECTION 2 PROFILE INFO */}
             <div className="row px-5">
-            <div className="column px-4 my-3" style={{ backgroundColor: 'rgb(212, 212, 212)' }}>
+            <div className="column px-4 my-3 border-custom" style={{ backgroundColor: 'rgb(212, 212, 212)' }}>
                 <div className="row my-3">
                   <h5 className="header5 px-3 my-2">Información Personal</h5>
                   
@@ -99,7 +99,7 @@ const Profile = () => {
 
             {/* SECTION 3 AREAS DE INTERES */}
             <div className="row px-5">
-              <div className="column px-4 my-4" style={{ backgroundColor: 'rgb(212, 212, 212)' }}>
+              <div className="column px-4 my-4 border-custom" style={{ backgroundColor: 'rgb(212, 212, 212)' }}>
                 <div className="row my-3">
                   <h5 className="header5 px-3 my-2">Áreas de Interés</h5>
                   {
@@ -113,7 +113,7 @@ const Profile = () => {
             
             {/* SECTION 4 RENUMERACIÓN */}
             <div className="row px-5 my-3">
-              <div className="column px-4" style={{ backgroundColor: 'rgb(212, 212, 212)'}}>
+              <div className="column px-4 border-custom" style={{ backgroundColor: 'rgb(212, 212, 212)'}}>
                 <div className="row my-3 justify-content-center">
                   <h5 className="header5 px-3 my-2">Renumeración</h5>
                     <div className="col-3 my-2 px-3" style={{ backgroundColor: 'white' }}>

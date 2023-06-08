@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getIdEmpleado, nuevoEmpleadoInfo } from '../../api/auth';
-import { getAreas } from '../../api/auth';
+import { getIdEmpleado, nuevoEmpleadoInfo, getAreas } from '../../api/auth';
 
 const DataCreateInfo = () => {
   const navigator = useNavigate();
   const [usuarioInfo, setUsuarioInfo] = useState({
-    idempleado: "",
     nombre: "",
     apellidopaterno: "",
     apellidomaterno: "",
     genero: "Masculino",
-    pais: "",
     fechanacimiento: "",
+    pais: "",
+    idempleado: "",
+    idarea: "",
+    fotoperfil: "https://t4.ftcdn.net/jpg/02/29/75/83/240_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg",
+    fechainicio: "",
     fechagraduacion: "",
-    idarea: 1,
-    idJefe: ""
+    idjefe: ""
   });
   const [areas, setAreas] = useState([]);
 
@@ -24,8 +25,12 @@ const DataCreateInfo = () => {
   }, []);
 
   const loadAreas = async () => {
-    const { data } = await getAreas();
-    setAreas(data);
+    try {
+      const {data} = await getAreas();
+      setAreas(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleInput = (e) => {
@@ -34,8 +39,8 @@ const DataCreateInfo = () => {
   };
 
   const handleAreaSelection = (e) => {
-    const area = areas.find((area) => area.nombre === e.target.value);
-    setUsuarioInfo({ ...usuarioInfo, idarea: area.idArea });
+    const selectedArea = areas.find((area) => area.idArea === parseInt(e.target.value));
+    setUsuarioInfo({ ...usuarioInfo, idarea: selectedArea.idArea });
   };
 
   const handleGenderSelection = (e) => {
@@ -74,12 +79,12 @@ const DataCreateInfo = () => {
 
                             <div className="mb-3">
                                 <label>Apellido Paterno</label>
-                                <input tEstadoype="text" name="apellidopaterno" value={usuarioInfo.apellidopaterno} onChange={handleInput} className="form-control" required/>
+                                <input type="text" name="apellidopaterno" value={usuarioInfo.apellidopaterno} onChange={handleInput} className="form-control" required/>
                             </div>
 
                             <div className="mb-3">
                                 <label>Apellido Materno</label>
-                                <input tEstadoype="text" name="apellidomaterno" value={usuarioInfo.apellidomaterno} onChange={handleInput} className="form-control" required/>
+                                <input type="text" name="apellidomaterno" value={usuarioInfo.apellidomaterno} onChange={handleInput} className="form-control" required/>
                             </div>
 
                             <div className="mb-3">
@@ -96,14 +101,14 @@ const DataCreateInfo = () => {
                             </div>
                             <div className="mb-3">
                                 <label>Pais</label>
-                                <input tEstadoype="text" name="pais" value={usuarioInfo.pais} onChange={handleInput} className="form-control" required/>
+                                <input type="text" name="pais" value={usuarioInfo.pais} onChange={handleInput} className="form-control" required/>
                             </div>
 
                             <div className="mb-3">
                                 <label>Area</label>
-                                <select type="number" name="idarea" value={usuarioInfo.idArea} onChange={handleAreaSelection} className="form-control">
+                                <select type="number" name="idarea" value={usuarioInfo.idarea} onChange={handleAreaSelection} className="form-control">
                                         {areas.map((area) => (
-                                            <option key={area.idArea} value={area.nombre}>{area.nombre}</option>
+                                            <option key={area.idArea} value={area.idArea}>{area.nombre}</option>
                                         ))}
                                 </select>
                             </div>
@@ -113,7 +118,7 @@ const DataCreateInfo = () => {
                             </div>
                             <div className="mb-3">
                                 <label>Jefe</label>
-                                <input type="number" name="idJefe" value={usuarioInfo.idJefe} onChange={handleInput} className="form-control" required/>
+                                <input type="number" name="idjefe" value={usuarioInfo.idjefe} onChange={handleInput} className="form-control" required/>
                             </div>
                             <div className="mb-3">
                                 <button type="submit" className="btn btn-primary"  onClick={creaInfoUsuario}>Agregar Info Usuario</button>

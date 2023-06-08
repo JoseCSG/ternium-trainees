@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
-import { getInfoEmpleado, getInfoJuego, getAvatars, setPuntaje, setCursos, addAvatar } from '../../api/auth';
+import { getInfoEmpleado, getInfoJuego, getAvatars, setPuntaje, setMonedas, addAvatar } from '../../api/auth';
 
 const Game = () => {
   // WebGL build loader de Unity
@@ -13,7 +13,6 @@ const Game = () => {
 
   const idEmpleado = useRef(localStorage.getItem('idEmpleado'));
   const idJSON = useRef({ "idempleado": idEmpleado.current });
-  const [infoJuego, setInfoJuego] = useState({});
   const effectUsed = useRef(false);
 
   // Carga el nombre del usuario desde la base de datos
@@ -26,37 +25,36 @@ const Game = () => {
   // Carga el puntaje alto y los cursos completados del usuario desde la base de datos
   const cargaInfoJuego = useCallback(async () => {
     const {data} = await getInfoJuego(idJSON.current);
-    setInfoJuego(data);
     console.log("Enviando puntaje", data.puntaje);
-    console.log("Enviando tokens", data.cursos);
+    console.log("Enviando tokens", data.monedas);
     sendMessage("Game Manager", "setHighScore", data.puntaje);
-    sendMessage("Game Manager", "getTokens", data.cursos);
+    sendMessage("Game Manager", "getTokens", data.monedas);
   }, [sendMessage]);
 
   // Carga los avatars del usuario desde la base de datos
   const cargaAvatars = useCallback(async () => {
     const {data} = await getAvatars(idJSON.current);
-    const avatars = data.map(avatar => avatar.idavatar);
+    const avatars = data ? data.map(avatar => avatar.idavatar) : [];
     console.log("Enviando avatars", avatars.toString());
     sendMessage("Game Manager", "userAvatars", avatars.toString());
   }, [sendMessage]);
 
   // Actualiza los cursos completados
-  const usaTokens = useCallback((tokens) => {
-    const subeCursos = async () => {
-      const cursosJSON = {
-        "cursoscompletados": tokens,
+  const usaMonedas = useCallback((tokens) => {
+    const subeMonedas = async () => {
+      const monedasJSON = {
+        "monedas": tokens,
         "idempleado": idEmpleado.current
       };
       try {
         console.log("Actualizando tokens:", tokens);
-        await setCursos(cursosJSON);
+        await setMonedas(monedasJSON);
         cargaInfoJuego();
       } catch (error) {
         console.log(error.message);
       }
     };
-    subeCursos();
+    subeMonedas();
   }, [cargaInfoJuego]);
 
   // Desbloquea nuevo avatar para el usuario
@@ -111,16 +109,16 @@ const Game = () => {
 
    // Detecta cuando comienzan los eventos useTokens, unlockAvatar, o GameOver
    useEffect(() => {
-    addEventListener("useTokens", usaTokens);
+    addEventListener("useTokens", usaMonedas);
     addEventListener("unlockAvatar", desbloqueaAvatar);
     addEventListener("GameOver", handleGameOver);
 
     return () => {
-      removeEventListener("useTokens", usaTokens);
+      removeEventListener("useTokens", usaMonedas);
       removeEventListener("unlockAvatar", desbloqueaAvatar);
       removeEventListener("GameOver", handleGameOver);
     };
-  }, [addEventListener, removeEventListener, usaTokens, desbloqueaAvatar, handleGameOver]);
+  }, [addEventListener, removeEventListener, usaMonedas, desbloqueaAvatar, handleGameOver]);
 
   return (
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "90vh" }}>

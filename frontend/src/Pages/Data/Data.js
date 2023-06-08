@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom';
 import {useState} from 'react';
 import axios from 'axios';
@@ -24,13 +24,9 @@ const Data = () => {
 
   const borrarUsuarioInfo = (e, idEmpleado) => {
     e.preventDefault();
-    const thisClicked=e.currentTarget
-    //thisClicked.innerText="Deleting...";
-
     axios.delete(`http://localhost:4000/api/empleados/delete/${idEmpleado}`)
     .then (res => {
       alert(res.data.message);
-      thisClicked.closest('tr').remove();
     })
     .catch (function(error) {
       console.log(error)
@@ -80,7 +76,7 @@ const Data = () => {
                   <button className='btn btn-primary dropdown-toggle' type='button' id='triggerId' data-bs-toggle="dropdown">
                     Agregar
                   </button>
-                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="triggerId">
+                  <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="triggerId">
                     <li><Link to="/data/create/usuario" className='dropdown-item'>Agrega Usuario</Link></li>
                     <li><Link to="/data/create/curso" className='dropdown-item'>Agrega Curso</Link></li>
                   </ul>

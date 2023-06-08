@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import './Home.css';
 import foto from "../../Images/banner.jpg";
 import Slider from '../../Components/Slides';
@@ -58,7 +58,7 @@ const Home = () => {
 
       <Footer/>
     </div>
-  )
+  );
 }
 
 
