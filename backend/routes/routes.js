@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { login, getIdEmpleado, getIdPerfil,
         protectedRoute, logout, getInfo, getCursosEmpleados,
-        getInfoJuego, setCursos, setPuntaje, addAvatar,
+        getInfoJuego, getAvatars, setCursos, setPuntaje, addAvatar,
         postUserLogin, postUserInfo, borrarUsuario, getEmpleadosTodos,
         getInfoSingle,
         actualizarUsuario, postCurso, getRotaciones, getAreas, getAreasInteres} from "../controllers/controllers.js";
