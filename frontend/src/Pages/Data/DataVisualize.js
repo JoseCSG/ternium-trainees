@@ -58,30 +58,42 @@ function DataVisualize ()
                 </div>
 
                 {/*tarjeta de areas de interes*/}
-
                 <div className="cardareas">
                     <div className="cardprofile_title">ÁREAS DE INTERÉS</div>
-                    <div className="cardprofile_body">
-                        {/*{areasInteres.map((area) => (
-                            <span key={area.idareainteres}>{area.nombre} <br /></span>
-                        ))}*/}
-                        {Array.isArray(areasInteres) && areasInteres.length > 0 ? (
-                            <React.Fragment>
-                                Areas:
-                                {areasInteres.map((area) => (
-                                <React.Fragment key={area.idareainteres}>
-                                    {area.nombre}
-                                    <br />
+                        <div className="cardprofile_body">
+                            {Array.isArray(areasInteres) && areasInteres.length > 0 ? (
+                                <React.Fragment>
+                                    Areas:
+                                    {areasInteres.map((area) => (
+                                    <React.Fragment key={area.idareainteres}>
+                                        {area.nombre}
+                                        <br />
+                                    </React.Fragment>
+                                    ))}
                                 </React.Fragment>
-                                ))}
-                            </React.Fragment>
-                            ) : (
-                            <p>No se encontraron áreas de interés.</p>
-                            )}
-                        <div className="card_image"></div>
+                                ) : (
+                                <p>No se encontraron áreas de interés.</p>
+                                )}
+                            <div className="card_image"></div>
+                        </div>
                     </div>
-                </div>
+
+
+                {/*tarjeta de info juego*/}
+                <div className="cardareas">
+                    <div className="cardprofile_title">INFO JUEFO</div>
+                        <div className="cardprofile_body">
+                            Puntaje alto:
+                            Monedas:
+                            <div className="card_image"></div>
+                        </div>
+                    </div>
+
+
             </div>
+
+                
+
         
         </div>
     </div>
