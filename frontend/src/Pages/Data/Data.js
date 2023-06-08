@@ -31,7 +31,7 @@ const Data = () => {
     .then (res => {
       alert(res.data.message);
       const renglonUsuario = thisClicked.closest('tr');
-      closestRow.parentNode.removeChild(renglonUsuario);
+      renglonUsuario.parentNode.removeChild(renglonUsuario);
     })
     .catch (function(error) {
       console.log(error)
