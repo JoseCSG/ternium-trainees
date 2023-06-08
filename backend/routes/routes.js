@@ -1,10 +1,9 @@
 import { Router } from "express";
 import { login, getIdEmpleado, getIdPerfil,
-        protectedRoute, logout, getInfo, getCursosEmpleados,
-        getInfoJuego, getAvatars, setCursos, setPuntaje, addAvatar,
-        postUserLogin, postUserInfo, borrarUsuario, getEmpleadosTodos,
-        getInfoSingle,
-        actualizarUsuario, postCurso, getRotaciones, getAreas, getAreasInteres} from "../controllers/controllers.js";
+        protectedRoute, logout, getInfo, getAreas, getCursosEmpleados,
+        getInfoJuego, getAvatars, setMonedas, setPuntaje, addAvatar,
+        postUserLogin, postUserInfo, borrarUsuario, getEmpleadosTodos, postCurso,
+        getRotaciones, getAreasInteres, actualizarUsuario, getInfoSingle} from "../controllers/controllers.js";
 import { loginValidation } from '../validators/auth.js'
 import { validationMiddleware } from "../middlewares/validations-middleware.js";
 import { userAuth } from "../middlewares/auth-middleware.js";
@@ -23,7 +22,7 @@ router.get('/cursosEmpleado', getCursosEmpleados);
 //VALE
 router.get('/getInfoJuego', getInfoJuego);
 router.get('/getAvatars', getAvatars);
-router.post('/setCursos', setCursos);
+router.post('/setMonedas', setMonedas);
 router.post('/setPuntaje', setPuntaje);
 router.post('/addAvatar', addAvatar);
 

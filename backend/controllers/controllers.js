@@ -61,8 +61,8 @@ export const getIdEmpleado = async (req, res) => {
 export const getIdPerfil = async (req, res) => {
 	try {
 		const correo = req.query.correo
-		const {rows} = await client.query('SELECT fun_empleado_perfil($1)', [correo])
-		res.json(rows[0].fun_empleado_perfil)
+		const {rows} = await client.query('SELECT fun_empleado_id_perfil($1)', [correo])
+		res.json(rows[0].fun_empleado_id_perfil)
 	} catch (error) {
 		return res.status(500).json({
 			error: error.message,
@@ -73,11 +73,8 @@ export const getIdPerfil = async (req, res) => {
 export const getInfo = async (req, res) => {
 	try {
 		const idEmpleado = req.query.idempleado
-
-		//const {rows} = await client.query('SELECT * FROM empleados_info WHERE idEmpleado = $1', [idEmpleado])
-		const {rows} = await client.query('SELECT fun_empleados_perfil($1)', [idEmpleado])
-		//res.json(rows)
-		res.json(rows[0].fun_empleados_perfil)
+		const {rows} = await client.query('SELECT fun_empleado_perfil($1)', [idEmpleado])
+		res.json(rows[0].fun_empleado_perfil)
 	} catch (error) {
 		return res.status(500).json({
 			error: error.message,
@@ -89,7 +86,6 @@ export const getAreas = async (req, res) => {
 	try {
 		const {rows} = await client.query('SELECT fun_areas()')
 		res.json(rows[0].fun_areas)
-
 	} catch (error) {
 		return res.status(500).json({
 			error: error.message,
@@ -100,8 +96,8 @@ export const getAreas = async (req, res) => {
 export const getCursosEmpleados = async (req, res) => {
 	try {
 		const idEmpleado = req.query.idempleado
-		const {rows} = await client.query('SELECT fun_cursos($1) ', [idEmpleado])
-		res.json(rows[0].fun_cursos)
+		const {rows} = await client.query('SELECT fun_empleado_cursos($1)', [idEmpleado])
+		res.json(rows[0].fun_empleado_cursos)
 	} catch (error) {
 		return error.status(500).json({
 			error: error.message,		
@@ -113,8 +109,8 @@ export const getCursosEmpleados = async (req, res) => {
 export const getInfoJuego = async (req, res) => {
 	try {
 		const idEmpleado = req.query.idempleado
-		const {rows} = await client.query('SELECT fun_empleados_juego($1)', [idEmpleado])
-		res.json(rows[0].fun_empleados_juego)
+		const {rows} = await client.query('SELECT fun_empleado_juego($1)', [idEmpleado])
+		res.json(rows[0].fun_empleado_juego)
 	} catch (error) {
 		return res.status(500).json({
 			error: error.message,
@@ -125,8 +121,8 @@ export const getInfoJuego = async (req, res) => {
 export const getAvatars = async (req, res) => {
 	try {
 		const idEmpleado = req.query.idempleado
-		const {rows} = await client.query('SELECT fun_empleados_avatars($1)', [idEmpleado])
-		res.json(rows[0].fun_empleados_avatars)
+		const {rows} = await client.query('SELECT fun_empleado_avatars($1)', [idEmpleado])
+		res.json(rows[0].fun_empleado_avatars)
 	} catch (error) {
 		return res.status(500).json({
 			error: error.message,
@@ -134,13 +130,13 @@ export const getAvatars = async (req, res) => {
 	}
 }
 
-export const setCursos = async (req, res) => {
-  const infoCursos = req.body.params
-  const cursosCompletados = infoCursos.cursoscompletados
-  const idEmpleado = infoCursos.idempleado
+export const setMonedas = async (req, res) => {
+  const infoMonedas = req.body.params
+  const monedas = infoMonedas.monedas
+  const idEmpleado = infoMonedas.idempleado
 
   try {
-		await client.query("CALL sp_empleados_juego_update_cursos($1, $2)", [cursosCompletados, idEmpleado])
+		await client.query("CALL sp_empleados_juego_update_monedas($1, $2)", [monedas, idEmpleado])
 		res.send("Response received: " + req.body);
 	} catch (error) {
 		console.log(error)
@@ -185,7 +181,7 @@ export const addAvatar = async (req, res) => {
 //JEANNETTE
 export const getEmpleadosTodos = async (req, res) => {
 	try {
-		const {rows} = await client.query('SELECT * FROM empleados_info ')
+		const {rows} = await client.query('SELECT * FROM empleados_info')
 		res.json(rows)
 
 	} catch (error) {
@@ -195,11 +191,10 @@ export const getEmpleadosTodos = async (req, res) => {
 	}
 }
 
-
-export const borrarUsuario=async(req,res) => {
+export const borrarUsuario = async(req,res) => {
 	try {
 		const idEmpleado = req.params.id
-		await client.query("CALL sp_delete_empleado($1)", [idEmpleado])
+		await client.query("CALL sp_empleados_login_delete($1)", [idEmpleado])
 		res.status(200).json({ message: 'Data deleted' });
 	}
 	catch(error) 
@@ -217,13 +212,17 @@ export const actualizarUsuario = async (req, res) => {
 		genero,
 		fechanacimiento,
 		pais,
-		idarea
+		idarea,
+    fotoperfil,
+    fechainicio,
+    fechagraduacion,
+    idjefe
 	  } = req.body; // Datos actualizados del usuario
 	try {
 		const idEmpleado = req.params.id
 
-		await client.query("CALL sp_update_empleados_info($1, $2, $3, $4, $5, $6, $7, $8)", 
-		[nombre, apellidopaterno, apellidomaterno, genero, fechanacimiento, pais, idarea, idEmpleado])
+		await client.query("CALL sp_empleados_info_update($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)", 
+		[nombre, apellidopaterno, apellidomaterno, genero, fechanacimiento, pais, idEmpleado, idarea, fotoperfil, fechainicio, fechagraduacion, idjefe])
 
 	}
 	catch (error) {
@@ -235,10 +234,7 @@ export const actualizarUsuario = async (req, res) => {
 export const getInfoSingle = async (req, res) => {
 	try {
 		const idEmpleado = req.params.id
-
-		//const {rows} = await client.query('SELECT * FROM empleados_info WHERE idEmpleado = $1', [idEmpleado])
 		const {rows} = await client.query('SELECT * from empleados_info WHERE idempleado=$1', [idEmpleado])
-		//res.json(rows)
 		res.json(rows)
 	}
 	catch (error) {
@@ -252,7 +248,7 @@ export const postUserLogin = async (req, res) => {
 	const nuevoUsuario = req.body.params
 
 	try {
-		await client.query("CALL sp_insert_empleado($1, $2, $3)", [
+		await client.query("CALL sp_empleados_login_insert($1, $2, $3)", [
 			nuevoUsuario.correo,
 			nuevoUsuario.contraseña,
 			nuevoUsuario.idperfil
@@ -271,17 +267,18 @@ export const postUserLogin = async (req, res) => {
 export const postUserInfo = async (req, res) => {
 	try {
 		const infoNuevoUsuario = req.body.params	
-		await client.query("CALL sp_empleados_info_insert($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", [
+		await client.query("CALL sp_empleados_info_insert($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)", [
 			infoNuevoUsuario.nombre,
 			infoNuevoUsuario.apellidopaterno,
 			infoNuevoUsuario.apellidomaterno,
 			infoNuevoUsuario.genero,
 			infoNuevoUsuario.fechanacimiento,
 			infoNuevoUsuario.pais,
+      infoNuevoUsuario.idempleado,
 			infoNuevoUsuario.idarea,
-			infoNuevoUsuario.idempleado,
+      infoNuevoUsuario.fotoperfil,
 			infoNuevoUsuario.fechagraduacion,
-			infoNuevoUsuario.idJefe
+			infoNuevoUsuario.idjefe
 		]);
 		res.send("Response received: " + req.body);
 	} catch (error) {

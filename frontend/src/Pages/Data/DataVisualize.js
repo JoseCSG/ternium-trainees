@@ -18,7 +18,10 @@ function DataVisualize ()
         fechanacimiento: "",
         pais: "",
         idempleado: "",
-        idarea: ""
+        idarea: "",
+        fotoperfil: "",
+        fechagraduacion: "",
+        idjefe: ""
     });
 
     useEffect(()=>{
