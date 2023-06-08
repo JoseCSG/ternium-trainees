@@ -24,14 +24,9 @@ const Data = () => {
 
   const borrarUsuarioInfo = (e, idEmpleado) => {
     e.preventDefault();
-    const thisClicked=e.currentTarget
-    //thisClicked.innerText="Deleting...";
-
     axios.delete(`http://localhost:4000/api/empleados/delete/${idEmpleado}`)
     .then (res => {
       alert(res.data.message);
-      const renglonUsuario = thisClicked.closest('tr');
-      renglonUsuario.parentNode.removeChild(renglonUsuario);
     })
     .catch (function(error) {
       console.log(error)
