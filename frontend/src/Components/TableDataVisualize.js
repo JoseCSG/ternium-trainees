@@ -31,11 +31,9 @@ const TableDataVisualize = () =>
   detallesRotaciones=rotaciones.map((item,index)=> {
     return (
       <tr key={index}>
-          <td>{item.idrotacion}</td>
-          <td>{item.idempleado}</td>
           <td>{item.idarea}</td>
           <td>{item.fechainicio.split('T')[0]}</td>
-          <td>{item.fechafin.split('T')[0]}</td>
+          <td>{item.fechafin === null ? "Actualmente" : item.fechafin.split('T')[0]}</td>
       </tr>
     );
 
@@ -55,8 +53,6 @@ const TableDataVisualize = () =>
               <table className='table table-stripped'>
                 <thead>
                   <tr>
-                    <th>ID ROTACION</th>
-                    <th>ID EMPLEADO</th>
                     <th>ID AREA</th>
                     <th>FECHA INICIO</th>
                     <th>FECHA FIN</th>

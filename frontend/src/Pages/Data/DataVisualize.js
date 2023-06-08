@@ -39,8 +39,6 @@ function DataVisualize ()
         });
     },[idempleadoinfo])
 
-    
-
     return(
     <div>
         <TableDataVisualize/>

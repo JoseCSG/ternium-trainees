@@ -1,92 +1,3 @@
--- Crear las tablas
-CREATE TABLE perfiles (
-	idPerfil SERIAL NOT NULL PRIMARY KEY,
-	nombre VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE empleados_login (
-	idEmpleado SERIAL NOT NULL PRIMARY KEY,
-	correo VARCHAR(255) NOT NULL UNIQUE,
-	contraseña VARCHAR(255) NOT NULL,
-	estado BOOLEAN NOT NULL,
-	idPerfil INT NOT NULL
-);
-
-CREATE TABLE remuneraciones (
-	idRenumeracion SERIAL NOT NULL PRIMARY KEY,
-	sueldo INT NOT NULL,
-	ptu DATE NOT NULL,
-	fondoAhorro DATE NOT NULL,
-	idEmpleado INT NOT NULL
-);
-
-CREATE TABLE empleados_info (
-	idEmpleadoInfo SERIAL NOT NULL PRIMARY KEY,
-	nombre VARCHAR(100) NOT NULL,
-	apellidoPaterno VARCHAR(100) NOT NULL,
-	apellidoMaterno VARCHAR(100),
-	genero VARCHAR(50) NOT NULL,
-	fechaNacimiento DATE NOT NULL,
-	pais VARCHAR(100) NOT NULL,
-	idEmpleado INT NOT NULL,
-	idArea INT NOT NULL,
-	fotoPerfil VARCHAR(255),
-	fechaInicio DATE NOT NULL,
-	fechaGraduacion DATE,
-	idJefe INT 
-);
-
-CREATE TABLE areas (
-	idArea SERIAL NOT NULL PRIMARY KEY,
-	nombre VARCHAR(100) NOT NULL UNIQUE
-);
-
-CREATE TABLE areas_interes (
-	idAreaInteres SERIAL NOT NULL PRIMARY KEY,
-	idArea INT NOT NULL,
-	idEmpleado INT NOT NULL
-);
-
-CREATE TABLE rotaciones (
-	idRotacion SERIAL NOT NULL PRIMARY KEY,
-	idEmpleado INT NOT NULL,
-	idArea INT NOT NULL,
-	fechaInicio DATE NOT NULL,
-	fechaFin DATE
-);
-
-CREATE TABLE cursos (
-	idCurso SERIAL NOT NULL PRIMARY KEY,
-	nombre VARCHAR(200) NOT NULL UNIQUE,
-	idArea INT NOT NULL,
-	img TEXT
-);
-
-CREATE TABLE cursos_completados (
-	idCursoCompletado SERIAL NOT NULL PRIMARY KEY,
-	idEmpleado INT NOT NULL,
-	idCurso INT NOT NULL,
-	estado BOOLEAN NOT NULL
-);
-
-CREATE TABLE empleados_juego (
-	idEmpleadoJuego SERIAL NOT NULL PRIMARY KEY,
-	puntajeAlto INT NOT NULL,
-	monedas INT NOT NULL,
-	idEmpleado INT NOT NULL UNIQUE
-);
-
-CREATE TABLE avatars (
-	idAvatar SERIAL NOT NULL PRIMARY KEY,
-	nombre VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE empleados_avatars (
-	idEmpleadoAvatar SERIAL NOT NULL PRIMARY KEY,
-	idEmpleado INT NOT NULL,
-  idAvatar INT NOT NULL UNIQUE
-);
-
 -- Crear las llaves foráneas
 ALTER TABLE empleados_login ADD CONSTRAINT fk_id_perfil FOREIGN KEY (idPerfil) REFERENCES perfiles(idPerfil);
 ALTER TABLE empleados_info ADD CONSTRAINT fk_id_empleado_perfil FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
@@ -384,6 +295,43 @@ CREATE TRIGGER monedas_trigger
 AFTER UPDATE ON cursos_completados
 FOR EACH ROW
 EXECUTE FUNCTION trg_monedas();
+
+--Trigger rotaciones
+CREATE OR REPLACE FUNCTION trg_crear_rotaciones()
+RETURNS TRIGGER
+AS $$
+BEGIN
+	IF NEW.idArea <> OLD.idArea THEN
+		INSERT INTO rotaciones (idEmpleado, idArea, fechaInicio)
+		VALUES (NEW.idEmpleado, NEW.idArea, now());
+	END IF;
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER rotaciones_trigger_iniciar
+AFTER UPDATE ON empleados_info
+FOR EACH ROW
+EXECUTE FUNCTION trg_iniciar_rotaciones();
+
+CREATE OR REPLACE FUNCTION trg_terminar_rotaciones()
+RETURNS TRIGGER
+AS $$
+BEGIN
+	IF NEW.idArea <> OLD.idArea THEN
+		UPDATE rotaciones 
+		SET fechafin = now()		
+		WHERE idArea = OLD.idArea;
+	END IF;
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER rotaciones_trigger_terminar
+AFTER UPDATE ON empleados_info
+FOR EACH ROW
+EXECUTE FUNCTION trg_terminar_rotaciones();
+
 
 -- Insertar datos
 INSERT INTO perfiles(nombre) VALUES ('Administrador');
