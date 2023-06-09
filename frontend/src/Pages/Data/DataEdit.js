@@ -2,13 +2,14 @@ import React from "react";
 import { useState,useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { getAreas } from "../../api/auth";
 
 
 function DataEdit ()
 {
     const navigate = useNavigate();
     let {idempleadoinfo} = useParams();
-
+    const [areas, setAreas] = useState([]);
     const [usuario,setUsuario]=useState({
         nombre: "",
         apellidopaterno: "",
@@ -28,7 +29,9 @@ function DataEdit ()
         const fetchData = async () => {
           try {
             const { data } = await axios.get(`http://localhost:4000/api/data/get/${idempleadoinfo}`);
+            const areas = await getAreas();
             setUsuario(data[0]);
+            setAreas(areas.data);
           } catch (error) {
             console.log(error);
             alert("Error al cargar el usuario");
@@ -72,6 +75,10 @@ function DataEdit ()
             alert("Error al editar el usuario")
         }
     };
+    const handleAreaSelection = (e) => {
+        const selectedArea = areas.find((area) => area.idArea === parseInt(e.target.value));
+        setUsuario({ ...usuario, idarea: selectedArea.idArea });
+      };
 
     return (
         <div className="container mt-5">
@@ -119,7 +126,11 @@ function DataEdit ()
 
                                     <div className="mb-3">
                                         <label>Area</label>
-                                        <input type="number" name="idarea" value={usuario.idarea} onChange={handleInput2} className="form-control"/>
+                                        <select type="number" name="idarea" value={usuario.idarea} onChange={handleAreaSelection} className="form-control">
+                                        {areas.map((area) => (
+                                            <option value={area.idArea}>{area.nombre}</option>
+                                        ))}
+                                        </select>
                                     </div>
 
                                     <div className="mb-3">

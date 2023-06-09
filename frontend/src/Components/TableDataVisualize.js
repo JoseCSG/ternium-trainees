@@ -1,18 +1,21 @@
 import React from "react";
 import axios from "axios";
 import { useState,useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { getRotaciones } from "../api/auth";
+import { Link, useParams } from "react-router-dom";
+import { getAreas } from "../api/auth";
 
 const TableDataVisualize = () =>
 {
     let {idempleadoinfo} = useParams();
     const[rotaciones,setRotaciones]=useState([]);
+    const [areas, setAreas] = useState([]);
     const loadRotaciones = async () => 
     {
       try {
         //console.log(idempleadoinfo)
         const res = await axios.get(`http://localhost:4000/api/data/getRotaciones/${idempleadoinfo}`)
+        const areas = await getAreas();
+        setAreas(areas.data)
         //console.log(res)
         setRotaciones(res.data)
       } catch (error) {
@@ -27,11 +30,11 @@ const TableDataVisualize = () =>
     },[idempleadoinfo]);
     loadRotaciones()
 
-    var detallesRotaciones="";
-  detallesRotaciones=rotaciones.map((item,index)=> {
+    var detallesRotaciones = rotaciones.map((item,index)=> {
+    const areaUsuario = areas.find((area) => area.idArea === item.idarea);
     return (
       <tr key={index}>
-          <td>{item.idarea}</td>
+          <td>{areaUsuario.nombre}</td>
           <td>{item.fechainicio.split('T')[0]}</td>
           <td>{item.fechafin === null ? "Actualmente" : item.fechafin.split('T')[0]}</td>
       </tr>
@@ -46,6 +49,7 @@ const TableDataVisualize = () =>
           <div className='card'>
             <div className='card-header'>
               <h4> Historial de Rotacion
+              <Link to="/data" className='btn btn-danger float-end'>Regresar</Link>
               </h4>
             </div>
 

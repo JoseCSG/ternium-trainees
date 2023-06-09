@@ -44,11 +44,10 @@ const Data = () => {
           <td>{item.nombre}</td>
           <td>{item.apellidopaterno}</td>
           <td>{item.apellidomaterno}</td>
+          <td>{areaUsuario.nombre}</td>
           <td>{item.genero}</td>
           <td>{(item.fechanacimiento).split('T')[0]}</td>
           <td>{item.pais}</td>
-          <td>{item.idempleado}</td>
-          <td>{areaUsuario.nombre}</td>
           <td>
             <Link to={`/data/edit/${item.idempleado}`} className='btn btn-success'>EDIT</Link>
           </td>
@@ -56,7 +55,7 @@ const Data = () => {
             <button type="button" onClick={(e)=>borrarUsuarioInfo(e, item.idempleado)}  className='btn btn-danger'>BORRAR</button>
           </td>
           <td>
-            <Link to={`/data/getRotaciones/${item.idempleadoinfo}`} className='btn btn-info'>VER</Link>
+            <Link to={`/data/getRotaciones/${item.idempleado}`} className='btn btn-info'>VER</Link>
           </td>
       </tr>
     );
@@ -93,11 +92,10 @@ const Data = () => {
                     <th>NOMBRE</th>
                     <th>APELLIDO PATERNO</th>
                     <th>APELLIDO MATERNO</th>
+                    <th>AREA </th>
                     <th>GENERO</th>
                     <th>FECHA NAC</th>
                     <th>PAIS</th>
-                    <th>ID EMP</th>
-                    <th>AREA </th>
                     <th>EDITAR</th>
                     <th>BORRAR</th>
                     <th>VER</th>

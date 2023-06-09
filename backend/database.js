@@ -8,6 +8,6 @@ const client = new Client ({
     password: "password",
     host: "localhost",
     port: 5432,
-    database: "basebasura",
+    database: "ternium_database",
 })
 export default client;

@@ -308,6 +308,21 @@ AFTER UPDATE ON empleados_info
 FOR EACH ROW
 EXECUTE FUNCTION trg_terminar_rotaciones();
 
+CREATE OR REPLACE FUNCTION trg_insert_rotaciones()
+RETURNS TRIGGER
+AS $$
+BEGIN
+	INSERT INTO rotaciones (idEmpleado, idArea, fechainicio)
+	SELECT NEW.idEmpleado, NEW.idArea, now();
+
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER insert_empleados_rotaciones_trigger
+AFTER INSERT ON empleados_info
+FOR EACH ROW
+EXECUTE FUNCTION trg_insert_rotaciones();
 
 -- Insertar datos
 INSERT INTO areas(nombre)

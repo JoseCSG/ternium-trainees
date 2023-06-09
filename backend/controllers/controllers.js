@@ -299,21 +299,15 @@ export const postCurso = async(req,res) => {
 	console.log("ID Area: " + idarea);
 	//console.log("Img: " + img);
 
-	client.query("INSERT INTO cursos (nombre , idarea) VALUES ($1,$2)", [
-		nombre,
-		idarea
-	])
-	.then((response) => {
-		console.log("Data saved");
+	try {
+		const response = await client.query("INSERT INTO cursos (nombre , idarea) VALUES ($1,$2)", [
+			nombre, idarea
+		]);
 		console.log(response);
-	})
-	.catch((err) => {
-		console.log(err);
-	});
 
-	console.log(req.body);
-	res.send("Response received: " + req.body);
-
+	} catch (error) {
+		console.log(error.message)
+	}
 };
 
 //get de rotaciones
@@ -321,7 +315,8 @@ export const getRotaciones = async (req, res) => {
 	try {
 		const idEmpleado = req.params.id
 
-		const {rows} = await client.query('SELECT * FROM rotaciones WHERE idempleado=$1', [idEmpleado])
+		const {rows} = await client.query('SELECT * FROM rotaciones WHERE idempleado = $1 ORDER BY fechainicio DESC'
+		 ,[idEmpleado])
 		res.json(rows)
 		//console.log(rows)
 	} catch (error) {
