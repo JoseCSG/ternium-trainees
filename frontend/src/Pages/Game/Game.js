@@ -12,7 +12,7 @@ const Game = () => {
   });
 
   const idEmpleado = useRef(localStorage.getItem('idEmpleado'));
-  const idJSON = useRef({ "idempleado": idEmpleado.current });
+  const idJSON = useRef({"idempleado": idEmpleado.current});
   const effectUsed = useRef(false);
 
   // Carga el nombre del usuario desde la base de datos
