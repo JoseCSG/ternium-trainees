@@ -64,31 +64,30 @@ export async function nuevoEmpleado(infoEmpleado){
     return await axios.post('http://localhost:4000/api/adduser',{params: infoEmpleado});
 }
 
-export async function borrarUsuario(idempleadoinfo){
-    return await axios.delete('http://localhost:4000/api/empleados/delete',{params: idempleadoinfo});
+export async function borrarUsuario(idEmpleado){
+    return await axios.delete(`http://localhost:4000/api/empleados/delete/${idEmpleado}`);
 }
-export async function actualizarUsuario(idempleadoinfo)
+
+export async function actualizarUsuario(idempleadoinfo,data) //aquii estoy trabajando
 {
-    return await axios.get('http://localhost:4000/api/data/edit',{params: idempleadoinfo});
+    return await axios.put(`http://localhost:4000/api/data/edit/${idempleadoinfo}`,data);
 }
 
 export async function getSingleUsuario(idempleadoinfo)
 {
-    return await axios.get('http://localhost:4000/api/data/get', {params: idempleadoinfo});
+    return await axios.get(`http://localhost:4000/api/data/get/${idempleadoinfo}`);
 }
-export async function getInfoUsuario(idempleadoinfo){
-    return await axios.get('http://localhost:4000/api/data/{id}/edit',{params: idempleadoinfo});
-}
+
 export async function nuevoCurso(infoNuevoCurso){
-    return await axios.post('http://localhost:4000/api/addcurso',{params: infoNuevoCurso});
+    return await axios.post('http://localhost:4000/api/addcurso',infoNuevoCurso);
 }
 
 export async function getRotaciones(idempleado)
 {
-    return await axios.get(`http://localhost:4000/api/data/getRotaciones/${idempleado}`,{params: idempleado});
+    return await axios.get(`http://localhost:4000/api/data/getRotaciones/${idempleado}`);
 }
 
 export async function getAreasInteres(idempleado)
 {
-    return await axios.get(`http://localhost:4000/api/data/getAreasInteres/${idempleado}`,{params: idempleado});
+    return await axios.get(`http://localhost:4000/api/data/getAreasInteres/${idempleado}`);
 }

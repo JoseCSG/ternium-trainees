@@ -3,8 +3,8 @@ import '../../Components/TableDataVisualize';
 import TableDataVisualize from "../../Components/TableDataVisualize";
 import '../Data/DataVisualize.css';
 import { useState,useEffect } from "react";
-import axios from "axios";
 import { useParams } from "react-router-dom";
+import { getSingleUsuario, getAreasInteres } from "../../api/auth";
 
 function DataVisualize ()
 {
@@ -25,7 +25,7 @@ function DataVisualize ()
     });
 
     useEffect(()=>{
-        axios.get(`http://localhost:4000/api/data/get/${idempleadoinfo}`) ///aqui tiene que ir un get
+        getSingleUsuario(idempleadoinfo)
         .then(res=> {
             console.log(res)
             setUsuario(res.data[0])
@@ -35,7 +35,7 @@ function DataVisualize ()
     const[areasInteres, setAreasInteres]=useState({});
 
     useEffect(()=> {
-        axios.get(`http://localhost:4000/api/data/getAreasInteres/${idempleadoinfo}`)
+        getAreasInteres(idempleadoinfo)
         .then(res=> {
             console.log(res)
             setAreasInteres(res.data)
