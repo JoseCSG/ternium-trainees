@@ -1,14 +1,11 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { getAreas } from '../../api/auth'
+import { nuevoCurso } from '../../api/auth'
 
 
 const CursoCreate = () => {
-    const navigate = useNavigate()
+    //const navigator = useNavigate()
 
-    const [areas, setAreas] = useState([])
     const[cursoInfo,setCursoInfo]=useState({
         nombre: "",
         idarea: "",
@@ -19,36 +16,25 @@ const CursoCreate = () => {
         e.persist();
         setCursoInfo({...cursoInfo,[e.target.name]:e.target.value})
     }
-    const handleAreaSelection = (e) => {
-        const selectedArea = areas.find((area) => area.idArea === parseInt(e.target.value));
-        setCursoInfo({ ...cursoInfo, idarea: selectedArea.idArea });
-      };
 
     const creaCurso = async (e) => {
         e.preventDefault();
-        try {
-            const data ={
-                nombre: cursoInfo.nombre,
-                idarea: cursoInfo.idarea,
-            }
-            const response = await axios.post(`http://localhost:4000/api/addcurso`,data)
-            console.log(response)
-            navigate("/data")
-        } catch (error) {
-            console.log(error.message)
+        const data ={
+            nombre: cursoInfo.nombre,
+            idarea: cursoInfo.idarea,
+
         }
+
+        nuevoCurso(data)
+        .then (res=> {
+            alert(res.data.message)
+        })
+        //navigator("/data")
+        .catch (function(error){
+            console.error(error)
+        })
+
     }
-    const loadAreas = async () => {
-        try {
-            const {data} = await getAreas();
-            setAreas(data)
-        } catch (error) {
-            console.log(error.message)
-        }
-    }
-    useEffect (() => {
-        loadAreas();
-    },[]);
 
     return (
         <div className='container mt-5'>
@@ -68,12 +54,8 @@ const CursoCreate = () => {
                                 </div>
                                         
                                 <div className="mb-3">
-                                    <label>Area</label>
-                                    <select type="number" name="idarea" value={cursoInfo.idarea} onChange={handleAreaSelection} className="form-control">
-                                        {areas.map((area) => (
-                                            <option value={area.idArea}>{area.nombre}</option>
-                                        ))}
-                                    </select>
+                                    <label>ID Area</label>
+                                    <input type="text" name="idarea" value={cursoInfo.idarea} onChange={handleInput} className="form-control"/>
                                 </div>
 
     

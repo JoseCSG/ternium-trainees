@@ -1,8 +1,7 @@
 import React from "react";
 import { useState,useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { getAreas } from "../../api/auth";
+import { getAreas, getSingleUsuario, actualizarUsuario } from "../../api/auth";
 
 
 function DataEdit ()
@@ -28,7 +27,7 @@ function DataEdit ()
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const { data } = await axios.get(`http://localhost:4000/api/data/get/${idempleadoinfo}`);
+            const { data } = await getSingleUsuario(idempleadoinfo)
             const areas = await getAreas();
             setUsuario(data[0]);
             setAreas(areas.data);
@@ -68,7 +67,7 @@ function DataEdit ()
                 idjefe:usuario.idjefe,
             }
             console.log("Antes del post")
-            await axios.put(`http://localhost:4000/api/data/edit/${usuario.idempleado}`,data) //aqui tiene que ir un put
+            await actualizarUsuario(usuario.idempleado, data);
             navigate('/data')
         } catch (error) {
             console.log(error)
