@@ -375,5 +375,20 @@ export const seleccionAreasInteres = async (req, res) => {
 	  res.status(500).json({ message: 'Error al actualizar el checkbox en la base de datos' });
 	}
   };
-  
-  
+
+
+  export const getInfoUsuarioJuego = async (req, res) =>
+  {
+	try {
+		const idEmpleado = req.params.id
+
+		const {rows} = await client.query('SELECT * FROM empleados_juego WHERE idempleado=$1', [idEmpleado])
+		res.json(rows)
+		console.log(rows)
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+
+  }
