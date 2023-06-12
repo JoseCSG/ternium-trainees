@@ -340,3 +340,40 @@ export const getAreasInteres = async (req, res) => {
 		})
 	}
 }
+
+export const seleccionAreasInteres = async (req, res) => {
+	const nombre = req.body.nombre;
+	const idEmpleado = req.body.idempleado;
+  
+	try {
+	  const IDAREA = await client.query('SELECT idarea FROM areas WHERE nombre=$1', [nombre]);
+  
+	  if (IDAREA.rows.length > 0) {
+		const idArea = IDAREA.rows[0].idarea;
+  
+		// Verificar si ya existe un registro para el idEmpleado e idArea en areas_interes
+		const existingRecord = await client.query(
+		  'SELECT * FROM areas_interes WHERE idempleado = $1 AND idarea = $2',
+		  [idEmpleado, idArea]
+		);
+  
+		if (existingRecord.rows.length === 0) {
+		  await client.query(
+			'INSERT INTO areas_interes (idarea, idempleado) VALUES ($1, $2)',
+			[idArea, idEmpleado]
+		  );
+  
+		  res.status(200).json({ message: 'Checkbox insertado en la base de datos' });
+		} else {
+		  res.status(200).json({ message: 'El registro ya existe' });
+		}
+	  } else {
+		res.status(404).json({ message: 'No se encontró el ID del área' });
+	  }
+	} catch (error) {
+	  console.error('Error en la consulta SQL:', error);
+	  res.status(500).json({ message: 'Error al actualizar el checkbox en la base de datos' });
+	}
+  };
+  
+  

@@ -64,7 +64,6 @@ function DataVisualize ()
                         <div className="cardprofile_body">
                             {Array.isArray(areasInteres) && areasInteres.length > 0 ? (
                                 <React.Fragment>
-                                    Areas:
                                     {areasInteres.map((area) => (
                                     <React.Fragment key={area.idareainteres}>
                                         {area.nombre}
