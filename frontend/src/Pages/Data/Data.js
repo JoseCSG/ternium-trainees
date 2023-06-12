@@ -1,9 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import {useState} from 'react';
-import axios from 'axios';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; //sin esto no me funcionaba el dropdown
-import { getAreas } from '../../api/auth';
+import { getAreas,getEmpleadosTodos,borrarUsuario } from '../../api/auth';
 
 
 const Data = () => {
@@ -12,7 +11,7 @@ const Data = () => {
   const [areas, setAreas] = useState([]);
   
   const loadUsuarios = async () => {
-    const { data } = await axios.get('http://localhost:4000/api/empleados');
+    const { data } = await getEmpleadosTodos();
     setUsuarios(data)
     localStorage.setItem('correo', '');
   }
@@ -24,7 +23,7 @@ const Data = () => {
 
   const borrarUsuarioInfo = (e, idEmpleado) => {
     e.preventDefault();
-    axios.delete(`http://localhost:4000/api/empleados/delete/${idEmpleado}`)
+    borrarUsuario(idEmpleado)
     .then (res => {
       alert(res.data.message);
     })
