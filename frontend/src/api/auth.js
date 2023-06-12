@@ -91,3 +91,13 @@ export async function getAreasInteres(idempleado)
 {
     return await axios.get(`http://localhost:4000/api/data/getAreasInteres/${idempleado}`);
 }
+
+export async function actualizarCheckboxEnBaseDeDatos(nombre,idempleado) 
+{
+    return await axios.post(`http://localhost:4000/api/actualizarCheckbox`,{nombre,idempleado});
+}
+
+export async function getInfoUsuarioJuego(idempleado)
+{
+    return await axios.get(`http://localhost:4000/api/data/getInfoJuego/${idempleado}`);
+}
