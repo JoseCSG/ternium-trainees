@@ -116,13 +116,13 @@ const Profile = () => {
               <div className="column px-4 border-custom" style={{ backgroundColor: 'rgb(212, 212, 212)'}}>
                 <div className="row my-3 justify-content-center">
                   <h5 className="header5 px-3 my-2">Renumeración</h5>
-                    <div className="col-3 my-2 px-3" style={{ backgroundColor: 'white' }}>
+                    <div className="col-md-3 col-sm-6 my-2" style={{ backgroundColor: 'white' }}>
                       <br />
                       <p className="">Sueldo correspondiente:</p>
                       <p className="">Encuadre actual:</p>
                     </div>
                     
-                    <div className="col-2 my-2" style={{ backgroundColor: 'white' }}>
+                    <div className="col-md-2 col-sm-6 my-2" style={{ backgroundColor: 'white' }}>
                       <br />
                       <p className="">{infoEmpleado.sueldo}</p>
                       <p className="">{infoEmpleado.area}</p>
@@ -132,13 +132,13 @@ const Profile = () => {
                       <div className="vertical-line"></div>
                     </div>
 
-                    <div className="col-3 my-2" style={{ backgroundColor: 'white' }}>
+                    <div className="col-md-3 col-sm-6 my-2" style={{ backgroundColor: 'white' }}>
                       <h6 className="my-1">Fechas importantes</h6>
                       <p className="">Próximo adelanto PTU:</p>
                       <p className="">Fondo de ahorro:</p>
                     </div>
 
-                    <div className="col-2 my-2" style={{ backgroundColor: 'white' }}>
+                    <div className="col-md-3 col-sm-6 my-2" style={{ backgroundColor: 'white' }}>
                       <h6 className="my-1" style={{ color: 'white' }}> . </h6>
                       <p className="">{infoEmpleado.PTU}</p>
                       <p className="">{infoEmpleado.fondoAhorro}</p>
