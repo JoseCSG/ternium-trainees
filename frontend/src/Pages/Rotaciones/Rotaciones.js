@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
-import { getAreas } from "../../api/auth";
+import { getAreas, getRotaciones } from "../../api/auth";
 
 const Rotaciones = () => {
   const idempleadoinfo = localStorage.getItem('idEmpleado');
@@ -10,7 +9,8 @@ const Rotaciones = () => {
 
   const loadRotaciones = async () => {
     try {
-      const res = await axios.get(`http://localhost:4000/api/data/getRotaciones/${idempleadoinfo}`);
+      //const res = await axios.get(`http://localhost:4000/api/data/getRotaciones/${idempleadoinfo}`);
+      const res = await getRotaciones(idempleadoinfo);
       const areasData = await getAreas();
       setAreas(areasData.data);
       setRotaciones(res.data);

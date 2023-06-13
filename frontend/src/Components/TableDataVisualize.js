@@ -1,8 +1,7 @@
 import React from "react";
-import axios from "axios";
 import { useState,useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getAreas } from "../api/auth";
+import { getAreas, getRotaciones } from "../api/auth";
 
 const TableDataVisualize = () =>
 {
@@ -12,8 +11,8 @@ const TableDataVisualize = () =>
     const loadRotaciones = async () => 
     {
       try {
-        //console.log(idempleadoinfo)
-        const res = await axios.get(`http://localhost:4000/api/data/getRotaciones/${idempleadoinfo}`)
+        //const res = await axios.get(`http://localhost:4000/api/data/getRotaciones/${idempleadoinfo}`)
+        const res = await getRotaciones(idempleadoinfo);
         const areas = await getAreas();
         setAreas(areas.data)
         //console.log(res)
@@ -21,9 +20,7 @@ const TableDataVisualize = () =>
       } catch (error) {
         //console.log(error.message)
       }
-      //getRotaciones(id)
 
-      //setRotaciones(res.data)
 
       }
     useEffect (() => {
