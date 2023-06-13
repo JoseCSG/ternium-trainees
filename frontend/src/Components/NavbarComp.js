@@ -42,6 +42,7 @@ const NavbarComp = ({ isAuth, isAdmin, dispatch }) => {
                 {!isAdmin && <Nav.Link href="/courses">Cursos</Nav.Link>}
                 {!isAdmin && <Nav.Link href="/rotaciones">Rotaciones</Nav.Link>}
                 {!isAdmin && <Nav.Link href="/game">Juego</Nav.Link>}
+                {!isAdmin && <Nav.Link href="/rotaciones">Rotaciones</Nav.Link>}
                 {!isAdmin && <Nav.Link href="/profile">Perfil</Nav.Link>}
                 {isAdmin && <Nav.Link href="/data">Datos</Nav.Link>}
                 <Nav.Link onClick={logout}>Log out</Nav.Link>

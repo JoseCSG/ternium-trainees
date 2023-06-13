@@ -29,6 +29,7 @@ function App() {
         <Route path='/courses' element={isAuth && !isAdmin ? <Courses/> : <Login/>}/>
         <Route path='/rotaciones' element={isAuth && !isAdmin ? <Rotaciones/> : <Login/>}/>
         <Route path='/game' element={isAuth && !isAdmin ? <Game/> : <Login/>}/>
+        <Route path='/rotaciones' element={isAuth && !isAdmin ? <Rotaciones/> : <Login/>}/>
         <Route path='/login' element={!isAuth ? <Login/> : <Home/>}/>
         <Route path='/data' element={isAuth && isAdmin ? <Data/> : <Home/>}/>
         <Route path='/data/create/usuario' element={isAuth && isAdmin ? <DataCreate/> : <Home/>}/>
