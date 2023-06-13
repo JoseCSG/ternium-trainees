@@ -324,9 +324,17 @@ VALUES('Recursos Humanos'),
       ('Comunicaciones');
 
 INSERT INTO avatars(nombre)
-VALUES('Avatar 1'),
-      ('Avatar 2'),
-      ('Avatar 3');
+VALUES('Leo'),
+      ('Moto Moto'),
+      ('Marty'),
+      ('Jacob'),
+      ('Milaneso'),
+      ('Otis'),
+      ('Burro'),
+      ('Pato'),
+      ('Dumbo'),
+      ('Rhino'),
+      ('Nick');
 
 INSERT INTO cursos(nombre, idarea)
 VALUES('Como lidear con las personas', 1),
