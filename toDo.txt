@@ -1,16 +1,7 @@
-Pestaña para view en admin
-    -Historial de rotaciones
-    -Poner toda la informacion del trainee
+En rotaciones
+    hacer un pop up para cambiar la rotacion, añadir 
+    performace, potencial
 
-Perfil
-    Area de interes 
-    Remuneracion
-    Poner la información
-
-Admin 
-    Encuadre
-    Agregar Cursos
-
-Base de Datos
-    Trigger cuando agregas cursos
+Cambiar que solo aparezca los cursos del area actual
     
+Hacer uno igual de Rotaciones para remuneracion

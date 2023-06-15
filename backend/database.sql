@@ -21,7 +21,7 @@ ALTER TABLE empleados_login
 ALTER TABLE remuneraciones
   ADD CONSTRAINT fk_id_empleado_renumeracion FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE;
 ALTER TABLE rotaciones
-  ADD CONSTRAINT fk_id_empleado_rotacion FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado),
+  ADD CONSTRAINT fk_id_empleado_rotacion FOREIGN KEY (idEmpleado) REFERENCES empleados_login(idEmpleado) ON DELETE CASCADE,
   ADD CONSTRAINT fk_id_area_rotacion FOREIGN KEY (idArea) REFERENCES areas(idArea);
 
 --Stored Procedures empleados_avatar
@@ -37,25 +37,25 @@ $$ LANGUAGE SQL;
 CREATE OR REPLACE PROCEDURE sp_empleados_info_insert(
 	nombre VARCHAR(100), apellidoPaterno VARCHAR(100), apellidoMaterno VARCHAR(100),
 	genero VARCHAR(50), fechaNacimiento DATE, pais VARCHAR(100), idEmpleado INT,
-	idArea INT, fotoPerfil VARCHAR(255), fechaGraduacion DATE, idJefe INT)
+	fotoPerfil VARCHAR(255), fechaGraduacion DATE, idJefe INT, idArea INT)
 AS $$
 	INSERT INTO empleados_info(
 	nombre, apellidoPaterno, apellidoMaterno, genero, fechaNacimiento, pais,
-	idEmpleado, idArea, fotoPerfil, fechaInicio, fechaGraduacion, idJefe)
-  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, CURRENT_DATE, $10, $11);
+	idEmpleado, fotoPerfil, fechaInicio, fechaGraduacion, idJefe)
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, CURRENT_DATE, $9, $10, $11);
 $$ LANGUAGE SQL;
 
 --Update
 CREATE OR REPLACE PROCEDURE sp_empleados_info_update(
 	nombre VARCHAR(100), apellidoPaterno VARCHAR(100), apellidoMaterno VARCHAR(100), 
-	genero VARCHAR(50), fechaNacimiento DATE, pais VARCHAR(100), idEmpleado INT,
-  idArea INT, fotoPerfil VARCHAR(255), fechaInicio DATE, fechaGraduacion DATE,
+	genero VARCHAR(50), fechaNacimiento DATE, pais VARCHAR(100), idEmpleado INT, 
+  fotoPerfil VARCHAR(255), fechaInicio DATE, fechaGraduacion DATE,
   idJefe INT)
 AS $$
 	UPDATE empleados_info
 	SET nombre = $1, apellidoPaterno = $2, apellidoMaterno = $3, genero = $4, 
-		fechaNacimiento = $5, pais = $6, idArea = $8, fotoPerfil = $9,
-    fechaInicio = $10, fechaGraduacion = $11, idJefe = $12
+		fechaNacimiento = $5, pais = $6, fotoPerfil = $8,
+    fechaInicio = $9, fechaGraduacion = $10, idJefe = $11
 	WHERE idEmpleado = $7;
 $$ LANGUAGE SQL;
 
@@ -143,7 +143,7 @@ AS $$
     SELECT json_agg(json_build_object('nombre', c.nombre, 'imagenURL', img ,'estado', estado))
     FROM cursos_completados cc
     INNER JOIN cursos c ON cc.idCurso = c.idCurso
-    WHERE cc.idEmpleado = $1;
+    WHERE cc.idEmpleado = $1 AND c.idArea = (SELECT idArea FROM empleados_info WHERE idEmpleado = $1);
 $$ LANGUAGE SQL;
 
 --Función empleado_id
@@ -288,7 +288,7 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER rotaciones_trigger_iniciar
 AFTER UPDATE ON empleados_info
 FOR EACH ROW
-EXECUTE FUNCTION trg_iniciar_rotaciones();
+EXECUTE FUNCTION trg_crear_rotaciones();
 
 CREATE OR REPLACE FUNCTION trg_terminar_rotaciones()
 RETURNS TRIGGER
@@ -382,13 +382,13 @@ VALUES(10000, '2023-10-30', '2023-12-10', 1),
       (15000, '2023-10-30', '2023-12-10', 2),
       (20000, '2023-10-30', '2023-12-10', 3);
 
-INSERT INTO rotaciones(idempleado, idarea, fechainicio, fechafin)
-VALUES(1, 2, '2022-01-01','2022-06-06'),
-      (1, 2, '2023-01-01','2023-06-06'),
-      (1, 1, '2023-01-01','2023-06-06'),
-      (2, 2, '2022-01-01','2022-06-06'),
-      (2, 2, '2023-01-01','2023-06-06'),
-      (2, 1, '2023-01-01','2023-06-06');
+INSERT INTO rotaciones(idempleado, idarea, fechainicio, fechafin, performance, potencial)
+VALUES(1, 2, '2022-01-01','2022-06-06', 5, 'MN'),
+      (1, 2, '2023-01-01','2023-06-06', 4, 'MN+'),
+      (1, 1, '2023-01-01','2023-06-06', 1, 'PROM'),
+      (2, 2, '2022-01-01','2022-06-06', 2, 'AP'),
+      (2, 2, '2023-01-01','2023-06-06', 3, 'PROM'),
+      (2, 1, '2023-01-01','2023-06-06', 5, 'MN+');
 
 -- Update
 UPDATE cursos_completados
@@ -398,3 +398,5 @@ WHERE idcurso IN (6, 7);
 UPDATE cursos_completados
 SET estado = true
 WHERE idcurso IN (11, 13);
+
+CREATE INDEX idx_employeeName ON empleados_info (nombre);

@@ -2,14 +2,18 @@ import React from "react";
 import { useState,useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { getAreas } from "../../api/auth";
-
+import RotacionForm from "../../Components/RotacionForm";
+import Button from 'react-bootstrap/Button';
+import RemuneracionForm from "../../Components/RemuneracionForm";
+import {format} from 'date-fns';
 
 function DataEdit ()
 {
     const navigate = useNavigate();
     let {idempleadoinfo} = useParams();
-    const [areas, setAreas] = useState([]);
+    const [showRotacion, setShowRotacion] = useState(false);
+    const [showRemuneracion, setShowRemuneracion] = useState(false);
+
     const [usuario,setUsuario]=useState({
         nombre: "",
         apellidopaterno: "",
@@ -18,7 +22,6 @@ function DataEdit ()
         fechanacimiento: "",
         pais: "",
         idempleado: "",
-        idarea: "",
         fotoperfil: "",
         fechainicio: "",
         fechagraduacion: "",
@@ -28,12 +31,11 @@ function DataEdit ()
     useEffect(() => {
         const fetchData = async () => {
           try {
+            console.log(idempleadoinfo)
             const { data } = await axios.get(`http://localhost:4000/api/data/get/${idempleadoinfo}`);
-            const areas = await getAreas();
-            setUsuario(data[0]);
-            setAreas(areas.data);
+            const formattedDate = format(new Date(data[0].fechanacimiento), 'yyyy-MM-dd');
+            setUsuario({...data[0], fechanacimiento: formattedDate});
           } catch (error) {
-            console.log(error);
             alert("Error al cargar el usuario");
           }
         };
@@ -61,13 +63,12 @@ function DataEdit ()
                 fechanacimiento:usuario.fechanacimiento,
                 pais:usuario.pais,
                 idempleado:usuario.idempleado,
-                idarea:usuario.idarea,
                 fotoperfil:usuario.fotoperfil,
                 fechainicio:usuario.fechainicio,
                 fechagraduacion:usuario.fechagraduacion,
                 idjefe:usuario.idjefe,
             }
-            console.log("Antes del post")
+            console.log(data)
             await axios.put(`http://localhost:4000/api/data/edit/${usuario.idempleado}`,data) //aqui tiene que ir un put
             navigate('/data')
         } catch (error) {
@@ -75,10 +76,6 @@ function DataEdit ()
             alert("Error al editar el usuario")
         }
     };
-    const handleAreaSelection = (e) => {
-        const selectedArea = areas.find((area) => area.idArea === parseInt(e.target.value));
-        setUsuario({ ...usuario, idarea: selectedArea.idArea });
-      };
 
     return (
         <div className="container mt-5">
@@ -94,51 +91,54 @@ function DataEdit ()
                         </div>
                         <div className="card-body">
                             <form onSubmit={handleSubmit}>
-                                    <div className="mb-3">
-                                        <label>Nombre</label>
-                                        <input type="text" name="nombre" value={usuario.nombre} onChange={handleInput2} className="form-control"/>
-                                    </div>
+                                <div className="mb-3">
+                                    <label>Nombre</label>
+                                    <input type="text" name="nombre" value={usuario.nombre} onChange={handleInput2} className="form-control"/>
+                                </div>
 
-                                    <div className="mb-3">
-                                        <label>Apellido Paterno</label>
-                                        <input type="text" name="apellidopaterno" value={usuario.apellidopaterno} onChange={handleInput2} className="form-control"/>
-                                    </div>
+                                <div className="mb-3">
+                                    <label>Apellido Paterno</label>
+                                    <input type="text" name="apellidopaterno" value={usuario.apellidopaterno} onChange={handleInput2} className="form-control"/>
+                                </div>
 
-                                    <div className="mb-3">
-                                        <label>Apellido Materno</label>
-                                        <input type="text" name="apellidomaterno" value={usuario.apellidomaterno} onChange={handleInput2} className="form-control"/>
-                                    </div>
+                                <div className="mb-3">
+                                    <label>Apellido Materno</label>
+                                    <input type="text" name="apellidomaterno" value={usuario.apellidomaterno} onChange={handleInput2} className="form-control"/>
+                                </div>
 
-                                    <div className="mb-3">
-                                        <label>Genero</label>
-                                        <input type="text" name="genero" value={usuario.genero} onChange={handleInput2} className="form-control"/>
-                                    </div>
+                                <div className="mb-3">
+                                    <label>Genero</label>
+                                    <input type="text" name="genero" value={usuario.genero} onChange={handleInput2} className="form-control"/>
+                                </div>
 
-                                    <div className="mb-3">
-                                        <label>Fecha Nacimiento</label>
-                                        <input type="date" name="fechanacimiento" value={usuario.fechanacimiento} onChange={handleInput2} className="form-control"/>
-                                    </div>
+                                <div className="mb-3">
+                                    <label>Fecha Nacimiento</label>
+                                    <input type="date" name="fechanacimiento" value={usuario.fechanacimiento} onChange={handleInput2} className="form-control"/>
+                                </div>
 
-                                    <div className="mb-3">
-                                        <label>Pais</label>
-                                        <input type="text" name="pais" value={usuario.pais} onChange={handleInput2} className="form-control"/>
-                                    </div>
+                                <div className="mb-3">
+                                    <label>Pais</label>
+                                    <input type="text" name="pais" value={usuario.pais} onChange={handleInput2} className="form-control"/>
+                                </div>
 
-                                    <div className="mb-3">
-                                        <label>Area</label>
-                                        <select type="number" name="idarea" value={usuario.idarea} onChange={handleAreaSelection} className="form-control">
-                                        {areas.map((area) => (
-                                            <option value={area.idArea}>{area.nombre}</option>
-                                        ))}
-                                        </select>
-                                    </div>
+                                <div className="mb-3">
+                                        <Button variant="primary" onClick={()=> {setShowRotacion(true)}}>
+                                            Cambiar Rotacion
+                                        </Button>
+                                        <span style={{ marginLeft: '10px' }}></span> {/* Add a span for spacing */}
 
-                                    <div className="mb-3">
-                                        <button type="submit" className="btn btn-primary">Actualizar Usuario</button>
-                                    </div>
+                                        <Button variant="primary" onClick={()=> {setShowRemuneracion(true)}}>
+                                            Cambiar Remuneracion
+                                        </Button>
 
+                                    <RotacionForm show = {showRotacion} handleClose={()=> {setShowRotacion(false)}} idArea = {usuario.idarea} id = {idempleadoinfo}/>
+                                    <RemuneracionForm show = {showRemuneracion} handleClose={()=> {setShowRemuneracion(false)}} id = {idempleadoinfo}/>
+                                </div>
+
+                                <div className="mb-3">
+                                    <button type="submit" className="btn btn-primary">Actualizar Usuario</button>
+                                </div>
                             </form>
-
                         </div>
                     </div>
                 </div>
@@ -147,5 +147,4 @@ function DataEdit ()
     )
 
 }
-
-export default DataEdit
+export default DataEdit;
