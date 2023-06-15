@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { login, getIdEmpleado, getIdPerfil,
         protectedRoute, logout, getInfo, getAreas, getCursosEmpleados,
-        getInfoJuego, getAvatars, setMonedas, setPuntaje, addAvatar,
+        getInfoJuego, getAvatars, setMonedas, setPuntaje, addAvatar, getLeaderboard,
         postUserLogin, postUserInfo, borrarUsuario, getEmpleadosTodos, postCurso,
         getRotaciones, getAreasInteres, actualizarUsuario, getInfoSingle, seleccionAreasInteres,getInfoUsuarioJuego} from "../controllers/controllers.js";
 import { loginValidation } from '../validators/auth.js'
@@ -25,6 +25,7 @@ router.get('/getAvatars', getAvatars);
 router.post('/setMonedas', setMonedas);
 router.post('/setPuntaje', setPuntaje);
 router.post('/addAvatar', addAvatar);
+router.post('/getLeaderboard', getLeaderboard);
 
 //JEANNETTE
 router.post('/adduser', postUserLogin);  //post para el primer forms
