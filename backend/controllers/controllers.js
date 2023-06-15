@@ -397,6 +397,7 @@ export const seleccionAreasInteres = async (req, res) => {
 			error: error.message,
 		})
 	}
+}
 export const getRemuneracion = async (req, res) => {
 	try {
 		const idEmpleado = req.params.id

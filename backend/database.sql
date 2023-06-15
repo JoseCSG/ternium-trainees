@@ -37,13 +37,14 @@ $$ LANGUAGE SQL;
 CREATE OR REPLACE PROCEDURE sp_empleados_info_insert(
 	nombre VARCHAR(100), apellidoPaterno VARCHAR(100), apellidoMaterno VARCHAR(100),
 	genero VARCHAR(50), fechaNacimiento DATE, pais VARCHAR(100), idEmpleado INT,
-	fotoPerfil VARCHAR(255), fechaGraduacion DATE, idJefe INT, idArea INT)
+	idArea INT, fotoPerfil VARCHAR(255), fechaGraduacion DATE, idJefe INT)
 AS $$
 	INSERT INTO empleados_info(
 	nombre, apellidoPaterno, apellidoMaterno, genero, fechaNacimiento, pais,
-	idEmpleado, fotoPerfil, fechaInicio, fechaGraduacion, idJefe)
-  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, CURRENT_DATE, $9, $10, $11);
+	idEmpleado, idArea ,fotoPerfil, fechaInicio, fechaGraduacion, idJefe)
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 ,CURRENT_DATE, $10, $11);
 $$ LANGUAGE SQL;
+
 
 --Update
 CREATE OR REPLACE PROCEDURE sp_empleados_info_update(

@@ -3,8 +3,7 @@ import { login, getIdEmpleado, getIdPerfil,
         protectedRoute, logout, getInfo, getAreas, getCursosEmpleados,
         getInfoJuego, getAvatars, setMonedas, setPuntaje, addAvatar, getLeaderboard,
         postUserLogin, postUserInfo, borrarUsuario, getEmpleadosTodos, postCurso,
-        getRotaciones, getAreasInteres, actualizarUsuario, getInfoSingle, seleccionAreasInteres,getInfoUsuarioJuego,
-        getRemuneracion, setRemuneracion, setRotacion} from "../controllers/controllers.js";
+        getRotaciones, getAreasInteres, actualizarUsuario, getInfoSingle, seleccionAreasInteres,getInfoUsuarioJuego, getRemuneracion, setRemuneracion, setRotacion} from "../controllers/controllers.js";
 
 import { loginValidation } from '../validators/auth.js'
 import { validationMiddleware } from "../middlewares/validations-middleware.js";
