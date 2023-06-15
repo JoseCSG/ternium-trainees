@@ -1,9 +1,11 @@
 import { Router } from "express";
 import { login, getIdEmpleado, getIdPerfil,
         protectedRoute, logout, getInfo, getAreas, getCursosEmpleados,
-        getInfoJuego, getAvatars, setMonedas, setPuntaje, addAvatar,
+        getInfoJuego, getAvatars, setMonedas, setPuntaje, addAvatar, getLeaderboard,
         postUserLogin, postUserInfo, borrarUsuario, getEmpleadosTodos, postCurso,
-        getRotaciones, getAreasInteres, actualizarUsuario, getInfoSingle, getRemuneracion, setRemuneracion, setRotacion} from "../controllers/controllers.js";
+        getRotaciones, getAreasInteres, actualizarUsuario, getInfoSingle, seleccionAreasInteres,getInfoUsuarioJuego,
+        getRemuneracion, setRemuneracion, setRotacion} from "../controllers/controllers.js";
+
 import { loginValidation } from '../validators/auth.js'
 import { validationMiddleware } from "../middlewares/validations-middleware.js";
 import { userAuth } from "../middlewares/auth-middleware.js";
@@ -25,6 +27,7 @@ router.get('/getAvatars', getAvatars);
 router.post('/setMonedas', setMonedas);
 router.post('/setPuntaje', setPuntaje);
 router.post('/addAvatar', addAvatar);
+router.post('/getLeaderboard', getLeaderboard);
 
 //JEANNETTE
 router.post('/adduser', postUserLogin);  //post para el primer forms
@@ -34,6 +37,8 @@ router.get('/empleados',getEmpleadosTodos);
 router.post('/addcurso',postCurso);
 router.get('/data/getRotaciones/:id',getRotaciones);
 router.get('/data/getAreasInteres/:id',getAreasInteres);
+router.post('/actualizarCheckbox',seleccionAreasInteres);
+router.get('/data/getInfoJuego/:id',getInfoUsuarioJuego);
 //para el update
 router.put('/data/edit/:id',actualizarUsuario);
 router.get('/data/get/:id',getInfoSingle);

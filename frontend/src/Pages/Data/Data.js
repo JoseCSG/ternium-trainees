@@ -1,9 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import {useState} from 'react';
-import axios from 'axios';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; //sin esto no me funcionaba el dropdown
-import { getAreas } from '../../api/auth';
+import { getAreas,getEmpleadosTodos,borrarUsuario } from '../../api/auth';
 
 
 const Data = () => {
@@ -12,7 +11,7 @@ const Data = () => {
   const [areas, setAreas] = useState([]);
   
   const loadUsuarios = async () => {
-    const { data } = await axios.get('http://localhost:4000/api/empleados');
+    const { data } = await getEmpleadosTodos();
     setUsuarios(data)
     localStorage.setItem('correo', '');
   }
@@ -24,7 +23,7 @@ const Data = () => {
 
   const borrarUsuarioInfo = (e, idEmpleado) => {
     e.preventDefault();
-    axios.delete(`http://localhost:4000/api/empleados/delete/${idEmpleado}`)
+    borrarUsuario(idEmpleado)
     .then (res => {
       alert(res.data.message);
     })
@@ -45,9 +44,9 @@ const Data = () => {
           <td>{item.apellidopaterno}</td>
           <td>{item.apellidomaterno}</td>
           <td>{areaUsuario.nombre}</td>
-          <td>{item.genero}</td>
+          {/*<td>{item.genero}</td>
           <td>{(item.fechanacimiento).split('T')[0]}</td>
-          <td>{item.pais}</td>
+    <td>{item.pais}</td>*/}
           <td>
             <Link to={`/data/edit/${item.idempleado}`} className='btn btn-success'>EDIT</Link>
           </td>
@@ -55,7 +54,7 @@ const Data = () => {
             <button type="button" onClick={(e)=>borrarUsuarioInfo(e, item.idempleado)}  className='btn btn-danger'>BORRAR</button>
           </td>
           <td>
-            <Link to={`/data/getRotaciones/${item.idempleado}`} className='btn btn-info'>VER</Link>
+            <Link to={`/data/getRotaciones/${item.idempleado}`} className='btn btn-info'>VISUALIZAR</Link>
           </td>
       </tr>
     );
@@ -93,12 +92,12 @@ const Data = () => {
                     <th>APELLIDO PATERNO</th>
                     <th>APELLIDO MATERNO</th>
                     <th>AREA </th>
-                    <th>GENERO</th>
+                    {/*<th>GENERO</th>
                     <th>FECHA NAC</th>
-                    <th>PAIS</th>
+              <th>PAIS</th>*/}
                     <th>EDITAR</th>
                     <th>BORRAR</th>
-                    <th>VER</th>
+                    <th>VISUALIZAR</th>
                   </tr>
                 </thead>
                 <tbody>

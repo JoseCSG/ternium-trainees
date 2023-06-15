@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useCallback } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
-import { getInfoEmpleado, getInfoJuego, getAvatars, setPuntaje, setMonedas, addAvatar } from '../../api/auth';
+import { getInfoEmpleado, getInfoJuego, getAvatars, setPuntaje, setMonedas, addAvatar, getLeaderboard } from '../../api/auth';
 
 const Game = () => {
   // WebGL build loader de Unity
@@ -12,14 +12,18 @@ const Game = () => {
   });
 
   const idEmpleado = useRef(localStorage.getItem('idEmpleado'));
-  const idJSON = useRef({ "idempleado": idEmpleado.current });
+  const idJSON = useRef({"idempleado": idEmpleado.current});
   const effectUsed = useRef(false);
 
   // Carga el nombre del usuario desde la base de datos
   const cargaInfoEmpleado = useCallback(async () => {
     const {data} = await getInfoEmpleado(idJSON.current);
     console.log("Enviando nombre", data.nombre);
-    sendMessage("Game Manager", "getNombre", data.nombre);
+    try {
+      sendMessage("Game Manager", "getNombre", data.nombre);
+    } catch (error) {
+      console.log(error.message);
+    }
   }, [sendMessage]);
 
   // Carga el puntaje alto y los cursos completados del usuario desde la base de datos
@@ -27,8 +31,16 @@ const Game = () => {
     const {data} = await getInfoJuego(idJSON.current);
     console.log("Enviando puntaje", data.puntaje);
     console.log("Enviando tokens", data.monedas);
-    sendMessage("Game Manager", "setHighScore", data.puntaje);
-    sendMessage("Game Manager", "getTokens", data.monedas);
+    try {
+      sendMessage("Game Manager", "setHighScore", data.puntaje);
+    } catch (error) {
+      console.log(error.message);
+    }
+    try {
+      sendMessage("Game Manager", "getTokens", data.monedas);
+    } catch (error) {
+      console.log(error.message);
+    }
   }, [sendMessage]);
 
   // Carga los avatars del usuario desde la base de datos
@@ -36,9 +48,26 @@ const Game = () => {
     const {data} = await getAvatars(idJSON.current);
     const avatars = data ? data.map(avatar => avatar.idavatar) : [];
     console.log("Enviando avatars", avatars.toString());
-    sendMessage("Game Manager", "userAvatars", avatars.toString());
+    try {
+      sendMessage("Game Manager", "userAvatars", avatars.toString());
+    } catch (error) {
+      console.log(error.message);
+    }
   }, [sendMessage]);
 
+  // Carga el leaderboard de los puntajes más altos
+  const cargaLeaderboard = useCallback(async () => {
+    const {data} = await getLeaderboard();
+    const jugadores = data ? data.map((jugador) => `${jugador.nombre} ${jugador.puntaje}`) : [];
+    const leaderboard = jugadores.join("\n");
+    console.log("Enviando leaderboard", leaderboard);
+    try {
+      sendMessage("Game Manager", "getLeaderboard", leaderboard);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, [sendMessage]);
+  
   // Actualiza los cursos completados
   const usaMonedas = useCallback((tokens) => {
     const subeMonedas = async () => {
@@ -47,7 +76,6 @@ const Game = () => {
         "idempleado": idEmpleado.current
       };
       try {
-        console.log("Actualizando tokens:", tokens);
         await setMonedas(monedasJSON);
         cargaInfoJuego();
       } catch (error) {
@@ -65,7 +93,6 @@ const Game = () => {
         "idempleado": idEmpleado.current
       };
       try {
-        console.log("Desbloqueando avatar:", idavatar);
         await addAvatar(avatarJSON);
         cargaAvatars();
       } catch (error) {
@@ -84,15 +111,15 @@ const Game = () => {
         "idempleado": idEmpleado.current
       };
       try {
-        console.log("Actualizando puntaje alto:", puntaje);
         await setPuntaje(puntajeJSON);
         cargaInfoJuego();
+        cargaLeaderboard();
       } catch (error) {
         console.log(error.message);
       }
     }
     subePuntaje();
-  }, [cargaInfoJuego]);
+  }, [cargaInfoJuego, cargaLeaderboard]);
   
   // Inicialización del juego
   useEffect(() => {
@@ -104,8 +131,9 @@ const Game = () => {
       cargaInfoEmpleado();
       cargaInfoJuego();
       cargaAvatars();
+      cargaLeaderboard();
     }
-  }, [isLoaded, cargaInfoEmpleado, cargaInfoJuego, cargaAvatars]);
+  }, [isLoaded, cargaInfoEmpleado, cargaInfoJuego, cargaAvatars, cargaLeaderboard]);
 
    // Detecta cuando comienzan los eventos useTokens, unlockAvatar, o GameOver
    useEffect(() => {

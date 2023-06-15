@@ -6,6 +6,7 @@ import RotacionForm from "../../Components/RotacionForm";
 import Button from 'react-bootstrap/Button';
 import RemuneracionForm from "../../Components/RemuneracionForm";
 import {format} from 'date-fns';
+import { getAreas, getSingleUsuario, actualizarUsuario } from "../../api/auth";
 
 function DataEdit ()
 {
@@ -69,7 +70,7 @@ function DataEdit ()
                 idjefe:usuario.idjefe,
             }
             console.log(data)
-            await axios.put(`http://localhost:4000/api/data/edit/${usuario.idempleado}`,data) //aqui tiene que ir un put
+            await actualizarUsuario(usuario.idempleado, data);
             navigate('/data')
         } catch (error) {
             console.log(error)
