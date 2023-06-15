@@ -84,5 +84,7 @@ CREATE TABLE rotaciones (
 	idEmpleado INT NOT NULL,
 	idArea INT NOT NULL,
 	fechaInicio DATE NOT NULL,
-	fechaFin DATE
+	fechaFin DATE,
+	potencial VARCHAR(4),
+	performance INT
 );

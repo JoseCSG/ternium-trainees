@@ -93,7 +93,12 @@ export async function getRotaciones(idempleado)
 
 export async function getAreasInteres(idempleado)
 {
-    return await axios.get(`http://localhost:4000/api/data/getAreasInteres/${idempleado}`);
+    return await axios.get(`http://localhost:4000/api/data/getAreasInteres/${idempleado}`,{params: idempleado});
+}
+
+export async function getRemuneracion(idempleado)
+{
+    return await axios.get(`http://localhost:4000/api/data/get/remuneraciones}`,{params: idempleado});
 }
 
 export async function actualizarCheckboxEnBaseDeDatos(nombre,idempleado) 
