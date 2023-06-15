@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useCallback } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
-import { getInfoEmpleado, getInfoJuego, getAvatars, setPuntaje, setMonedas, addAvatar } from '../../api/auth';
+import { getInfoEmpleado, getInfoJuego, getAvatars, setPuntaje, setMonedas, addAvatar, getLeaderboard } from '../../api/auth';
 
 const Game = () => {
   // WebGL build loader de Unity
@@ -55,6 +55,19 @@ const Game = () => {
     }
   }, [sendMessage]);
 
+  // Carga el leaderboard de los puntajes más altos
+  const cargaLeaderboard = useCallback(async () => {
+    const {data} = await getLeaderboard();
+    const jugadores = data ? data.map((jugador) => `${jugador.nombre} ${jugador.puntaje}`) : [];
+    const leaderboard = jugadores.join("\n");
+    console.log("Enviando leaderboard", leaderboard);
+    try {
+      sendMessage("Game Manager", "getLeaderboard", leaderboard);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, [sendMessage]);
+  
   // Actualiza los cursos completados
   const usaMonedas = useCallback((tokens) => {
     const subeMonedas = async () => {
@@ -63,7 +76,6 @@ const Game = () => {
         "idempleado": idEmpleado.current
       };
       try {
-        console.log("Actualizando tokens:", tokens);
         await setMonedas(monedasJSON);
         cargaInfoJuego();
       } catch (error) {
@@ -81,7 +93,6 @@ const Game = () => {
         "idempleado": idEmpleado.current
       };
       try {
-        console.log("Desbloqueando avatar:", idavatar);
         await addAvatar(avatarJSON);
         cargaAvatars();
       } catch (error) {
@@ -100,15 +111,15 @@ const Game = () => {
         "idempleado": idEmpleado.current
       };
       try {
-        console.log("Actualizando puntaje alto:", puntaje);
         await setPuntaje(puntajeJSON);
         cargaInfoJuego();
+        cargaLeaderboard();
       } catch (error) {
         console.log(error.message);
       }
     }
     subePuntaje();
-  }, [cargaInfoJuego]);
+  }, [cargaInfoJuego, cargaLeaderboard]);
   
   // Inicialización del juego
   useEffect(() => {
@@ -120,8 +131,9 @@ const Game = () => {
       cargaInfoEmpleado();
       cargaInfoJuego();
       cargaAvatars();
+      cargaLeaderboard();
     }
-  }, [isLoaded, cargaInfoEmpleado, cargaInfoJuego, cargaAvatars]);
+  }, [isLoaded, cargaInfoEmpleado, cargaInfoJuego, cargaAvatars, cargaLeaderboard]);
 
    // Detecta cuando comienzan los eventos useTokens, unlockAvatar, o GameOver
    useEffect(() => {

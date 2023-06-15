@@ -178,6 +178,17 @@ export const addAvatar = async (req, res) => {
 	}
 }
 
+export const getLeaderboard = async (req, res) => {
+  try {
+		const {rows} = await client.query("SELECT fun_leaderboard()")
+		res.json(rows[0].fun_leaderboard)
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+}
+
 //JEANNETTE
 export const getEmpleadosTodos = async (req, res) => {
 	try {

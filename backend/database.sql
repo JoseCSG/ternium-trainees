@@ -199,6 +199,18 @@ AS $$
   WHERE e.idEmpleado = $1;
 $$ LANGUAGE SQL;
 
+--Función leaderboard
+CREATE OR REPLACE FUNCTION fun_leaderboard()
+RETURNS JSON
+AS $$
+	SELECT json_agg(json_build_object('nombre', ej.nombre, 'puntaje', ej.puntajeAlto))
+	FROM (SELECT ei.nombre, ej.puntajeAlto
+	  FROM empleados_juego ej
+	  INNER JOIN empleados_info ei ON ei.idempleado = ej.idempleado
+	  ORDER BY ej.puntajeAlto DESC
+	  LIMIT 3) ej;
+$$ LANGUAGE SQL;
+
 --Trigger insert_cursos_completados
 CREATE OR REPLACE FUNCTION trg_insert_cursos_completados()
 RETURNS TRIGGER

@@ -50,6 +50,10 @@ export async function addAvatar(infoAvatar){
   return await axios.post('http://localhost:4000/api/addAvatar',{params: infoAvatar});
 }
 
+export async function getLeaderboard(){
+  return await axios.post('http://localhost:4000/api/getLeaderboard');
+}
+
 //JEANNETTE
 export async function getEmpleadosTodos()
 {
