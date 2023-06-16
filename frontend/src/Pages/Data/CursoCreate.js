@@ -1,21 +1,40 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { nuevoCurso } from '../../api/auth'
+import { getAreas, nuevoCurso } from '../../api/auth'
 
 
 const CursoCreate = () => {
     const navigator = useNavigate()
-
+    const [areas, setAreas] = useState([])
     const[cursoInfo,setCursoInfo]=useState({
         nombre: "",
         idarea: "",
 
     })
+    const loadAreas = async () => {
+        try {
+          const {data} = await getAreas();
+          setAreas(data);
+          console.log(data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+    useEffect(() => {
+        loadAreas();
+    }, []);
+
 
     const handleInput = (e) => {
         e.persist();
         setCursoInfo({...cursoInfo,[e.target.name]:e.target.value})
     }
+
+    const handleAreaSelection = (e) => {
+        const selectedArea = areas.find((area) => area.idArea === parseInt(e.target.value));
+        setCursoInfo({ ...cursoInfo, idarea: selectedArea.idArea });
+      };
 
     const creaCurso = async (e) => {
         e.preventDefault();
@@ -54,10 +73,13 @@ const CursoCreate = () => {
                                 </div>
                                         
                                 <div className="mb-3">
-                                    <label>ID Area</label>
-                                    <input type="text" name="idarea" value={cursoInfo.idarea} onChange={handleInput} className="form-control"/>
+                                    <label>Area</label>
+                                    <select type="number" name="idarea" value={cursoInfo.idarea} onChange={handleAreaSelection} className="form-control">
+                                        {areas.map((area) => (
+                                            <option key={area.idArea} value={area.idArea}>{area.nombre}</option>
+                                        ))}
+                                    </select>
                                 </div>
-
     
                                 <div className="mb-3">
                                     <button type="submit" className="btn" style={{backgroundColor: 'rgb(0, 51, 153)', color: 'white'}} onClick={creaCurso}>Agregar Curso</button>
