@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getIdEmpleado, nuevoEmpleadoInfo, getAreas } from '../../api/auth';
+import axios from 'axios';
 
 const DataCreateInfo = () => {
   const navigator = useNavigate();
@@ -19,15 +20,26 @@ const DataCreateInfo = () => {
     idjefe: ""
   });
   const [areas, setAreas] = useState([]);
+  const [jefes, setJefes] = useState([]);
 
   useEffect(() => {
     loadAreas();
+    loadJefes();
   }, []);
 
   const loadAreas = async () => {
     try {
       const {data} = await getAreas();
       setAreas(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const loadJefes = async () => {
+    try {
+      const {data} = await axios.get("http://localhost:4000/api/get/jefes");
+      setJefes(data);
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -42,7 +54,9 @@ const DataCreateInfo = () => {
     const selectedArea = areas.find((area) => area.idArea === parseInt(e.target.value));
     setUsuarioInfo({ ...usuarioInfo, idarea: selectedArea.idArea });
   };
-
+  const handleBossSelection = (e) => {
+    setUsuarioInfo({ ...usuarioInfo, idjefe: e.target.value });
+  };
   const handleGenderSelection = (e) => {
     setUsuarioInfo({ ...usuarioInfo, genero: e.target.value });
   };
@@ -52,6 +66,7 @@ const DataCreateInfo = () => {
     try {
       const {data} = await getIdEmpleado({ correo: localStorage.getItem("correo") });
       const updatedUsuarioInfo = { ...usuarioInfo, idempleado: data.idEmpleado };
+      console.log(updatedUsuarioInfo);
       await nuevoEmpleadoInfo(updatedUsuarioInfo);
       navigator("/data");
     } catch (error) {
@@ -118,8 +133,12 @@ const DataCreateInfo = () => {
                             </div>
                             <div className="mb-3">
                                 <label>Jefe</label>
-                                <input type="number" name="idjefe" value={usuarioInfo.idjefe} onChange={handleInput} className="form-control" required/>
-                            </div>
+                                <select type="number" name="idjefe" value={usuarioInfo.idjefe} onChange={handleBossSelection} className="form-control">
+                                        <option value='0'>-</option>
+                                        {jefes.map((jefe) => (
+                                            <option value={jefe.idempleado}>{jefe.nombre + ' ' + jefe.apellidopaterno + ' ' + jefe.apellidomaterno}</option>
+                                        ))}
+                                </select>                            </div>
                             <div className="mb-3">
                                 <button type="submit" className="btn" style={{backgroundColor: 'rgb(0, 51, 153)', color: 'white'}} onClick={creaInfoUsuario}>Agregar Info Usuario</button>
                             </div>

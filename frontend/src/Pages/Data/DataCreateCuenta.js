@@ -5,7 +5,7 @@ import { nuevoEmpleado } from '../../api/auth'
 const DataCreateCuenta = () => {
     const[usuario,setUsuario] = useState({
         correo:"",
-        contraseña:"",
+        contrasena:"",
         idperfil:1
     })
 
@@ -21,6 +21,7 @@ const DataCreateCuenta = () => {
     const creaCorreoContraseña = async (e) => {
         try {
             localStorage.setItem("correo", usuario.correo)
+            console.log(usuario)
             await nuevoEmpleado(usuario);
             
         } catch (error) {
@@ -47,7 +48,7 @@ const DataCreateCuenta = () => {
                                     
                             <div className="mb-3">
                                 <label>Contraseña</label>
-                                <input type="text" name="contraseña" value={usuario.contraseña} onChange={handleInput} className="form-control"/>
+                                <input type="text" name="contrasena" value={usuario.contrasena} onChange={handleInput} className="form-control"/>
                             </div>
 
                             <div className="mb-3">

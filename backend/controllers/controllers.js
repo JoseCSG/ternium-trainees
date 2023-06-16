@@ -257,11 +257,17 @@ export const postUserLogin = async (req, res) => {
 	const nuevoUsuario = req.body.params
 
 	try {
-		await client.query("CALL sp_empleados_login_insert($1, $2, $3)", [
+		console.log(nuevoUsuario)
+ 		await client.query("CALL sp_empleados_login_insert($1, $2, $3)", [
 			nuevoUsuario.correo,
-			nuevoUsuario.contraseña,
+			nuevoUsuario.contrasena,
 			nuevoUsuario.idperfil
 		]);
+/* 		await client.query("INSERT INTO empleados_login (correo, contraseña, idperfil) VALUES ($1, $2, $3)", [
+			nuevoUsuario.correo,
+			nuevoUsuario.contrasena,
+			nuevoUsuario.idperfil
+		]); */
 		return res.status(200).json({
 			message: "Data saved",
 		});
@@ -275,16 +281,18 @@ export const postUserLogin = async (req, res) => {
 //Inserta en la base de datos un nuevo usuario en empleados_login
 export const postUserInfo = async (req, res) => {
 	try {
-		const infoNuevoUsuario = req.body.params	
-		await client.query("CALL sp_empleados_info_insert($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", [
+		const infoNuevoUsuario = req.body.params
+		console.log(infoNuevoUsuario)	
+		await client.query("CALL sp_empleados_info_insert($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)", [
 			infoNuevoUsuario.nombre,
 			infoNuevoUsuario.apellidopaterno,
 			infoNuevoUsuario.apellidomaterno,
 			infoNuevoUsuario.genero,
 			infoNuevoUsuario.fechanacimiento,
 			infoNuevoUsuario.pais,
-      infoNuevoUsuario.idempleado,
-      infoNuevoUsuario.fotoperfil,
+			infoNuevoUsuario.idempleado,
+			infoNuevoUsuario.idarea,
+      		infoNuevoUsuario.fotoperfil,
 			infoNuevoUsuario.fechagraduacion,
 			infoNuevoUsuario.idjefe
 		]);
@@ -449,6 +457,18 @@ export const getFeedback = async (req, res) => {
 		const {rows} = await client.query('SELECT potencial, performance FROM rotaciones WHERE idempleado = $1',[idEmpleado])
 		res.json(rows)
 		//console.log(rows)
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
+}
+
+export const getJefes = async (req, res) => {
+	try {
+		const {rows} = await client.query('SELECT idempleado, nombre, apellidopaterno, apellidomaterno FROM empleados_info NATURAL JOIN empleados_login el WHERE el.idperfil = 1')
+		console.log(rows)
+		res.json(rows)
 	} catch (error) {
 		return res.status(500).json({
 			error: error.message,
