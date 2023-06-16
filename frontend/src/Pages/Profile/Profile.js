@@ -80,7 +80,6 @@ const Profile = () => {
                     <p>Encuadre actual:</p>
                     <p>Fecha inicio:</p>
                     <p>Fecha graduación:</p>
-                    <p>Dirección:</p>
                     <p>Jefe:</p>
                   </div>
 
@@ -88,7 +87,6 @@ const Profile = () => {
                     <p>{infoEmpleado.area}</p>
                     <p>{infoEmpleado.fechaInicio}</p>
                     <p>{infoEmpleado.fechaGraduacion !== null ? infoEmpleado.fechaGraduacion : "null"}</p>
-                    <p>Direccion</p>
                     <p>{infoEmpleado.jefe}</p>
                   </div>
 
