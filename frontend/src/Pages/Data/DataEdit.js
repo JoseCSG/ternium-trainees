@@ -85,8 +85,8 @@ function DataEdit ()
                     <div className="card">
                         <div className="card-header">
                             <h4> Editar Usuario
-                                <Link to='/data' className="btn btn-danger float-end">
-                                    Back
+                                <Link to='/data' className="btn float-end"  style={{backgroundColor: 'rgb(255, 51, 0)', color: 'white'}}>
+                                    Regresar
                                 </Link>
                             </h4>
                         </div>
@@ -123,13 +123,13 @@ function DataEdit ()
                                 </div>
 
                                 <div className="mb-3">
-                                        <Button variant="primary" onClick={()=> {setShowRotacion(true)}}>
-                                            Cambiar Rotacion
+                                        <Button variant="primary" style={{backgroundColor: 'rgb(0, 51, 153)', color: 'white'}} onClick={()=> {setShowRotacion(true)}}>
+                                            Cambiar Rotación
                                         </Button>
                                         <span style={{ marginLeft: '10px' }}></span> {/* Add a span for spacing */}
 
-                                        <Button variant="primary" onClick={()=> {setShowRemuneracion(true)}}>
-                                            Cambiar Remuneracion
+                                        <Button variant="primary" style={{backgroundColor: 'rgb(0, 51, 153)', color: 'white'}} onClick={()=> {setShowRemuneracion(true)}}>
+                                            Cambiar Remuneración
                                         </Button>
 
                                     <RotacionForm show = {showRotacion} handleClose={()=> {setShowRotacion(false)}} idArea = {usuario.idarea} id = {idempleadoinfo}/>
@@ -137,7 +137,7 @@ function DataEdit ()
                                 </div>
 
                                 <div className="mb-3">
-                                    <button type="submit" className="btn btn-primary">Actualizar Usuario</button>
+                                    <button type="submit" className="btn" style={{backgroundColor: 'rgb(0, 51, 153)', color: 'white'}}>Actualizar Usuario</button>
                                 </div>
                             </form>
                         </div>

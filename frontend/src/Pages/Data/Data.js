@@ -48,13 +48,13 @@ const Data = () => {
           <td>{(item.fechanacimiento).split('T')[0]}</td>
     <td>{item.pais}</td>*/}
           <td>
-            <Link to={`/data/edit/${item.idempleado}`} className='btn btn-success'>EDIT</Link>
+            <Link to={`/data/edit/${item.idempleado}`} className='btn' style={{backgroundColor: 'rgb(0, 180, 81)', color: 'white'}}>Editar</Link>
           </td>
           <td>
-            <button type="button" onClick={(e)=>borrarUsuarioInfo(e, item.idempleado)}  className='btn btn-danger'>BORRAR</button>
+            <button type="button" onClick={(e)=>borrarUsuarioInfo(e, item.idempleado)}  className='btn' style={{backgroundColor: 'rgb(255, 51, 0)', color: 'white'}}>Borrar</button>
           </td>
           <td>
-            <Link to={`/data/getRotaciones/${item.idempleado}`} className='btn btn-info'>VISUALIZAR</Link>
+            <Link to={`/data/getRotaciones/${item.idempleado}`} className='btn' style={{backgroundColor: 'rgb(1, 104, 138)', color: 'white'}}>Visualizar</Link>
           </td>
       </tr>
     );
@@ -67,16 +67,16 @@ const Data = () => {
         <div className='col-md-12'>
           <div className='card'>
             <div className='card-header'>
-              <h4> Lista de Usuarios
+              <h4> Lista de usuarios
                 {/*<Link to="/data/create/usuario" className='btn btn-primary float-end'>Agrega Usuario</Link>
                 <Link to="/data/create/curso" className='btn btn-primary float-end'>Agrega Curso</Link>*/}
                 <div className='dropdown mt-3'>
-                  <button className='btn btn-primary dropdown-toggle' type='button' id='triggerId' data-bs-toggle="dropdown">
+                  <button className='btn dropdown-toggle' type='button' id='triggerId' data-bs-toggle="dropdown" style={{backgroundColor: 'rgb(0, 51, 153)', color: 'white'}}>
                     Agregar
                   </button>
                   <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="triggerId">
-                    <li><Link to="/data/create/usuario" className='dropdown-item'>Agrega Usuario</Link></li>
-                    <li><Link to="/data/create/curso" className='dropdown-item'>Agrega Curso</Link></li>
+                    <li><Link to="/data/create/usuario" className='dropdown-item'>Agrega usuario</Link></li>
+                    <li><Link to="/data/create/curso" className='dropdown-item'>Agrega curso</Link></li>
                   </ul>
                 </div>
               </h4>

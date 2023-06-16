@@ -104,8 +104,6 @@ function DataVisualize ()
 
             </div>
 
-                
-
         
         </div>
     </div>

@@ -35,7 +35,7 @@ const DataCreateCuenta = () => {
                     <div className='card-header'>
                         <h4> Agrega Usuario
                             {/*<Link to="/nuevousuario" className='btn btn-primary float-end'>Agrega Usuario</Link>*/}
-                            <Link to="/data" className='btn btn-danger float-end'>Back</Link>
+                            <Link to="/data" className='btn float-end' style={{backgroundColor: 'rgb(255, 51, 0)', color: 'white'}}>Regresar</Link>
                         </h4>
                     </div>
                     <div className='card-body'>
@@ -60,7 +60,7 @@ const DataCreateCuenta = () => {
                             </div>
 
                             <div className="mb-3">
-                                <button type="submit" className="btn btn-primary"  onClick={creaCorreoContraseña}>Agregar Usuario</button>
+                                <button type="submit" className="btn" style={{backgroundColor: 'rgb(0, 51, 153)', color: 'white'}} onClick={creaCorreoContraseña}>Agregar Usuario</button>
                             </div>
                         </form>                
                     </div>

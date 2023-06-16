@@ -40,8 +40,8 @@ const Rotaciones = () => {
         <div className='col-md-12'>
           <div className='card'>
             <div className='card-header'>
-              <h4>Historial de Rotacion
-                <Link to="/data" className='btn btn-danger float-end'>Regresar</Link>
+              <h4>Historial de Rotación
+                <Link to="/data" className='btn float-end' style={{backgroundColor: 'rgb(255, 51, 0)', color: 'white'}}>Regresar</Link>
               </h4>
             </div>
             <div className='card-body'>
