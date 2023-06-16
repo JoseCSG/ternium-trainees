@@ -110,3 +110,8 @@ export async function getInfoUsuarioJuego(idempleado)
 {
     return await axios.get(`http://localhost:4000/api/data/getInfoJuego/${idempleado}`);
 }
+
+export async function getFeedback(idempleado)
+{
+    return await axios.get(`http://localhost:4000/api/data/getFeedback}`,{params: idempleado});
+}

@@ -33,7 +33,7 @@ const TableDataVisualize = () =>
       <tr key={index}>
           <td>{areaUsuario.nombre}</td>
           <td>{item.fechainicio.split('T')[0]}</td>
-          <td>{item.fechafin === null ? "Actualmente" : item.fechafin.split('T')[0]}</td>
+          <td>{item.fechafin === null ? "En curso" : item.fechafin.split('T')[0]}</td>
       </tr>
     );
 

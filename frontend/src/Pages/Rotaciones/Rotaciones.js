@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getAreas, getRotaciones } from "../../api/auth";
+import { getAreas, getRotaciones, getFeedback } from "../../api/auth";
 
 const Rotaciones = () => {
   const idempleadoinfo = localStorage.getItem('idEmpleado');
   const [rotaciones, setRotaciones] = useState([]);
   const [areas, setAreas] = useState([]);
+  const [feedback, setFeedback] = useState([]);
 
   const loadRotaciones = async () => {
     try {
@@ -14,6 +15,7 @@ const Rotaciones = () => {
       const areasData = await getAreas();
       setAreas(areasData.data);
       setRotaciones(res.data);
+      setFeedback(res.data);
     } catch (error) {
       console.log(error.message);
     }
@@ -25,11 +27,14 @@ const Rotaciones = () => {
 
   var detallesRotaciones = rotaciones.map((item, index) => {
     const areaUsuario = areas.find((area) => area.idArea === item.idarea);
+    const feedbackUsuario = feedback.find((feedback) => feedback.idrotacion === item.idrotacion);
     return (
       <tr key={index}>
         <td>{areaUsuario.nombre}</td>
         <td>{item.fechainicio.split('T')[0]}</td>
-        <td>{item.fechafin === null ? "Actualmente" : item.fechafin.split('T')[0]}</td>
+        <td>{item.fechafin === null ? "En curso" : item.fechafin.split('T')[0]}</td>
+        <td>{feedbackUsuario.potencial}</td>
+        <td>{feedbackUsuario.performance}</td>
       </tr>
     );
   });
@@ -51,6 +56,8 @@ const Rotaciones = () => {
                     <th>ID AREA</th>
                     <th>FECHA INICIO</th>
                     <th>FECHA FIN</th>
+                    <th>POTENCIAL</th>
+                    <th>RENDIMIENTO</th>
                   </tr>
                 </thead>
                 <tbody>
