@@ -1,5 +1,4 @@
-.cardprofile
-{
+.cardprofile{
     margin: 2rem 2rem 2rem 1rem;
     padding:1.5rem;
     width:400px;
@@ -8,8 +7,7 @@
     cursor: pointer
 }
 
-.cardareas
-{
+.cardareas{
     margin: 2rem 2rem 2rem 0.5rem;
     padding:1.5rem;
     width:390px;
@@ -18,19 +16,15 @@
     cursor: pointer
 }
 
-.cardprofile:hover
-{
+.cardprofile:hover{
     transform: scale(1.1);
 }
 
-.cardareas:hover
-{
+.cardareas:hover{
     transform: scale(1.1);
 }
 
-.cardprofile_title
-{
+.cardprofile_title{
     font-weight: 800;
     font-size: 1.5rem;
 }
-

@@ -350,6 +350,7 @@ export const getAreasInteres = async (req, res) => {
 		})
 	}
 }
+
 export const seleccionAreasInteres = async (req, res) => {
 	const nombre = req.body.nombre;
 	const idEmpleado = req.body.idempleado;
@@ -385,7 +386,6 @@ export const seleccionAreasInteres = async (req, res) => {
 	}
   };
 
-
   export const getInfoUsuarioJuego = async (req, res) =>
   {
 	try {
@@ -400,7 +400,7 @@ export const seleccionAreasInteres = async (req, res) => {
 		})
 	}
 }
-	
+
 export const getRemuneracion = async (req, res) => {
 	try {
 		const idEmpleado = req.params.id
@@ -412,6 +412,7 @@ export const getRemuneracion = async (req, res) => {
 		}
 	)}
 }
+
 export const setRemuneracion = async (req, res) => {
 	try {
 		const infoRemuneracion = req.body
@@ -426,6 +427,7 @@ export const setRemuneracion = async (req, res) => {
 		})
 	}
 }
+
 export const setRotacion = async (req, res) => {
 	try {
 		const infoRotacion = req.body
@@ -440,4 +442,18 @@ export const setRotacion = async (req, res) => {
 	} catch (error) {
 		console.log(error.message)
   }
+}
+
+export const getFeedback = async (req, res) => {
+	try {
+		const idEmpleado = req.params.id
+
+		const {rows} = await client.query('SELECT potencial, performance FROM rotaciones WHERE idempleado = $1',[idEmpleado])
+		res.json(rows)
+		//console.log(rows)
+	} catch (error) {
+		return res.status(500).json({
+			error: error.message,
+		})
+	}
 }

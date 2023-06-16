@@ -10,6 +10,11 @@ const TableDataVisualize = () =>
     const [areas, setAreas] = useState([]);
     const loadRotaciones = async () => 
     {
+      const res = await getRotaciones(idempleadoinfo);
+      const areas = await getAreas();
+      setAreas(areas.data)
+      setRotaciones(res.data)
+      /*
       try {
         //const res = await axios.get(`http://localhost:4000/api/data/getRotaciones/${idempleadoinfo}`)
         const res = await getRotaciones(idempleadoinfo);
@@ -20,9 +25,10 @@ const TableDataVisualize = () =>
       } catch (error) {
         //console.log(error.message)
       }
-
+      */
 
       }
+
     useEffect (() => {
     },[idempleadoinfo]);
     loadRotaciones()
@@ -33,7 +39,7 @@ const TableDataVisualize = () =>
       <tr key={index}>
           <td>{areaUsuario.nombre}</td>
           <td>{item.fechainicio.split('T')[0]}</td>
-          <td>{item.fechafin === null ? "Actualmente" : item.fechafin.split('T')[0]}</td>
+          <td>{item.fechafin === null ? "En curso" : item.fechafin.split('T')[0]}</td>
       </tr>
     );
 
@@ -44,11 +50,11 @@ const TableDataVisualize = () =>
       <div className='row'>
         <div className='col-md-12'>
           <div className='card'>
-            <div className='card-header'>
-              <h4> Historial de Rotacion
-              <Link to="/data" className='btn btn-danger float-end'>Regresar</Link>
-              </h4>
-            </div>
+          <div className='card-header'>
+            <h4> Historial de Rotación
+              <Link to="/data" className='btn float-end' style={{backgroundColor: 'rgb(255, 51, 0)', color: 'white'}}>Regresar</Link>
+            </h4>
+          </div>
 
             <div className='card-body'>
               <table className='table table-stripped'>

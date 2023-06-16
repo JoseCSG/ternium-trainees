@@ -43,7 +43,7 @@ const CursoCreate = () => {
                     <div className='card'>
                         <div className='card-header'>
                             <h4> Agrega Curso
-                                <Link to="/data" className='btn btn-danger float-end'>Back</Link>
+                                <Link to="/data" className='btn float-end' style={{backgroundColor: 'rgb(255, 51, 0)', color: 'white'}}>Regresar</Link>
                             </h4>
                         </div>
                         <div className='card-body'>
@@ -60,7 +60,7 @@ const CursoCreate = () => {
 
     
                                 <div className="mb-3">
-                                    <button type="submit" className="btn btn-primary"  onClick={creaCurso}>Agregar Curso</button>
+                                    <button type="submit" className="btn" style={{backgroundColor: 'rgb(0, 51, 153)', color: 'white'}} onClick={creaCurso}>Agregar Curso</button>
                                 </div>
                             </form>                
                         </div>
