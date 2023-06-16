@@ -82,7 +82,7 @@ const RemuneracionForm = ({show, handleClose, id}) => {
             </form>
         </Modal.Body>
         <Modal.Footer>
-            <button className="btn btn-primary bg-orange text-left" onClick={handleSubmit}>
+            <button className="btn bg-orange text-left" style={{backgroundColor: 'rgb(0, 51, 153)', color: 'white'}} onClick={handleSubmit}>
                 Guardar
             </button>
         </Modal.Footer>

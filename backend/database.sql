@@ -45,7 +45,6 @@ AS $$
   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 ,CURRENT_DATE, $10, $11);
 $$ LANGUAGE SQL;
 
-
 --Update
 CREATE OR REPLACE PROCEDURE sp_empleados_info_update(
 	nombre VARCHAR(100), apellidoPaterno VARCHAR(100), apellidoMaterno VARCHAR(100), 

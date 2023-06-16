@@ -66,7 +66,7 @@ const DataCreateInfo = () => {
                 <div className='card'>
                     <div className='card-header'>
                         <h4> Agrega Informacion Usuario
-                            {/*<Link to="/nuevousuario" className='btn btn-primary float-end'>Agrega Usuario</Link>*/}
+                            {/*<Link to="/nuevousuario" className='btn float-end'>Agrega Usuario</Link>*/}
                         </h4>
                     </div>
 
@@ -121,7 +121,7 @@ const DataCreateInfo = () => {
                                 <input type="number" name="idjefe" value={usuarioInfo.idjefe} onChange={handleInput} className="form-control" required/>
                             </div>
                             <div className="mb-3">
-                                <button type="submit" className="btn btn-primary"  onClick={creaInfoUsuario}>Agregar Info Usuario</button>
+                                <button type="submit" className="btn" style={{backgroundColor: 'rgb(0, 51, 153)', color: 'white'}} onClick={creaInfoUsuario}>Agregar Info Usuario</button>
                             </div>
                         </form>
                                 
