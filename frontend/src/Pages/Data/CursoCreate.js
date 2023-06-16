@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { nuevoCurso } from '../../api/auth'
 
 
 const CursoCreate = () => {
-    //const navigator = useNavigate()
+    const navigator = useNavigate()
 
     const[cursoInfo,setCursoInfo]=useState({
         nombre: "",
@@ -28,8 +28,8 @@ const CursoCreate = () => {
         nuevoCurso(data)
         .then (res=> {
             alert(res.data.message)
+            navigator("/data")
         })
-        //navigator("/data")
         .catch (function(error){
             console.error(error)
         })

@@ -14,8 +14,8 @@ const Courses =() => {
       "idempleado": localStorage.getItem('idEmpleado')
     }
     const {data} = await getCursosEmpleado(idJSON)
-    const cursosCompletados = data.filter((curso) => curso.estado === true)
-    const cursosEnProceso = data.filter((curso) => curso.estado === false)
+    const cursosCompletados = data ? data.filter((curso) => curso.estado === true) : []
+    const cursosEnProceso = data ? data.filter((curso) => curso.estado === false) : []
     console.log(cursosCompletados)
     console.log(cursosEnProceso)
 

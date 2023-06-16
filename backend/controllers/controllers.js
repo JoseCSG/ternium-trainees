@@ -232,7 +232,7 @@ export const actualizarUsuario = async (req, res) => {
 		const idEmpleado = req.params.id
 		await client.query("CALL sp_empleados_info_update($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)", 
 		[nombre, apellidopaterno, apellidomaterno, genero, fechanacimiento, pais, idEmpleado, fotoperfil, fechainicio, fechagraduacion, idjefe])
-
+    res.status(200).json({ message: 'Data updated' });
 	}
 	catch (error) {
 		console.error(error.message);
@@ -316,10 +316,9 @@ export const postCurso = async(req,res) => {
 	//console.log("Img: " + img);
 
 	try {
-		const response = await client.query("INSERT INTO cursos (nombre , idarea) VALUES ($1,$2)", [
-			nombre, idarea
-		]);
-		console.log(response);
+		await client.query("INSERT INTO cursos (nombre , idarea) VALUES ($1,$2)",
+    [nombre, idarea]);
+    res.status(200).json({ message: 'Curso agregado' });
 
 	} catch (error) {
 		console.log(error.message)
@@ -439,12 +438,12 @@ export const setRotacion = async (req, res) => {
 		const infoRotacion = req.body
 		infoRotacion.performance = Number(infoRotacion.performance)
 		infoRotacion.idempleado = Number(infoRotacion.idempleado)
-		let res = await client.query('UPDATE rotaciones SET potencial = $1, performance = $2 WHERE idempleado = $3 AND idarea = (SELECT idarea FROM empleados_info WHERE idempleado = $3)',
+		const {rows} = await client.query('UPDATE rotaciones SET potencial = $1, performance = $2 WHERE idempleado = $3 AND idarea = (SELECT idarea FROM empleados_info WHERE idempleado = $3)',
 			[infoRotacion.potencial, Number(infoRotacion.performance), Number(infoRotacion.idempleado)]);
-		console.log(res)
-		res = await client.query('UPDATE empleados_info SET idarea = $1 WHERE idempleado = $2', 
+    res.json(rows)
+		rows = await client.query('UPDATE empleados_info SET idarea = $1 WHERE idempleado = $2', 
 			[infoRotacion.idarea, Number(infoRotacion.idempleado)])
-		console.log(res)
+    res.json(rows)
 	} catch (error) {
 		console.log(error.message)
   }

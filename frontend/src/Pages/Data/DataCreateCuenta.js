@@ -19,11 +19,12 @@ const DataCreateCuenta = () => {
     }
 
     const creaCorreoContraseña = async (e) => {
+        e.preventDefault();
         try {
             localStorage.setItem("correo", usuario.correo)
             console.log(usuario)
             await nuevoEmpleado(usuario);
-            
+            window.location.reload();
         } catch (error) {
             console.log(error.message)
         }

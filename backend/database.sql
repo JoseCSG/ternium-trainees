@@ -336,6 +336,22 @@ AFTER INSERT ON empleados_info
 FOR EACH ROW
 EXECUTE FUNCTION trg_insert_rotaciones();
 
+--Trigger remuneraciones
+CREATE OR REPLACE FUNCTION trg_insert_remuneraciones()
+RETURNS TRIGGER
+AS $$
+BEGIN
+	INSERT INTO remuneraciones (sueldo, PTU, fondoAhorro, idEmpleado)
+	VALUES (0, now(), '2025-12-01', NEW.idEmpleado);
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER insert_empleados_remuneraciones_trigger
+AFTER INSERT ON empleados_info
+FOR EACH ROW
+EXECUTE FUNCTION trg_insert_remuneraciones();
+
 -- Insertar datos
 INSERT INTO areas(nombre)
 VALUES('Recursos Humanos'),
