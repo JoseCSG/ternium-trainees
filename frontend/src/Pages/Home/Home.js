@@ -50,6 +50,30 @@ const Home = () => {
               </div>
             </div>
 
+            <div className='col-md-4'>
+              <div className="card-shadow">
+                <img src={foto} className='w-100 border-bottom' alt="Services"/>
+                <div className='card-body'>
+                  <h6>Servicio 2</h6>
+                  <p style={{ textAlign: "justify" }}>
+                  Hay variaciones de pasajes de Lorem Ipsum disponibles, pero la mayoría ha sufrido alteraciones de alguna forma, por humor inyectado o palabras aleatorias que no parecen ni un poco creíbles. Si vas a usar un pasaje de Lorem Ipsum, debes asegurarte de que no haya nada vergonzoso escondido en medio del texto. Todo el saber
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className='col-md-4'>
+              <div className="card-shadow">
+                <img src={foto} className='w-100 border-bottom' alt="Services"/>
+                <div className='card-body'>
+                  <h6>Servicio 3</h6>
+                  <p style={{ textAlign: "justify" }}>
+                  Hay variaciones de pasajes de Lorem Ipsum disponibles, pero la mayoría ha sufrido alteraciones de alguna forma, por humor inyectado o palabras aleatorias que no parecen ni un poco creíbles. Si vas a usar un pasaje de Lorem Ipsum, debes asegurarte de que no haya nada vergonzoso escondido en medio del texto. Todo el saber
+                  </p>
+                </div>
+              </div>
+            </div>
+
             
 
           </div>
