@@ -5,7 +5,7 @@ const {Client} = pkg
 //Tienen que poner la contraseña que tienen en su propio postgress
 const client = new Client ({
     user: "postgres",
-    password: "123456",
+    password: "password",
     host: "localhost",
     port: 5432,
     database: "ternium_database",

@@ -282,15 +282,17 @@ export const postUserLogin = async (req, res) => {
 export const postUserInfo = async (req, res) => {
 	try {
 		const infoNuevoUsuario = req.body.params	
-		await client.query("CALL sp_empleados_info_insert($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)", [
+		console.log(infoNuevoUsuario)
+		await client.query("CALL sp_empleados_info_insert($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)", [
 			infoNuevoUsuario.nombre,
 			infoNuevoUsuario.apellidopaterno,
 			infoNuevoUsuario.apellidomaterno,
 			infoNuevoUsuario.genero,
 			infoNuevoUsuario.fechanacimiento,
 			infoNuevoUsuario.pais,
-      infoNuevoUsuario.idempleado,
-      infoNuevoUsuario.fotoperfil,
+    		infoNuevoUsuario.idempleado,
+			infoNuevoUsuario.idarea,
+      		infoNuevoUsuario.fotoperfil,
 			infoNuevoUsuario.fechagraduacion,
 			infoNuevoUsuario.idjefe
 		]);
