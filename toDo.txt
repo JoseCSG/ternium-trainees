@@ -1,7 +1,0 @@
-En rotaciones
-    hacer un pop up para cambiar la rotacion, añadir 
-    performace, potencial
-
-Cambiar que solo aparezca los cursos del area actual
-    
-Hacer uno igual de Rotaciones para remuneracion

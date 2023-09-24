@@ -1,6 +1,6 @@
 import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
-import foto from "../Images/terniumlogo.png";
+import foto from "../Images/mapa.png";
 import { connect } from "react-redux";
 import { onLogout } from "../api/auth";
 import { unauthenticateAdmin, unauthenticateUser } from "../redux/slices/auth_slice";
@@ -30,17 +30,14 @@ const NavbarComp = ({ isAuth, isAdmin, dispatch }) => {
         <img src={foto} alt="Imagen 1" width="100" height="40" />
       </Navbar.Brand>
         
-        <Navbar.Brand href="/">Ternium Learning</Navbar.Brand>
-          <Navbar.Toggle aria-controls="navbarScroll" />
-        
         <Navbar.Collapse id="navbarScroll" className="justify-content-end">
           <Nav className="px-5 mr-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
             <Nav.Link href="/">Inicio</Nav.Link>
             { isAuth ? 
               (
                 <>
-                {!isAdmin && <Nav.Link href="/courses">Cursos</Nav.Link>}
-                {!isAdmin && <Nav.Link href="/game">Juego</Nav.Link>}
+                {!isAdmin && <Nav.Link href="/courses">Mapa</Nav.Link>}
+                {!isAdmin && <Nav.Link href="/game">Información</Nav.Link>}
                 {!isAdmin && <Nav.Link href="/rotaciones">Rotaciones</Nav.Link>}
                 {!isAdmin && <Nav.Link href="/profile">Perfil</Nav.Link>}
                 {isAdmin && <Nav.Link href="/data">Datos</Nav.Link>}
